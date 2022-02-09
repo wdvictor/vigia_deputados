@@ -14,7 +14,9 @@ class CamaraApi {
 
   Future<DeputadosResponse> getDeputados() async {
     try {
+      /// It's make this way to not call the api constantly
       if (deputadosResponse == null) {
+        log('Deputados CALL', name: 'REQUEST');
         Response response = await Dio().get(deputadosUrl);
         deputadosResponse =
             deputadosResponseFromJson(jsonEncode(response.data));

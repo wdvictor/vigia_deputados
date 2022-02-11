@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             }
 
             return GridView.count(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
               crossAxisCount: 2,
               crossAxisSpacing: _axisSpacing,
               mainAxisSpacing: _axisSpacing,
@@ -61,17 +61,17 @@ class _HomePageState extends State<HomePage> {
                   Material(
                     elevation: 10,
                     color: CupertinoColors.tertiarySystemGroupedBackground,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(20),
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SizedBox(
-                            height: _size.height * 0.01,
+                            height: _size.height * 0.009,
                           ),
                           Material(
                             elevation: 11,
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                                 height: _size.height * 0.13,
                                 child: Image.network(dado.urlFoto)),
                           ),
-                          Expanded(child: Text(dado.nome)),
+                          Expanded(child: Center(child: Text(dado.nome))),
                           Expanded(
                             child: Container(
                                 alignment: Alignment.center,

@@ -14,36 +14,40 @@ class CamaraApi {
   DeputadosResponse? deputadosResponse;
   DeputadoDetalhadoResponse? deputadoDetalhadoResponse;
 
-  Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
-    try {
-      if (deputadoDetalhadoResponse == null) {
-        const String requestUrl =
-            'https://dadosabertos.camara.leg.br/api/v2/deputados';
-
-        Response response = await Dio().get('$requestUrl/$deputadoID');
-        deputadoDetalhadoResponse =
-            deputadoDetalhadoResponseFromJson(jsonEncode(response.data));
-      }
-
-      return deputadoDetalhadoResponse!;
-    } catch (exception) {
-      log('', name: 'ERROR', error: exception);
-      throw 'ER-00';
-    }
-  }
-
+  //CA-GD-00
   Future<DeputadosResponse> getDeputados() async {
     try {
       /// It's make this way to not call the api constantly
       if (deputadosResponse == null) {
         log('Deputados CALL', name: 'REQUEST');
         Response response = await Dio().get(deputadosUrl);
-        deputadosResponse =
-            deputadosResponseFromJson(jsonEncode(response.data));
+        deputadosResponse = deputadosResponseFromJson(
+          jsonEncode(response.data),
+        );
       }
       return deputadosResponse!;
     } catch (exception) {
-      rethrow;
+      throw 'CA-GDI-00';
+    }
+  }
+
+  //CA-GDI-00
+  Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
+    try {
+      if (deputadoDetalhadoResponse == null) {
+        String requestUrl =
+            'https://dadosabertos.camara.leg.br/api/v2/deputados/$deputadoID';
+
+        Response response = await Dio().get('$requestUrl/$deputadoID');
+        deputadoDetalhadoResponse = deputadoDetalhadoResponseFromJson(
+          jsonEncode(response.data),
+        );
+      }
+
+      return deputadoDetalhadoResponse!;
+    } catch (exception) {
+      log('', name: 'ERROR', error: exception);
+      throw 'CA-GDI-01';
     }
   }
 }

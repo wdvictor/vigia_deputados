@@ -36,7 +36,7 @@ class CamaraApi {
     try {
       if (deputadoDetalhadoResponse == null) {
         String requestUrl =
-            'https://dadosabertos.camara.leg.br/api/v2/deputados/$deputadoID';
+            'https://dadosabertos.camara.leg.br/api/v2/deputados';
 
         Response response = await Dio().get('$requestUrl/$deputadoID');
         deputadoDetalhadoResponse = deputadoDetalhadoResponseFromJson(

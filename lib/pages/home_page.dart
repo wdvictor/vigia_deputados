@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
-    final double _axisSpacing = _size.width * 0.05;
     return SafeArea(
       child: CupertinoPageScaffold(
         backgroundColor: CupertinoColors.white,
@@ -47,7 +46,7 @@ class _HomePageState extends State<HomePage> {
               AsyncSnapshot<DeputadosResponse> snapshot) {
             if (!snapshot.hasData) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CupertinoActivityIndicator(),
               );
             }
 
@@ -63,18 +62,30 @@ class _HomePageState extends State<HomePage> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
-                      return const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                        child: CupertinoTextField(
-                          placeholder: 'Buscar',
-                          prefix: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              CupertinoIcons.search,
-                              color: Colors.grey,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                                child: CupertinoButton(
+                              onPressed: () {
+                                showCupertinoModalPopup(
+                                    context: context,
+                                    builder: (context) =>
+                                        const MenuActionSheet());
+                              },
+                              child: Icon(
+                                  CupertinoIcons.line_horizontal_3_decrease),
+                            )),
+                            const Expanded(
+                              flex: 5,
+                              child: CupertinoSearchTextField(
+                                placeholder: 'Buscar',
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       );
                     }, childCount: 1),
@@ -116,7 +127,12 @@ class _HomePageState extends State<HomePage> {
                                           child: Image.network(dado.urlFoto)),
                                     ),
                                     Expanded(
-                                        child: Center(child: Text(dado.nome))),
+                                      child: Center(
+                                        child: Text(
+                                          dado.nome,
+                                        ),
+                                      ),
+                                    ),
                                     Expanded(
                                       child: Container(
                                           alignment: Alignment.center,
@@ -137,6 +153,39 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
+    );
+  }
+}
+
+class MenuActionSheet extends StatelessWidget {
+  const MenuActionSheet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoActionSheet(
+      cancelButton: CupertinoButton(
+        color: CupertinoColors.systemRed,
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Cancelar'),
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          onPressed: () {},
+          child: const Text('Filtrar por nome'),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {},
+          child: const Text('Filtrar por partido'),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {},
+          child: const Text('Filtrar por UF'),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {},
+          child: const Text('Filtrar por sexo'),
+        ),
+      ],
     );
   }
 }

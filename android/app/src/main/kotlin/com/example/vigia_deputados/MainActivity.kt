@@ -1,4 +1,4 @@
-package com.example.vigia_deputados
+package com.sysvic.vigia_deputados
 
 import io.flutter.embedding.android.FlutterActivity
 

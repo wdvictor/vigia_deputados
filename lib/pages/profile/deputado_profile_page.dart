@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
+import 'package:vigia_deputados/pages/home_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class DeputadoProfilePage extends StatefulWidget {
@@ -68,87 +69,140 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
               thickness: 2,
               color: ColorLib.blue.color,
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Center(
-                child: Text(
-                  'Mais Informações',
-                  style: TextStyle(
-                      color: CupertinoColors.systemGrey, fontSize: 20),
-                ),
-              ),
-            ),
             Expanded(
               flex: 5,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: FutureBuilder<DeputadoDetalhadoResponse>(
-                  future: _camaraApi.getDeputadoInfo(widget.deputado.id),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CupertinoActivityIndicator(),
-                      );
-                    }
-                    DeputadoDetalhadoResponse deputadoInfo = snapshot.data!;
-                    return CustomScrollView(
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            <Widget>[
-                              DeputadoInfoWithCopy(
-                                infoName: 'Nome Completo',
-                                infoValue: deputadoInfo.dados.nomeCivil,
-                                showCopyWidget: true,
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Email',
-                                infoValue:
-                                    deputadoInfo.dados.ultimoStatus.email,
-                                showCopyWidget: true,
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Telefone\n(Gabinete)',
-                                infoValue: deputadoInfo
-                                    .dados.ultimoStatus.gabinete.telefone,
-                                showCopyWidget: true,
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Endereço Gabinete',
-                                infoValue: getEnderecoGabinete(deputadoInfo),
-                                showCopyWidget: true,
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Sexo',
-                                infoValue: deputadoInfo.dados.sexo == 'M'
-                                    ? 'Masculino'
-                                    : 'Feminino',
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Data de Nascimento',
-                                infoValue:
-                                    getDataNascimentoFormatado(deputadoInfo),
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Município de Nascimento',
-                                infoValue:
-                                    deputadoInfo.dados.municipioNascimento,
-                              ),
-                              DeputadoInfoWithCopy(
-                                infoName: 'Escolaridade',
-                                infoValue: deputadoInfo.dados.escolaridade,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+              child: FutureBuilder<DeputadoDetalhadoResponse>(
+                future: _camaraApi.getDeputadoInfo(widget.deputado.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
                     );
-                  },
-                ),
+                  }
+                  DeputadoDetalhadoResponse deputadoInfo = snapshot.data!;
+                  return CustomScrollView(
+                    slivers: [
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Center(
+                                child: Text(
+                                  'Mais Informações',
+                                  style: TextStyle(
+                                      color: CupertinoColors.systemGrey,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Nome Completo',
+                              infoValue: deputadoInfo.dados.nomeCivil,
+                              showCopyWidget: true,
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Email',
+                              infoValue: deputadoInfo.dados.ultimoStatus.email,
+                              showCopyWidget: true,
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Telefone\n(Gabinete)',
+                              infoValue: deputadoInfo
+                                  .dados.ultimoStatus.gabinete.telefone,
+                              showCopyWidget: true,
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Endereço Gabinete',
+                              infoValue: getEnderecoGabinete(deputadoInfo),
+                              showCopyWidget: true,
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Sexo',
+                              infoValue: deputadoInfo.dados.sexo == 'M'
+                                  ? 'Masculino'
+                                  : 'Feminino',
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Data de Nascimento',
+                              infoValue:
+                                  getDataNascimentoFormatado(deputadoInfo),
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Município de Nascimento',
+                              infoValue: deputadoInfo.dados.municipioNascimento,
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'UF de Nascimento',
+                              infoValue: deputadoInfo.dados.ufNascimento,
+                            ),
+                            DeputadoInfoWithCopy(
+                              infoName: 'Escolaridade',
+                              infoValue: deputadoInfo.dados.escolaridade,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SliverGrid.count(
+                        // crossAxisSpacing: 25,
+                        // mainAxisSpacing: 25,
+                        crossAxisCount: 2,
+                        children: <Widget>[
+                          GridViewButton(
+                            title: 'Despesas',
+                            icon: CupertinoIcons.graph_square,
+                            navigationFunction: () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                },
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GridViewButton extends StatelessWidget {
+  const GridViewButton({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.navigationFunction,
+  }) : super(key: key);
+  final String title;
+  final IconData icon;
+  final Function() navigationFunction;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Material(
+        elevation: 10,
+        color: CupertinoColors.tertiarySystemGroupedBackground,
+        borderRadius: BorderRadius.circular(20),
+        child: GestureDetector(
+          onTap: navigationFunction,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                CupertinoIcons.graph_square,
+                size: 60,
+              ),
+              Text('Despesas')
+            ],
+          ),
         ),
       ),
     );

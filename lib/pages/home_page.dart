@@ -126,22 +126,26 @@ class _HomePageState extends State<HomePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
-                                      SizedBox(
-                                        height: _size.height * 0.009,
-                                      ),
-                                      Material(
-                                        elevation: 11,
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Container(
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          height: _size.height * 0.13,
-                                          child: Hero(
-                                            tag: 'DEP-${dado.id}',
-                                            child: Image.network(dado.urlFoto),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Material(
+                                          shape: const CircleBorder(),
+                                          elevation: 11,
+                                          child: Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            height: _size.height * 0.13,
+                                            child: Hero(
+                                              tag: 'DEP-${dado.id}',
+                                              child: CircleAvatar(
+                                                backgroundImage:
+                                                    NetworkImage(dado.urlFoto),
+                                                radius: 45,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),

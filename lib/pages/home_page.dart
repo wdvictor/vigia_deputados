@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
-import 'package:vigia_deputados/pages/deputado_profile_page.dart';
+import 'package:vigia_deputados/pages/profile/deputado_profile_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class HomePage extends StatefulWidget {
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                                 context,
                                 CupertinoPageRoute(
                                   builder: (BuildContext context) =>
-                                      DeputadoProfilePage(deputadoDados: dado),
+                                      DeputadoProfilePage(deputado: dado),
                                 ),
                               );
                             },

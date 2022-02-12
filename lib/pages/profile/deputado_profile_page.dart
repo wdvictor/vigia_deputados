@@ -9,9 +9,9 @@ import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class DeputadoProfilePage extends StatefulWidget {
-  const DeputadoProfilePage({Key? key, required this.deputadoDados})
+  const DeputadoProfilePage({Key? key, required this.deputado})
       : super(key: key);
-  final Dado deputadoDados;
+  final Dado deputado;
 
   @override
   _DeputadoProfilePageState createState() => _DeputadoProfilePageState();
@@ -25,27 +25,6 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
     _camaraApi = CamaraApi();
   }
 
-  Widget infoField({
-    required String infoName,
-    required String infoValue,
-  }) {
-    return Text.rich(
-      TextSpan(
-        text: '$infoName:',
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: CupertinoColors.black.withOpacity(0.6)),
-        children: <TextSpan>[
-          TextSpan(
-              text: '  $infoValue',
-              style: const TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: CupertinoColors.systemGrey2))
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -54,7 +33,7 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
         backgroundColor: CupertinoColors.white,
         navigationBar: CupertinoNavigationBar(
           middle: Text(
-            widget.deputadoDados.nome,
+            widget.deputado.nome,
             style: const TextStyle(color: CupertinoColors.systemBlue),
           ),
           backgroundColor: Colors.transparent,
@@ -66,7 +45,7 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
             ),
             Expanded(
               child: DeputadoHeader(
-                deputado: widget.deputadoDados,
+                deputado: widget.deputado,
               ),
             ),
             Divider(
@@ -75,11 +54,14 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
               thickness: 2,
               color: ColorLib.blue.color,
             ),
-            const Center(
-              child: Text(
-                'Mais Informações',
-                style:
-                    TextStyle(color: CupertinoColors.systemGrey, fontSize: 20),
+            const Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Center(
+                child: Text(
+                  'Mais Informações',
+                  style: TextStyle(
+                      color: CupertinoColors.systemGrey, fontSize: 20),
+                ),
               ),
             ),
             Expanded(
@@ -88,7 +70,7 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: FutureBuilder<DeputadoDetalhadoResponse>(
-                  future: _camaraApi.getDeputadoInfo(widget.deputadoDados.id),
+                  future: _camaraApi.getDeputadoInfo(widget.deputado.id),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -101,26 +83,14 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
                         SliverList(
                           delegate: SliverChildListDelegate(
                             <Widget>[
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  infoField(
-                                      infoName: 'Email',
-                                      infoValue: widget.deputadoDados.email),
-                                  CupertinoButton(
-                                    child: const Icon(
-                                      CupertinoIcons.doc_on_clipboard,
-                                      color: CupertinoColors.systemGrey,
-                                    ),
-                                    onPressed: () {
-                                      Clipboard.setData(
-                                        ClipboardData(
-                                            text: widget.deputadoDados.email),
-                                      ).then((value) {});
-                                    },
-                                  )
-                                ],
-                              ),
+                              DeputadoInfoWithCopy(
+                                  infoName: 'Email',
+                                  infoValue:
+                                      deputadoInfo.dados.ultimoStatus.email),
+                              DeputadoInfoWithCopy(
+                                  infoName: 'Telefone\n(Gabinete)',
+                                  infoValue: deputadoInfo
+                                      .dados.ultimoStatus.gabinete.telefone),
                             ],
                           ),
                         ),
@@ -133,6 +103,45 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DeputadoInfoWithoutCopy extends StatelessWidget {
+  const DeputadoInfoWithoutCopy(
+      {Key? key, required this.infoName, required this.infoValue})
+      : super(key: key);
+  final String infoName;
+  final String infoValue;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          child: Text.rich(
+            TextSpan(
+              text: '$infoName:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CupertinoColors.black.withOpacity(0.6),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text.rich(
+            TextSpan(
+              text: '  $infoValue',
+              style: const TextStyle(
+                fontWeight: FontWeight.normal,
+                color: CupertinoColors.systemGrey2,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -223,6 +232,49 @@ class DeputadoHeader extends StatelessWidget {
                 ],
               )),
         ),
+      ],
+    );
+  }
+}
+
+class DeputadoInfoWithCopy extends StatefulWidget {
+  const DeputadoInfoWithCopy(
+      {Key? key, required this.infoName, required this.infoValue})
+      : super(key: key);
+  final String infoName;
+  final String infoValue;
+
+  @override
+  State<DeputadoInfoWithCopy> createState() => _DeputadoInfoWithCopyState();
+}
+
+class _DeputadoInfoWithCopyState extends State<DeputadoInfoWithCopy> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          flex: 10,
+          child: DeputadoInfoWithoutCopy(
+              infoName: widget.infoName, infoValue: widget.infoValue),
+        ),
+        CupertinoButton(
+          child: const Icon(
+            CupertinoIcons.doc_on_clipboard,
+            color: CupertinoColors.systemGrey,
+          ),
+          onPressed: () {
+            Clipboard.setData(
+              ClipboardData(text: widget.infoValue),
+            );
+          },
+        )
       ],
     );
   }

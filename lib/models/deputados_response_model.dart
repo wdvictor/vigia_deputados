@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'dart:developer';
+
 DeputadosResponse deputadosResponseFromJson(String str) =>
     DeputadosResponse.fromJson(json.decode(str));
 
@@ -41,7 +43,7 @@ class Dado {
     required this.siglaUf,
     required this.idLegislatura,
     required this.urlFoto,
-    required this.email,
+    this.email,
   });
 
   int id;
@@ -52,9 +54,11 @@ class Dado {
   String siglaUf;
   int idLegislatura;
   String urlFoto;
-  String email;
+  String? email;
 
-  factory Dado.fromJson(Map<String, dynamic> json) => Dado(
+  factory Dado.fromJson(Map<String, dynamic> json) {
+    try {
+      return Dado(
         id: json["id"],
         uri: json["uri"],
         nome: json["nome"],
@@ -65,6 +69,11 @@ class Dado {
         urlFoto: json["urlFoto"],
         email: json["email"],
       );
+    } catch (exception) {
+      log(exception.toString());
+      rethrow;
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,

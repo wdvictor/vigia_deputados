@@ -1,8 +1,7 @@
-//cSpell:ignore cupertino camara
+//cSpell:ignore cupertino camara endereco predio andarº municipio
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
@@ -19,10 +18,25 @@ class DeputadoProfilePage extends StatefulWidget {
 
 class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
   late CamaraApi _camaraApi;
+
   @override
   void initState() {
     super.initState();
     _camaraApi = CamaraApi();
+  }
+
+  String getEnderecoGabinete(DeputadoDetalhadoResponse deputado) {
+    String sala = deputado.dados.ultimoStatus.gabinete.sala;
+    String andar = deputado.dados.ultimoStatus.gabinete.andar;
+    String predio = deputado.dados.ultimoStatus.gabinete.predio;
+    return 'Prédio $predio, $andarº Andar, Sala $sala';
+  }
+
+  String getDataNascimentoFormatado(DeputadoDetalhadoResponse deputado) {
+    int dia = deputado.dados.dataNascimento.day;
+    int mes = deputado.dados.dataNascimento.month;
+    int ano = deputado.dados.dataNascimento.year;
+    return '$dia/$mes/$ano';
   }
 
   @override
@@ -83,17 +97,48 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
                         SliverList(
                           delegate: SliverChildListDelegate(
                             <Widget>[
-                              DeputadoInfoWithoutCopy(
-                                  infoName: 'Nome Completo',
-                                  infoValue: deputadoInfo.dados.nomeCivil),
                               DeputadoInfoWithCopy(
-                                  infoName: 'Email',
-                                  infoValue:
-                                      deputadoInfo.dados.ultimoStatus.email),
+                                infoName: 'Nome Completo',
+                                infoValue: deputadoInfo.dados.nomeCivil,
+                                showCopyWidget: true,
+                              ),
                               DeputadoInfoWithCopy(
-                                  infoName: 'Telefone\n(Gabinete)',
-                                  infoValue: deputadoInfo
-                                      .dados.ultimoStatus.gabinete.telefone),
+                                infoName: 'Email',
+                                infoValue:
+                                    deputadoInfo.dados.ultimoStatus.email,
+                                showCopyWidget: true,
+                              ),
+                              DeputadoInfoWithCopy(
+                                infoName: 'Telefone\n(Gabinete)',
+                                infoValue: deputadoInfo
+                                    .dados.ultimoStatus.gabinete.telefone,
+                                showCopyWidget: true,
+                              ),
+                              DeputadoInfoWithCopy(
+                                infoName: 'Endereço Gabinete',
+                                infoValue: getEnderecoGabinete(deputadoInfo),
+                                showCopyWidget: true,
+                              ),
+                              DeputadoInfoWithCopy(
+                                infoName: 'Sexo',
+                                infoValue: deputadoInfo.dados.sexo == 'M'
+                                    ? 'Masculino'
+                                    : 'Feminino',
+                              ),
+                              DeputadoInfoWithCopy(
+                                infoName: 'Data de Nascimento',
+                                infoValue:
+                                    getDataNascimentoFormatado(deputadoInfo),
+                              ),
+                              DeputadoInfoWithCopy(
+                                infoName: 'Município de Nascimento',
+                                infoValue:
+                                    deputadoInfo.dados.municipioNascimento,
+                              ),
+                              DeputadoInfoWithCopy(
+                                infoName: 'Escolaridade',
+                                infoValue: deputadoInfo.dados.escolaridade,
+                              ),
                             ],
                           ),
                         ),
@@ -126,6 +171,7 @@ class DeputadoInfoWithoutCopy extends StatelessWidget {
             TextSpan(
               text: '$infoName:',
               style: TextStyle(
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: CupertinoColors.black.withOpacity(0.6),
               ),
@@ -134,12 +180,15 @@ class DeputadoInfoWithoutCopy extends StatelessWidget {
         ),
         Expanded(
           flex: 2,
-          child: Text.rich(
-            TextSpan(
-              text: '  $infoValue',
-              style: const TextStyle(
-                fontWeight: FontWeight.normal,
-                color: CupertinoColors.systemGrey2,
+          child: Center(
+            child: Text.rich(
+              TextSpan(
+                text: '  $infoValue',
+                style: const TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.normal,
+                  color: CupertinoColors.systemGrey2,
+                ),
               ),
             ),
           ),
@@ -242,10 +291,14 @@ class DeputadoHeader extends StatelessWidget {
 
 class DeputadoInfoWithCopy extends StatefulWidget {
   const DeputadoInfoWithCopy(
-      {Key? key, required this.infoName, required this.infoValue})
+      {Key? key,
+      required this.infoName,
+      required this.infoValue,
+      this.showCopyWidget = false})
       : super(key: key);
   final String infoName;
   final String infoValue;
+  final bool showCopyWidget;
 
   @override
   State<DeputadoInfoWithCopy> createState() => _DeputadoInfoWithCopyState();
@@ -267,17 +320,23 @@ class _DeputadoInfoWithCopyState extends State<DeputadoInfoWithCopy> {
           child: DeputadoInfoWithoutCopy(
               infoName: widget.infoName, infoValue: widget.infoValue),
         ),
-        CupertinoButton(
-          child: const Icon(
-            CupertinoIcons.doc_on_clipboard,
-            color: CupertinoColors.systemGrey,
+        if (widget.showCopyWidget)
+          CupertinoButton(
+            child: const Icon(
+              CupertinoIcons.doc_on_clipboard,
+              color: CupertinoColors.systemGrey,
+            ),
+            onPressed: () {
+              Clipboard.setData(
+                ClipboardData(text: widget.infoValue),
+              );
+            },
           ),
-          onPressed: () {
-            Clipboard.setData(
-              ClipboardData(text: widget.infoValue),
-            );
-          },
-        )
+        if (!widget.showCopyWidget)
+          CupertinoButton(
+            child: Container(),
+            onPressed: () {},
+          )
       ],
     );
   }

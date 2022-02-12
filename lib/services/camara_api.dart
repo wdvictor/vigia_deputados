@@ -9,8 +9,7 @@ import 'package:vigia_deputados/models/deputados_response_model.dart';
 class CamaraApi {
   final String dadosAbertosUrl = 'https://dadosabertos.camara.leg.br/api/v2';
   final String deputadosUrl =
-      'https://dadosabertos.camara.leg.br/api/v2/deputados'
-      '?dataInicio=2018-01-01&ordem=ASC&ordenarPor=nome';
+      'https://dadosabertos.camara.leg.br/api/v2/deputados?dataInicio=2018-01-01&ordem=ASC&ordenarPor=nome';
 
   DeputadosResponse? deputadosResponse;
   DeputadoDetalhadoResponse? deputadoDetalhadoResponse;
@@ -29,7 +28,7 @@ class CamaraApi {
       return deputadosResponse!;
     } catch (exception) {
       log('', name: 'CA-GD-00', error: exception);
-      throw 'CA-GDI-00';
+      throw 'CA-GD-00';
     }
   }
 

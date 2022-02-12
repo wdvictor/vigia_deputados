@@ -83,6 +83,9 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
                         SliverList(
                           delegate: SliverChildListDelegate(
                             <Widget>[
+                              DeputadoInfoWithoutCopy(
+                                  infoName: 'Nome Completo',
+                                  infoValue: deputadoInfo.dados.nomeCivil),
                               DeputadoInfoWithCopy(
                                   infoName: 'Email',
                                   infoValue:

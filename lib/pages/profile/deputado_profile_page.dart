@@ -13,7 +13,7 @@ import 'package:vigia_deputados/widgets/deputado_header.dart';
 class DeputadoProfilePage extends StatefulWidget {
   const DeputadoProfilePage({Key? key, required this.deputado})
       : super(key: key);
-  final Dado deputado;
+  final DeputadoDado deputado;
 
   @override
   _DeputadoProfilePageState createState() => _DeputadoProfilePageState();

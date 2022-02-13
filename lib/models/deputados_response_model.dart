@@ -18,12 +18,13 @@ class DeputadosResponse {
     required this.links,
   });
 
-  List<Dado> dados;
+  List<DeputadoDado> dados;
   List<Link> links;
 
   factory DeputadosResponse.fromJson(Map<String, dynamic> json) =>
       DeputadosResponse(
-        dados: List<Dado>.from(json["dados"].map((x) => Dado.fromJson(x))),
+        dados: List<DeputadoDado>.from(
+            json["dados"].map((x) => DeputadoDado.fromJson(x))),
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
       );
 
@@ -33,8 +34,8 @@ class DeputadosResponse {
       };
 }
 
-class Dado {
-  Dado({
+class DeputadoDado {
+  DeputadoDado({
     required this.id,
     required this.uri,
     required this.nome,
@@ -56,9 +57,9 @@ class Dado {
   String urlFoto;
   String? email;
 
-  factory Dado.fromJson(Map<String, dynamic> json) {
+  factory DeputadoDado.fromJson(Map<String, dynamic> json) {
     try {
-      return Dado(
+      return DeputadoDado(
         id: json["id"],
         uri: json["uri"],
         nome: json["nome"],

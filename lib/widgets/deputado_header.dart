@@ -5,7 +5,7 @@ import 'package:vigia_deputados/models/deputados_response_model.dart';
 
 class DeputadoHeader extends StatelessWidget {
   const DeputadoHeader({Key? key, required this.deputado}) : super(key: key);
-  final Dado deputado;
+  final DeputadoDado deputado;
   @override
   Widget build(BuildContext context) {
     return Row(

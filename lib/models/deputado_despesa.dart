@@ -18,12 +18,13 @@ class DeputadoDespesas {
     required this.links,
   });
 
-  List<Dado> dados;
+  List<DeputadoDespesasDado> dados;
   List<Link> links;
 
   factory DeputadoDespesas.fromJson(Map<String, dynamic> json) =>
       DeputadoDespesas(
-        dados: List<Dado>.from(json["dados"].map((x) => Dado.fromJson(x))),
+        dados: List<DeputadoDespesasDado>.from(
+            json["dados"].map((x) => DeputadoDespesasDado.fromJson(x))),
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
       );
 
@@ -33,8 +34,8 @@ class DeputadoDespesas {
       };
 }
 
-class Dado {
-  Dado({
+class DeputadoDespesasDado {
+  DeputadoDespesasDado({
     required this.ano,
     required this.mes,
     required this.tipoDespesa,
@@ -72,9 +73,9 @@ class Dado {
   int codLote;
   int parcela;
 
-  factory Dado.fromJson(Map<String, dynamic> json) {
+  factory DeputadoDespesasDado.fromJson(Map<String, dynamic> json) {
     try {
-      return Dado(
+      return DeputadoDespesasDado(
         ano: json["ano"],
         mes: json["mes"],
         tipoDespesa: tipoDespesaValues.map[json["tipoDespesa"]],
@@ -94,7 +95,8 @@ class Dado {
         parcela: json["parcela"],
       );
     } catch (exception) {
-      log(exception.toString(), name: 'Dado.fromJson in Deputado despesas');
+      log(exception.toString(),
+          name: 'DeputadoDespesasDado.fromJson in Deputado despesas');
       rethrow;
     }
   }

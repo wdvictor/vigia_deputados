@@ -16,12 +16,12 @@ class DeputadoDetalhadoResponse {
     required this.links,
   });
 
-  Dados dados;
+  DeputadoDetalhadoDado dados;
   List<Link> links;
 
   factory DeputadoDetalhadoResponse.fromJson(Map<String, dynamic> json) =>
       DeputadoDetalhadoResponse(
-        dados: Dados.fromJson(json["dados"]),
+        dados: DeputadoDetalhadoDado.fromJson(json["dados"]),
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
       );
 
@@ -31,8 +31,8 @@ class DeputadoDetalhadoResponse {
       };
 }
 
-class Dados {
-  Dados({
+class DeputadoDetalhadoDado {
+  DeputadoDetalhadoDado({
     required this.id,
     required this.uri,
     required this.nomeCivil,
@@ -62,7 +62,8 @@ class Dados {
   String municipioNascimento;
   String escolaridade;
 
-  factory Dados.fromJson(Map<String, dynamic> json) => Dados(
+  factory DeputadoDetalhadoDado.fromJson(Map<String, dynamic> json) =>
+      DeputadoDetalhadoDado(
         id: json["id"],
         uri: json["uri"],
         nomeCivil: json["nomeCivil"],

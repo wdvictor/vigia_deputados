@@ -54,10 +54,10 @@ class _HomePageState extends State<HomePage> {
             }
 
             /// Uses a [SliverGridDelegateWithFixedCrossAxisCount] as the
-            /// [gridDelegate], and a [SliverChildListDelegate] as the [delegate].
+            /// [gridDelegate], and a [SliverChildListDelegate] as the [delegate].d
 
             double axisSpacing = _size.height * 0.01;
-            List<Dado> dados = snapshot.data!.dados;
+            List<DeputadoDado> dados = snapshot.data!.dados;
             return SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(top: 60),
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisSpacing: axisSpacing,
                       crossAxisCount: 2,
                       children: [
-                        for (final Dado dado in dados)
+                        for (final DeputadoDado dado in dados)
                           GestureDetector(
                             onTap: () {
                               Navigator.push(

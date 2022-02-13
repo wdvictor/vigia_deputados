@@ -9,6 +9,7 @@ import 'package:vigia_deputados/pages/deputado_despesas.dart';
 import 'package:vigia_deputados/pages/home_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 import 'package:vigia_deputados/widgets/deputado_header.dart';
+import 'package:vigia_deputados/widgets/deputado_info_with_copy.dart';
 
 class DeputadoProfilePage extends StatefulWidget {
   const DeputadoProfilePage({Key? key, required this.deputado})
@@ -156,8 +157,9 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
                             navigationFunction: () => Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) =>
-                                    const DeputadoDespesasPage(),
+                                builder: (context) => DeputadoDespesasPage(
+                                  deputadoDado: widget.deputado,
+                                ),
                               ),
                             ),
                           ),
@@ -208,102 +210,6 @@ class GridViewButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class DeputadoInfoWithoutCopy extends StatelessWidget {
-  const DeputadoInfoWithoutCopy(
-      {Key? key, required this.infoName, required this.infoValue})
-      : super(key: key);
-  final String infoName;
-  final String infoValue;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          child: Text.rich(
-            TextSpan(
-              text: '$infoName:',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: CupertinoColors.black.withOpacity(0.6),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Center(
-            child: Text.rich(
-              TextSpan(
-                text: '  $infoValue',
-                style: const TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.normal,
-                  color: CupertinoColors.systemGrey2,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class DeputadoInfoWithCopy extends StatefulWidget {
-  const DeputadoInfoWithCopy(
-      {Key? key,
-      required this.infoName,
-      required this.infoValue,
-      this.showCopyWidget = false})
-      : super(key: key);
-  final String infoName;
-  final String infoValue;
-  final bool showCopyWidget;
-
-  @override
-  State<DeputadoInfoWithCopy> createState() => _DeputadoInfoWithCopyState();
-}
-
-class _DeputadoInfoWithCopyState extends State<DeputadoInfoWithCopy> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          flex: 10,
-          child: DeputadoInfoWithoutCopy(
-              infoName: widget.infoName, infoValue: widget.infoValue),
-        ),
-        if (widget.showCopyWidget)
-          CupertinoButton(
-            child: const Icon(
-              CupertinoIcons.doc_on_clipboard,
-              color: CupertinoColors.systemGrey,
-            ),
-            onPressed: () {
-              Clipboard.setData(
-                ClipboardData(text: widget.infoValue),
-              );
-            },
-          ),
-        if (!widget.showCopyWidget)
-          CupertinoButton(
-            child: Container(),
-            onPressed: () {},
-          )
-      ],
     );
   }
 }

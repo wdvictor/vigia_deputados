@@ -58,9 +58,10 @@ class CamaraApi {
   Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID) async {
     try {
       if (deputadoDespesas == null) {
+        log('Calling getDespesas');
         String requestUrl =
             'https://dadosabertos.camara.leg.br/api/v2/deputados'
-            '/$deputadoID/despesas/itens=3000&ordem=DESC';
+            '/$deputadoID/despesas?itens=3000&ordem=DESC';
 
         Response response = await Dio().get(requestUrl);
         deputadoDespesas = deputadoDespesasFromJson(jsonEncode(response.data));

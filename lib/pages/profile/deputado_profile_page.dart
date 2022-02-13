@@ -1,6 +1,7 @@
 //cSpell:ignore cupertino camara endereco predio andarº municipio
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';

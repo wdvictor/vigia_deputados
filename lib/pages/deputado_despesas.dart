@@ -1,4 +1,4 @@
-//cSpell:ignore cupertino camara
+//cSpell:ignore cupertino camara Graficos
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,55 +26,68 @@ class _DeputadoDespesasPageState extends State<DeputadoDespesasPage> {
     _camaraApi = CamaraApi();
   }
 
+  late List<Widget> pages = [
+    TabGraficos(
+      deputadoDado: widget.deputadoDado,
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.white,
       navigationBar: const CupertinoNavigationBar(
         middle: Text(
           'Despesas',
-          style: TextStyle(color: CupertinoColors.activeBlue),
+          style: TextStyle(color: CupertinoColors.systemBlue),
         ),
+        backgroundColor: Colors.transparent,
       ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: size.height * 0.1,
-          ),
-          Expanded(child: DeputadoHeader(deputado: widget.deputadoDado)),
-          Divider(
-            endIndent: 30,
-            indent: 30,
-            thickness: 2,
-            color: ColorLib.blue.color,
-          ),
-          Expanded(
-            flex: 5,
-            child: FutureBuilder(
-              future: _camaraApi.getDeputadoDespesas(widget.deputadoDado.id),
-              builder: (BuildContext context,
-                  AsyncSnapshot<DeputadoDespesas> snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CupertinoActivityIndicator(),
+      child: FutureBuilder(
+          future: _camaraApi.getDeputadoDespesas(widget.deputadoDado.id),
+          builder:
+              (BuildContext context, AsyncSnapshot<DeputadoDespesas> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CupertinoActivityIndicator(),
+              );
+            }
+            DeputadoDespesas deputadoDespesas = snapshot.data!;
+
+            return CupertinoTabScaffold(
+                tabBar: CupertinoTabBar(
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.doc),
+                      label: 'Notas Fiscais',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.graph_square),
+                      label: 'Gráficos',
+                    ),
+                  ],
+                ),
+                tabBuilder: (BuildContext context, int index) {
+                  return CupertinoTabView(
+                    builder: (BuildContext context) {
+                      switch (index) {
+                        case 0:
+                          return TabNotasFiscais(
+                              deputadoDado: widget.deputadoDado,
+                              deputadoDespesas: deputadoDespesas);
+
+                        case 1:
+                          return TabGraficos(
+                            deputadoDado: widget.deputadoDado,
+                          );
+
+                        default:
+                      }
+                      return pages[index];
+                    },
                   );
-                }
-                DeputadoDespesas deputadoDespesas = snapshot.data!;
-                return CustomScrollView(slivers: [
-                  SliverList(
-                    delegate: SliverChildListDelegate(<Widget>[
-                      for (final DeputadoDespesasDado deputadoDespesasDado
-                          in deputadoDespesas.dados)
-                        DespesaCard(deputadoDespesasDado: deputadoDespesasDado)
-                    ]),
-                  ),
-                ]);
-              },
-            ),
-          ),
-        ],
-      ),
+                });
+          }),
     );
   }
 }
@@ -150,6 +163,89 @@ class DespesaCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class TabNotasFiscais extends StatelessWidget {
+  const TabNotasFiscais(
+      {Key? key, required this.deputadoDado, required this.deputadoDespesas})
+      : super(key: key);
+  final DeputadoDado deputadoDado;
+  final DeputadoDespesas deputadoDespesas;
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.white,
+      child: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.1,
+          ),
+          Expanded(child: DeputadoHeader(deputado: deputadoDado)),
+          Divider(
+            endIndent: 30,
+            indent: 30,
+            thickness: 2,
+            color: ColorLib.blue.color,
+          ),
+          Expanded(
+            flex: 5,
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(<Widget>[
+                    for (final DeputadoDespesasDado deputadoDespesasDado
+                        in deputadoDespesas.dados)
+                      DespesaCard(deputadoDespesasDado: deputadoDespesasDado)
+                  ]),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TabGraficos extends StatefulWidget {
+  const TabGraficos({Key? key, required this.deputadoDado}) : super(key: key);
+  final DeputadoDado deputadoDado;
+  @override
+  State<TabGraficos> createState() => _TabGraficosState();
+}
+
+class _TabGraficosState extends State<TabGraficos> {
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.white,
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: size.height * 0.1,
+          ),
+          Expanded(
+            child: DeputadoHeader(
+              deputado: widget.deputadoDado,
+            ),
+          ),
+          Divider(
+            endIndent: 30,
+            indent: 30,
+            thickness: 2,
+            color: ColorLib.blue.color,
+          ),
+          Expanded(
+            flex: 5,
+            child: Container(),
+          )
+        ],
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 
@@ -49,6 +50,25 @@ class CamaraApi {
     } catch (exception) {
       log('', name: 'CA-GDI-01', error: exception);
       throw 'CA-GDI-01';
+    }
+  }
+
+  //CA-GDD-02
+  DeputadoDespesas? deputadoDespesas;
+  Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID) async {
+    try {
+      if (deputadoDespesas == null) {
+        String requestUrl =
+            'https://dadosabertos.camara.leg.br/api/v2/deputados'
+            '/$deputadoID/despesas/itens=3000&ordem=DESC';
+
+        Response response = await Dio().get(requestUrl);
+        deputadoDespesas = deputadoDespesasFromJson(jsonEncode(response.data));
+      }
+      return deputadoDespesas!;
+    } catch (exception) {
+      log('', name: 'CA-GDI-01', error: exception);
+      throw 'CA-GDD-02';
     }
   }
 }

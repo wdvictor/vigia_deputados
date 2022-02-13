@@ -1,4 +1,4 @@
-//cSpell:ignore cupertino camara Graficos Grafico
+//cSpell:ignore cupertino camara Graficos Grafico Inversed
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -253,10 +253,18 @@ class _TabGraficosState extends State<TabGraficos> {
 
     for (final MapEntry<String, double> data
         in despesasPorMes.entries.toList()) {
-      despesasDataSource.add(DespesaGraficoModel(data.key, data.value));
+      int year = int.parse(data.key.split('/')[1]);
+      int month = int.parse(data.key.split('/')[0]);
+      despesasDataSource.add(
+        DespesaGraficoModel(
+          data.key,
+          data.value,
+          DateTime(year, month),
+        ),
+      );
     }
-
-    return despesasDataSource;
+    despesasDataSource.sort((a, b) => a.documentDate.compareTo(b.documentDate));
+    return despesasDataSource.reversed.toList();
   }
 
   @override
@@ -294,7 +302,7 @@ class _TabGraficosState extends State<TabGraficos> {
                         title: ChartTitle(text: 'Despesas nos últimos meses'),
                         primaryXAxis: CategoryAxis(
                           isInversed: true,
-                          majorGridLines: const MajorGridLines(width: 0),
+                          majorGridLines: const MajorGridLines(width: 0.0),
                         ),
                         primaryYAxis: NumericAxis(labelFormat: 'R\$:{value}'),
                         series: [

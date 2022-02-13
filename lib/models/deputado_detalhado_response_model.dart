@@ -171,20 +171,20 @@ class UltimoStatus {
 
 class Gabinete {
   Gabinete({
-    required this.nome,
-    required this.predio,
-    required this.sala,
-    required this.andar,
-    required this.telefone,
-    required this.email,
+    this.nome,
+    this.predio,
+    this.sala,
+    this.andar,
+    this.telefone,
+    this.email,
   });
 
-  String nome;
-  String predio;
-  String sala;
-  String andar;
-  String telefone;
-  String email;
+  String? nome;
+  String? predio;
+  String? sala;
+  String? andar;
+  String? telefone;
+  String? email;
 
   factory Gabinete.fromJson(Map<String, dynamic> json) => Gabinete(
         nome: json["nome"],

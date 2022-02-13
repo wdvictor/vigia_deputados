@@ -1,7 +1,5 @@
-// To parse this JSON data, do
-//
-//     final deputadoDespesas = deputadoDespesasFromJson(jsonString);
-
+// ignore_for_file: constant_identifier_names
+//cSpell:ignore cnpj ESCRITRIO COMBUSTVEIS DIVULGAO SERVIOS ELETRNICA
 import 'dart:convert';
 
 import 'dart:developer';

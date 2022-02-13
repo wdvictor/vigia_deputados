@@ -32,7 +32,7 @@ class DeputadoInfoWithoutCopy extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.normal,
-                  color: CupertinoColors.systemGrey2,
+                  color: CupertinoColors.systemGrey,
                 ),
               ),
             ),

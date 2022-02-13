@@ -1,12 +1,10 @@
 //cSpell:ignore cupertino camara endereco predio andarº municipio
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/pages/deputado_despesas.dart';
-import 'package:vigia_deputados/pages/home_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 import 'package:vigia_deputados/widgets/deputado_header.dart';
 import 'package:vigia_deputados/widgets/deputado_info_with_copy.dart';
@@ -30,9 +28,10 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
   }
 
   String getEnderecoGabinete(DeputadoDetalhadoResponse deputado) {
-    String sala = deputado.dados.ultimoStatus.gabinete.sala;
-    String andar = deputado.dados.ultimoStatus.gabinete.andar;
-    String predio = deputado.dados.ultimoStatus.gabinete.predio;
+    String? sala = deputado.dados.ultimoStatus.gabinete.sala;
+    String? andar = deputado.dados.ultimoStatus.gabinete.andar;
+    String? predio = deputado.dados.ultimoStatus.gabinete.predio;
+    if (sala == null || andar == null || predio == null) return '';
     return 'Prédio $predio, $andarº Andar, Sala $sala';
   }
 
@@ -111,8 +110,12 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
                             ),
                             DeputadoInfoWithCopy(
                               infoName: 'Telefone\n(Gabinete)',
-                              infoValue: deputadoInfo
-                                  .dados.ultimoStatus.gabinete.telefone,
+                              infoValue: deputadoInfo.dados.ultimoStatus
+                                          .gabinete.telefone ==
+                                      null
+                                  ? ''
+                                  : deputadoInfo
+                                      .dados.ultimoStatus.gabinete.telefone!,
                               showCopyWidget: true,
                             ),
                             DeputadoInfoWithCopy(

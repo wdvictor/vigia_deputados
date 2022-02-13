@@ -1,6 +1,7 @@
 //cSpell:ignore cupertino camara
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
@@ -106,13 +107,21 @@ class DespesaCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              DeputadoInfoWithCopy(
+                  infoName: 'Tipo Despesa',
+                  infoValue: deputadoDespesasDado.tipoDespesa == null
+                      ? ''
+                      : deputadoDespesasDado.tipoDespesa!.name),
               Container(
                 color: CupertinoColors.systemGrey6,
                 child: DeputadoInfoWithCopy(
-                    infoName: 'Fornecedor',
-                    infoValue: deputadoDespesasDado.nomeFornecedor),
+                  infoName: 'Fornecedor',
+                  infoValue: deputadoDespesasDado.nomeFornecedor,
+                  showCopyWidget: true,
+                ),
               ),
               DeputadoInfoWithCopy(
+                  showCopyWidget: true,
                   infoName: 'CNPJ Fornecedor',
                   infoValue: deputadoDespesasDado.cnpjCpfFornecedor),
               Container(
@@ -135,7 +144,7 @@ class DespesaCard extends StatelessWidget {
                     color: CupertinoColors.white,
                     size: 30,
                   ),
-                  onPressed: () {},
+                  onPressed: () => launch(deputadoDespesasDado.urlDocumento!),
                 ),
               ),
             ],

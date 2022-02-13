@@ -1,13 +1,18 @@
-//cSpell:ignore cupertino camara Graficos
+//cSpell:ignore cupertino camara Graficos Grafico
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
+import 'package:vigia_deputados/models/despesa_grafico_model.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 import 'package:vigia_deputados/widgets/deputado_header.dart';
 import 'package:vigia_deputados/widgets/deputado_info_with_copy.dart';
+import 'package:intl/intl.dart';
 
 class DeputadoDespesasPage extends StatefulWidget {
   const DeputadoDespesasPage({Key? key, required this.deputadoDado})
@@ -25,12 +30,6 @@ class _DeputadoDespesasPageState extends State<DeputadoDespesasPage> {
     super.initState();
     _camaraApi = CamaraApi();
   }
-
-  late List<Widget> pages = [
-    TabGraficos(
-      deputadoDado: widget.deputadoDado,
-    )
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +78,14 @@ class _DeputadoDespesasPageState extends State<DeputadoDespesasPage> {
                         case 1:
                           return TabGraficos(
                             deputadoDado: widget.deputadoDado,
+                            deputadoDespesas: deputadoDespesas,
                           );
 
                         default:
+                          return TabNotasFiscais(
+                              deputadoDado: widget.deputadoDado,
+                              deputadoDespesas: deputadoDespesas);
                       }
-                      return pages[index];
                     },
                   );
                 });
@@ -213,15 +215,54 @@ class TabNotasFiscais extends StatelessWidget {
 }
 
 class TabGraficos extends StatefulWidget {
-  const TabGraficos({Key? key, required this.deputadoDado}) : super(key: key);
+  const TabGraficos(
+      {Key? key, required this.deputadoDado, required this.deputadoDespesas})
+      : super(key: key);
   final DeputadoDado deputadoDado;
+  final DeputadoDespesas deputadoDespesas;
   @override
   State<TabGraficos> createState() => _TabGraficosState();
 }
 
 class _TabGraficosState extends State<TabGraficos> {
+  late List<num> _xValues;
+  late List<num> _yValues;
+  List<double> _xPointValues = <double>[];
+  List<double> _yPointValues = <double>[];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  List<DespesaGraficoModel> getDespesasPorMes() {
+    Map<String, double> despesasPorMes = {};
+    List<DespesaGraficoModel> despesasDataSource = [];
+    for (final DeputadoDespesasDado deputadoDespesa
+        in widget.deputadoDespesas.dados) {
+      final String key =
+          '${deputadoDespesa.dataDocumento.month}/${deputadoDespesa.dataDocumento.year}';
+
+      if (despesasPorMes[key] != null) {
+        despesasPorMes[key] =
+            despesasPorMes[key]! + deputadoDespesa.valorLiquido;
+      } else {
+        despesasPorMes[key] = deputadoDespesa.valorLiquido;
+      }
+    }
+
+    for (final MapEntry<String, double> data
+        in despesasPorMes.entries.toList()) {
+      despesasDataSource.add(DespesaGraficoModel(data.key, data.value));
+    }
+
+    return despesasDataSource;
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<DespesaGraficoModel> despesasDataSource = getDespesasPorMes();
+
     final Size size = MediaQuery.of(context).size;
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.white,
@@ -243,7 +284,34 @@ class _TabGraficosState extends State<TabGraficos> {
           ),
           Expanded(
             flex: 5,
-            child: Container(),
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      SfCartesianChart(
+                        plotAreaBorderWidth: 0,
+                        title: ChartTitle(text: 'Despesas nos últimos meses'),
+                        primaryXAxis: CategoryAxis(
+                          isInversed: true,
+                          majorGridLines: const MajorGridLines(width: 0),
+                        ),
+                        primaryYAxis: NumericAxis(labelFormat: 'R\$:{value}'),
+                        series: [
+                          ColumnSeries(
+                            dataSource: despesasDataSource,
+                            xValueMapper: (DespesaGraficoModel data, index) =>
+                                data.x,
+                            yValueMapper: (DespesaGraficoModel data, index) =>
+                                data.y,
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),

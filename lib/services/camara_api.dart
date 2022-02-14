@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CamaraApi {
   final String dadosAbertosUrl = 'https://dadosabertos.camara.leg.br/api/v2';
@@ -15,14 +14,26 @@ class CamaraApi {
   DeputadosResponse? deputadosResponse;
   DeputadoDetalhadoResponse? deputadoDetalhadoResponse;
 
-  //CA-GD-00
-  Future<DeputadosResponse> getDeputados() async {
+  ///
+  ///CA-GD-00
+  Future<DeputadosResponse> getDeputados(
+      {List<String>? ufs, bool forceRequest = false}) async {
     try {
+      String request = deputadosUrl;
+
+      if (ufs != null) {
+        String ufsParam = '&siglaUf=';
+        for (final String uf in ufs) {
+          ufsParam += '$uf,';
+        }
+        request += '&siglaUf=$ufsParam';
+      }
+
       /// It's make this way to not call the api constantly
-      if (deputadosResponse == null) {
+      if (deputadosResponse == null || forceRequest) {
         log('', name: 'CALLING DEPUTADOS API');
         log('Deputados CALL', name: 'REQUEST');
-        Response response = await Dio().get(deputadosUrl);
+        Response response = await Dio().get(request);
         deputadosResponse = deputadosResponseFromJson(
           jsonEncode(response.data),
         );

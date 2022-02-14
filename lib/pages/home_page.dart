@@ -172,7 +172,8 @@ class _HomePageState extends State<HomePage> {
                                         constraints:
                                             const BoxConstraints.expand(),
                                         color: ColorLib.green.color,
-                                        child: Text(dado.siglaPartido),
+                                        child: Text(
+                                            '${dado.siglaPartido}-${dado.siglaUf}'),
                                       ),
                                     ),
                                   ],

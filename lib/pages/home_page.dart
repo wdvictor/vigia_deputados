@@ -1,9 +1,11 @@
 // cSpell: ignore Camara camara cupertino
 
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
+import 'package:vigia_deputados/pages/filtrar_uf_options.dart';
 import 'package:vigia_deputados/pages/profile/deputado_profile_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
@@ -17,11 +19,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late CamaraApi _camaraApi;
   late Size _size;
+  late List<String> _ufsSelecionadas;
 
   @override
   void initState() {
     super.initState();
     _camaraApi = CamaraApi();
+    _ufsSelecionadas = [];
   }
 
   @override
@@ -51,11 +55,9 @@ class _HomePageState extends State<HomePage> {
               );
             }
 
-            /// Uses a [SliverGridDelegateWithFixedCrossAxisCount] as the
-            /// [gridDelegate], and a [SliverChildListDelegate] as the [delegate].d
-
             double axisSpacing = _size.height * 0.01;
             List<DeputadoDado> dados = snapshot.data!.dados;
+
             return SafeArea(
               child: CustomScrollView(
                 slivers: [
@@ -72,9 +74,16 @@ class _HomePageState extends State<HomePage> {
                                 child: CupertinoButton(
                               onPressed: () {
                                 showCupertinoModalPopup(
-                                    context: context,
-                                    builder: (context) =>
-                                        const MenuActionSheet());
+                                  context: context,
+                                  builder: (context) => MenuActionSheet(
+                                    ufsSelecionadas:
+                                        (List<String> ufsSelecionadas) {
+                                      setState(() {
+                                        _ufsSelecionadas = ufsSelecionadas;
+                                      });
+                                    },
+                                  ),
+                                );
                               },
                               child: const Icon(
                                   CupertinoIcons.line_horizontal_3_decrease),
@@ -180,7 +189,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class MenuActionSheet extends StatelessWidget {
-  const MenuActionSheet({Key? key}) : super(key: key);
+  const MenuActionSheet({
+    Key? key,
+    required this.ufsSelecionadas,
+  }) : super(key: key);
+  final ValueChanged<List<String>> ufsSelecionadas;
 
   @override
   Widget build(BuildContext context) {
@@ -200,12 +213,18 @@ class MenuActionSheet extends StatelessWidget {
           child: const Text('Filtrar por partido'),
         ),
         CupertinoActionSheetAction(
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) =>
+                  FiltrarUfsPage(ufsSelecionadas: ufsSelecionadas),
+            ),
+          ),
           child: const Text('Filtrar por UF'),
         ),
         CupertinoActionSheetAction(
           onPressed: () {},
-          child: const Text('Filtrar por sexo'),
+          child: const Text('Limpar Filtros'),
         ),
       ],
     );

@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    log(_ufsSelecionadas.toString());
     _size = MediaQuery.of(context).size;
     return SafeArea(
       child: CupertinoPageScaffold(
@@ -82,6 +83,10 @@ class _HomePageState extends State<HomePage> {
                                         _ufsSelecionadas = ufsSelecionadas;
                                       });
                                     },
+                                    alreadySelectedUfs:
+                                        _ufsSelecionadas.isNotEmpty
+                                            ? _ufsSelecionadas
+                                            : null,
                                   ),
                                 );
                               },
@@ -189,11 +194,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class MenuActionSheet extends StatelessWidget {
-  const MenuActionSheet({
-    Key? key,
-    required this.ufsSelecionadas,
-  }) : super(key: key);
+  const MenuActionSheet(
+      {Key? key, required this.ufsSelecionadas, this.alreadySelectedUfs})
+      : super(key: key);
   final ValueChanged<List<String>> ufsSelecionadas;
+  final List<String>? alreadySelectedUfs;
 
   @override
   Widget build(BuildContext context) {
@@ -216,9 +221,13 @@ class MenuActionSheet extends StatelessWidget {
           onPressed: () => Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) =>
-                  FiltrarUfsPage(ufsSelecionadas: ufsSelecionadas),
+              builder: (context) => FiltrarUfsPage(
+                ufsSelecionadas: ufsSelecionadas,
+                alreadySelectedUfs: alreadySelectedUfs,
+              ),
             ),
+          ).then(
+            (value) => Navigator.pop(context),
           ),
           child: const Text('Filtrar por UF'),
         ),

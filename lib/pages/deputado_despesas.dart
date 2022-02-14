@@ -1,6 +1,5 @@
 //cSpell:ignore cupertino camara Graficos Grafico Inversed
-import 'dart:developer';
-
+//cSpell:ignore syncfusion grafico cnpj
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -12,7 +11,6 @@ import 'package:vigia_deputados/models/despesa_grafico_model.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 import 'package:vigia_deputados/widgets/deputado_header.dart';
 import 'package:vigia_deputados/widgets/deputado_info_with_copy.dart';
-import 'package:intl/intl.dart';
 
 class DeputadoDespesasPage extends StatefulWidget {
   const DeputadoDespesasPage({Key? key, required this.deputadoDado})
@@ -225,11 +223,6 @@ class TabGraficos extends StatefulWidget {
 }
 
 class _TabGraficosState extends State<TabGraficos> {
-  late List<num> _xValues;
-  late List<num> _yValues;
-  List<double> _xPointValues = <double>[];
-  List<double> _yPointValues = <double>[];
-
   @override
   void initState() {
     super.initState();

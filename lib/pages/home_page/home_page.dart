@@ -5,7 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vigia_deputados/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
-import 'package:vigia_deputados/pages/filtrar_uf_options.dart';
+import 'package:vigia_deputados/pages/home_page/action_sheet.dart';
+import 'package:vigia_deputados/pages/home_page/filtrar_uf_options.dart';
 import 'package:vigia_deputados/pages/profile/deputado_profile_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
@@ -190,53 +191,6 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-    );
-  }
-}
-
-class MenuActionSheet extends StatelessWidget {
-  const MenuActionSheet(
-      {Key? key, required this.ufsSelecionadas, this.alreadySelectedUfs})
-      : super(key: key);
-  final ValueChanged<List<String>> ufsSelecionadas;
-  final List<String>? alreadySelectedUfs;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoActionSheet(
-      cancelButton: CupertinoButton(
-        color: CupertinoColors.systemRed,
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Cancelar'),
-      ),
-      actions: <Widget>[
-        CupertinoActionSheetAction(
-          onPressed: () {},
-          child: const Text('Filtrar por nome'),
-        ),
-        CupertinoActionSheetAction(
-          onPressed: () {},
-          child: const Text('Filtrar por partido'),
-        ),
-        CupertinoActionSheetAction(
-          onPressed: () => Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => FiltrarUfsPage(
-                ufsSelecionadas: ufsSelecionadas,
-                alreadySelectedUfs: alreadySelectedUfs,
-              ),
-            ),
-          ).then(
-            (value) => Navigator.pop(context),
-          ),
-          child: const Text('Filtrar por UF'),
-        ),
-        CupertinoActionSheetAction(
-          onPressed: () {},
-          child: const Text('Limpar Filtros'),
-        ),
-      ],
     );
   }
 }

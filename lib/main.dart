@@ -1,6 +1,7 @@
 //cSpell:ignore cupertino RGBO
 import 'package:flutter/cupertino.dart';
-import 'package:vigia_deputados/pages/home_page.dart';
+import 'package:vigia_deputados/pages/home_page/filtrar_uf_options.dart';
+import 'package:vigia_deputados/pages/home_page/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       //     //brightness: Brightness.dark
       //     //scaffoldBackgroundColor: ColorLib.opaqueWhite.color,
       //     ),
-      home: HomePage(),
+      home: FiltrarUfsPage(),
     );
   }
 }

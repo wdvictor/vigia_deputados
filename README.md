@@ -9,3 +9,8 @@ Um aplicativo mobile para vigiar as atividades e despesas dos deputados. A inten
   - Falta melhorar a arquitetura do código. Tem alguma sugestão? Abra uma issue e vamos discutir ela.
    
    Venha comigo nessa para ajudar a democracia Brasileira.
+
+   ![1](1.jpg)
+   ![2](2.jpg)
+   ![3](3.jpg)
+   ![4](4.jpg)

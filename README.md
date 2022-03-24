@@ -1,16 +1,11 @@
-# vigia_deputados
+# Vigia Deputados
 
-A new Flutter project.
+Um aplicativo mobile para vigiar as atividades e despesas dos deputados. A intenção desse aplicativo é poder criar uma ferramenta no qual os eleitores possam tirar suas próprias conclusões sobre os parlamentares.
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+   Quer contribuir? ÓTIMO, qualquer ajuda é bem-vinda. É iniciante em flutter? Está com medo? ótimo! Pegue uma issue, crie sua branch e faça seu pull request. Não existe melhor hora para começar se não essa. Não esqueça de comentar na issue que você irá trabalhar nela.
+   
+  - A Guideline de contribuição será criada nas próximas semanas
+  - Falta melhorar a arquitetura do código. Tem alguma sugestão? Abra uma issue e vamos discutir ela.
+   
+   Venha comigo nessa para ajudar a democracia Brasileira.

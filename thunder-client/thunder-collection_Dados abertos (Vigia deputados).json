@@ -1,0 +1,79 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Dados abertos (Vigia deputados)",
+    "dateExported": "2023-05-22T18:30:44.681Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "b14d916a-8855-44dd-b7a3-bb19e28ccfa2",
+            "colId": "25c60728-6795-4dbb-bd49-9ec76201b7e7",
+            "containerId": "",
+            "name": "Blocos",
+            "url": "{{url}}/blocos",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-05-22T15:25:58.637Z",
+            "modified": "2023-05-22T15:25:58.637Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2ff3734b-0ba6-4ab8-93bb-5fbdc49c1fd0",
+            "colId": "25c60728-6795-4dbb-bd49-9ec76201b7e7",
+            "containerId": "",
+            "name": "/deputados",
+            "url": "{{url}}/deputados/74057/profissoes",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-05-22T15:38:53.798Z",
+            "modified": "2023-05-22T16:19:54.189Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "37d56d8a-c183-4192-b038-d85bc0753021",
+            "colId": "25c60728-6795-4dbb-bd49-9ec76201b7e7",
+            "containerId": "",
+            "name": "/referencias/situacoesEvento",
+            "url": "{{url}}/referencias/situacoesEvento",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-05-22T15:42:05.018Z",
+            "modified": "2023-05-22T15:42:05.018Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "afe4a83c-e94a-4462-867b-9b42204b0b93",
+            "colId": "25c60728-6795-4dbb-bd49-9ec76201b7e7",
+            "containerId": "",
+            "name": "/partidos/36779/membros",
+            "url": "{{url}}/partidos/36779/membros",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-05-22T15:46:12.542Z",
+            "modified": "2023-05-22T15:46:12.542Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9b0dc275-f94b-4734-a2b6-64bd5e3d125a",
+            "colId": "25c60728-6795-4dbb-bd49-9ec76201b7e7",
+            "containerId": "",
+            "name": "/referencias/proposicoes/codSituacao",
+            "url": "{{url}}/referencias/proposicoes/codSituacao",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-05-22T16:24:32.288Z",
+            "modified": "2023-05-22T16:24:32.288Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

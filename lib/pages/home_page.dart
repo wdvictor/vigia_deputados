@@ -113,16 +113,15 @@ class MainMenuOption extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(8.0),
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.white, width: 3),
                       shape: BoxShape.circle),
                   child: Image.asset(
                     'images/$imageAsset',
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.contain,
+                    height: 80,
+                    width: 80,
                   )),
               Text(
                 title,

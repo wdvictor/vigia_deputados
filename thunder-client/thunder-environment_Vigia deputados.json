@@ -1,0 +1,12 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "Vigia deputados",
+    "dateExported": "2023-05-22T18:31:02.378Z",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "url",
+            "value": "https://dadosabertos.camara.leg.br/api/v2"
+        }
+    ]
+}

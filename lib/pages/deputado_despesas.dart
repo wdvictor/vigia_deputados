@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vigia_deputados/color_lib.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
+
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/models/despesa_grafico_model.dart';
@@ -190,7 +191,7 @@ class TabNotasFiscais extends StatelessWidget {
             endIndent: 30,
             indent: 30,
             thickness: 2,
-            color: ColorLib.blue.color,
+            color: ColorLib.darkBlue.color,
           ),
           Expanded(
             flex: 5,
@@ -281,7 +282,7 @@ class _TabGraficosState extends State<TabGraficos> {
             endIndent: 30,
             indent: 30,
             thickness: 2,
-            color: ColorLib.blue.color,
+            color: ColorLib.darkBlue.color,
           ),
           Expanded(
             flex: 5,

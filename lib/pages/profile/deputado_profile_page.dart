@@ -1,7 +1,8 @@
 //cSpell:ignore cupertino camara endereco predio andarº municipio
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vigia_deputados/color_lib.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
+
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/pages/deputado_despesas.dart';
@@ -69,7 +70,7 @@ class _DeputadoProfilePageState extends State<DeputadoProfilePage> {
               endIndent: 30,
               indent: 30,
               thickness: 2,
-              color: ColorLib.blue.color,
+              color: ColorLib.darkBlue.color,
             ),
             Expanded(
               flex: 5,

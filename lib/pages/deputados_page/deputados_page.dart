@@ -3,21 +3,22 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vigia_deputados/color_lib.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
+
 import 'package:vigia_deputados/models/deputados_response_model.dart';
-import 'package:vigia_deputados/pages/home_page/action_sheet.dart';
-import 'package:vigia_deputados/pages/home_page/filtrar_uf_options.dart';
+import 'package:vigia_deputados/pages/deputados_page/action_sheet.dart';
+
 import 'package:vigia_deputados/pages/profile/deputado_profile_page.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class DeputadosPage extends StatefulWidget {
+  const DeputadosPage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _DeputadosPageState createState() => _DeputadosPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DeputadosPageState extends State<DeputadosPage> {
   late CamaraApi _camaraApi;
   late Size _size;
   late List<String> _ufsSelecionadas;
@@ -172,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                         alignment: Alignment.center,
                                         constraints:
                                             const BoxConstraints.expand(),
-                                        color: ColorLib.green.color,
+                                        color: ColorLib.darkGreen.color,
                                         child: Text(
                                             '${dado.siglaPartido}-${dado.siglaUf}'),
                                       ),

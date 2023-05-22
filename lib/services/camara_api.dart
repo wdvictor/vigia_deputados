@@ -1,6 +1,6 @@
 // cSpell: ignore Camara camara
 import 'dart:convert';
-import 'dart:developer';
+
 import 'package:http/http.dart';
 
 import 'package:vigia_deputados/models/deputado_despesa.dart';

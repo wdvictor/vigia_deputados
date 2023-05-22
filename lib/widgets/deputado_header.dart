@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vigia_deputados/color_lib.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
+
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 
 class DeputadoHeader extends StatelessWidget {
@@ -21,13 +22,13 @@ class DeputadoHeader extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border:
-                          Border.all(color: ColorLib.green.color, width: 4)),
+                      border: Border.all(
+                          color: ColorLib.darkGreen.color, width: 4)),
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border:
-                          Border.all(color: ColorLib.blue.color, width: 2.5),
+                      border: Border.all(
+                          color: ColorLib.darkBlue.color, width: 2.5),
                     ),
                     child: CircleAvatar(
                       backgroundImage:

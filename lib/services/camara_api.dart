@@ -6,57 +6,50 @@ import 'package:http/http.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
+import 'package:vigia_deputados/models/partidos_response.dart';
 
 class CamaraApi {
-  final String dadosAbertosUrl = 'https://dadosabertos.camara.leg.br/api/v2';
+  final String url = 'https://dadosabertos.camara.leg.br/api/v2';
   final String deputadosUrl =
       'https://dadosabertos.camara.leg.br/api/v2/deputados?dataInicio=2018-01-01&ordem=ASC&ordenarPor=nome';
 
-  DeputadosResponse? deputadosResponse;
-  DeputadoDetalhadoResponse? deputadoDetalhadoResponse;
+  DeputadosResponse? deputadosResponseCache;
 
-  ///
-  ///CA-GD-00
   Future<DeputadosResponse> getDeputados(
       {List<String>? ufs, bool forceRequest = false}) async {
     try {
       /// It's make this way to not call the api constantly
-      if (deputadosResponse == null || forceRequest) {
-        log('', name: 'CALLING DEPUTADOS API');
-        log('Deputados CALL', name: 'REQUEST');
-
-        Response response = await get(Uri.parse('$dadosAbertosUrl/'));
-        deputadosResponse = deputadosResponseFromJson(
+      if (deputadosResponseCache == null || forceRequest) {
+        Response response = await get(Uri.parse('$url/'));
+        deputadosResponseCache = deputadosResponseFromJson(
           jsonEncode(response.body),
         );
       }
-      return deputadosResponse!;
+      return deputadosResponseCache!;
     } catch (exception) {
       rethrow;
     }
   }
 
-  //CA-GDI-00
+  DeputadoDetalhadoResponse? deputadoDetalhadoResponseCache;
   Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
     try {
-      if (deputadoDetalhadoResponse == null) {
-        log('', name: 'CALLING DEPUTADO API');
+      if (deputadoDetalhadoResponseCache == null) {
         String requestUrl =
             'https://dadosabertos.camara.leg.br/api/v2/deputados';
 
         Response response = await get(Uri.parse('$requestUrl/$deputadoID'));
-        deputadoDetalhadoResponse = deputadoDetalhadoResponseFromJson(
+        deputadoDetalhadoResponseCache = deputadoDetalhadoResponseFromJson(
           jsonEncode(response.body),
         );
       }
 
-      return deputadoDetalhadoResponse!;
+      return deputadoDetalhadoResponseCache!;
     } catch (exception) {
       rethrow;
     }
   }
 
-  //CA-GDD-02
   DeputadoDespesas? deputadoDespesas;
   Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID) async {
     try {
@@ -69,6 +62,21 @@ class CamaraApi {
         deputadoDespesas = deputadoDespesasFromJson(jsonEncode(response.body));
       }
       return deputadoDespesas!;
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  PartidosResponse? partidosResponseCache;
+  Future<PartidosResponse> getPartidos({int pag = 1}) async {
+    try {
+      if (partidosResponseCache == null) {
+        Response response = await get(Uri.parse('$url/partidos'));
+        partidosResponseCache = partidosResponseFromJson(response.body);
+        return partidosResponseCache!;
+      } else {
+        return partidosResponseCache!;
+      }
     } catch (exception) {
       rethrow;
     }

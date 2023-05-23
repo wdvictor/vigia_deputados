@@ -1,8 +1,8 @@
 // cSpell: ignore Camara camara
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart';
-
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
@@ -69,7 +69,10 @@ class CamaraApi {
   PartidosResponse? partidosResponseCache;
   Future<PartidosResponse> getPartidos({int pag = 1}) async {
     try {
+      log('initializing partidosResponse ${DateTime.now()}');
       if (partidosResponseCache == null) {
+        log('initializing partidosResponse ${DateTime.now()}',
+            name: '[Request]');
         Response response = await get(Uri.parse('$url/partidos'));
         partidosResponseCache = partidosResponseFromJson(response.body);
         return partidosResponseCache!;

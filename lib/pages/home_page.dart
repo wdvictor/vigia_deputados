@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
+import 'package:vigia_deputados/pages/partidos_page/partidos_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,7 +15,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        backgroundColor: ColorLib.almostWhite.color,
         navigationBar: CupertinoNavigationBar(
           middle: Text(
             'Vigia Deputados',
@@ -28,7 +28,12 @@ class _HomePageState extends State<HomePage> {
               title: 'Partidos',
               imageAsset: 'lime-flag-1.png',
               animationMillisecondsDuration: 250,
-              callback: () {},
+              callback: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (_) => const PartidosPage(),
+                ),
+              ),
             ),
             MainMenuOption(
               title: 'Deputados',
@@ -120,7 +125,7 @@ class _MainMenuOptionState extends State<MainMenuOption>
             _isTapped = value;
           });
         },
-        onTap: () {},
+        onTap: widget.callback,
         child: AnimatedBuilder(
             animation: _controller,
             builder: (context, snapshot) {
@@ -145,17 +150,18 @@ class _MainMenuOptionState extends State<MainMenuOption>
                             child: Container(
                               margin: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 15),
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10.0),
                               clipBehavior: Clip.hardEdge,
                               decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: Image.asset(
+                                    'images/${widget.imageAsset}',
+                                    height: 100,
+                                    width: 100,
+                                  ).image),
                                   border: Border.all(
                                       color: ColorLib.darkBlue.color, width: 3),
                                   shape: BoxShape.circle),
-                              child: Image.asset(
-                                'images/${widget.imageAsset}',
-                                height: 80,
-                                width: 80,
-                              ),
                             ),
                           ),
                           const Spacer(),

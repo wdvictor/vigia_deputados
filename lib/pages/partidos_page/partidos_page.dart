@@ -51,7 +51,10 @@ class _PartidosPageState extends State<PartidosPage> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),
                   itemBuilder: (context, index) {
-                    return PartidoWidget(dado: snapshot.data!.dados[index]);
+                    return PartidoWidget(
+                      dado: snapshot.data!.dados[index],
+                      animationMillisecondsDuration: 100 * index,
+                    );
                   }),
               SizedBox(
                 height: 100,
@@ -107,34 +110,91 @@ class _PartidosPageState extends State<PartidosPage> {
   }
 }
 
-class PartidoWidget extends StatelessWidget {
-  const PartidoWidget({Key? key, required this.dado}) : super(key: key);
+class PartidoWidget extends StatefulWidget {
+  const PartidoWidget(
+      {Key? key,
+      required this.dado,
+      required this.animationMillisecondsDuration})
+      : super(key: key);
   final Dado dado;
+  final int animationMillisecondsDuration;
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(20),
-        elevation: 12,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(),
-              child: Text(dado.sigla),
-            ),
-            Text(
-              dado.nome,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.w600,
-                  color: CupertinoColors.systemGrey2),
-            )
-          ],
-        ),
+  State<PartidoWidget> createState() => _PartidoWidgetState();
+}
+
+class _PartidoWidgetState extends State<PartidoWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: Duration(milliseconds: widget.animationMillisecondsDuration),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOut,
       ),
     );
+
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+        animation: _controller,
+        builder: (context, snapshot) {
+          return Opacity(
+            opacity: _opacityAnimation.value,
+            child: Transform.scale(
+              scale: _scaleAnimation.value,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Material(
+                  borderRadius: BorderRadius.circular(20),
+                  elevation: 12,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(),
+                        child: Text(widget.dado.sigla),
+                      ),
+                      Text(
+                        widget.dado.nome,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.w600,
+                            color: CupertinoColors.systemGrey2),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

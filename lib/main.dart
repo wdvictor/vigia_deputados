@@ -1,6 +1,5 @@
 //cSpell:ignore cupertino RGBO
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import 'package:vigia_deputados/pages/home_page.dart';
 
 void main() {
@@ -12,13 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      // theme: CupertinoThemeData(
-      //     // TODO: Dark theme
-      //     //brightness: Brightness.dark
-      //     //scaffoldBackgroundColor: ColorLib.opaqueWhite.color,
-      //     ),
       home: HomePage(),
     );
   }

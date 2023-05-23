@@ -66,19 +66,15 @@ class CamaraApi {
     }
   }
 
-  PartidosResponse? partidosResponseCache;
-  Future<PartidosResponse> getPartidos({int pag = 1}) async {
+  Future<PartidosResponse> getPartidos(
+      {int pag = 1, String sortBy = 'sigla'}) async {
     try {
       log('initializing partidosResponse ${DateTime.now()}');
-      if (partidosResponseCache == null) {
-        log('initializing partidosResponse ${DateTime.now()}',
-            name: '[Request]');
-        Response response = await get(Uri.parse('$url/partidos'));
-        partidosResponseCache = partidosResponseFromJson(response.body);
-        return partidosResponseCache!;
-      } else {
-        return partidosResponseCache!;
-      }
+
+      log('requesting ${DateTime.now()}', name: '[Request]');
+      Response response =
+          await get(Uri.parse('$url/partidos?pagina=$pag&ordenarPor=$sortBy'));
+      return partidosResponseFromJson(response.body);
     } catch (exception) {
       rethrow;
     }

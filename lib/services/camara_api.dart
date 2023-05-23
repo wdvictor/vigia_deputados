@@ -18,7 +18,6 @@ class CamaraApi {
   Future<DeputadosResponse> getDeputados(
       {List<String>? ufs, bool forceRequest = false}) async {
     try {
-      /// It's make this way to not call the api constantly
       if (deputadosResponseCache == null || forceRequest) {
         Response response = await get(Uri.parse('$url/'));
         deputadosResponseCache = deputadosResponseFromJson(

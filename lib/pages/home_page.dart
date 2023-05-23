@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:vigia_deputados/helpers/color_lib.dart';
 
 class HomePage extends StatefulWidget {
@@ -45,45 +42,25 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 50,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    MainMenuOption(
-                      optionColor: ColorLib.darkBlue.color,
-                      title: 'Partidos',
-                      imageAsset: 'lime-flag-1.png',
-                      animationMillisecondsDuration: 250,
-                    ),
-                    MainMenuOption(
-                      optionColor: ColorLib.darkBlue.color,
-                      title: 'Deputados',
-                      imageAsset: 'clip-politician-1.png',
-                      animationMillisecondsDuration: 500,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    MainMenuOption(
-                      optionColor: ColorLib.darkGreen.color,
-                      title: 'Proposições',
-                      imageAsset: 'congresswoman.png',
-                      animationMillisecondsDuration: 750,
-                    ),
-                    MainMenuOption(
-                      optionColor: ColorLib.darkGreen.color,
-                      title: 'Votações',
-                      imageAsset: 'urban-online-voting.png',
-                      animationMillisecondsDuration: 1000,
-                    ),
-                  ],
-                )
-              ],
+            const MainMenuOption(
+              title: 'Partidos',
+              imageAsset: 'lime-flag-1.png',
+              animationMillisecondsDuration: 250,
+            ),
+            const MainMenuOption(
+              title: 'Deputados',
+              imageAsset: 'clip-politician-1.png',
+              animationMillisecondsDuration: 500,
+            ),
+            const MainMenuOption(
+              title: 'Proposições',
+              imageAsset: 'congresswoman.png',
+              animationMillisecondsDuration: 750,
+            ),
+            const MainMenuOption(
+              title: 'Votações',
+              imageAsset: 'urban-online-voting.png',
+              animationMillisecondsDuration: 1000,
             ),
           ],
         ));
@@ -93,12 +70,11 @@ class _HomePageState extends State<HomePage> {
 class MainMenuOption extends StatefulWidget {
   const MainMenuOption({
     Key? key,
-    required this.optionColor,
     required this.title,
     required this.imageAsset,
     required this.animationMillisecondsDuration,
   }) : super(key: key);
-  final Color optionColor;
+
   final String title;
   final String imageAsset;
 
@@ -117,13 +93,12 @@ class _MainMenuOptionState extends State<MainMenuOption>
   @override
   void initState() {
     super.initState();
-    // Configura a duração e o vsync para a animação
+
     _controller = AnimationController(
       duration: Duration(milliseconds: widget.animationMillisecondsDuration),
       vsync: this,
     );
 
-    // Configura a animação de escala (aumento de tamanho)
     _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -131,7 +106,6 @@ class _MainMenuOptionState extends State<MainMenuOption>
       ),
     );
 
-    // Configura a animação de opacidade (fadeIn)
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -139,7 +113,6 @@ class _MainMenuOptionState extends State<MainMenuOption>
       ),
     );
 
-    // Inicia a animação quando a tela for construída
     _controller.forward();
   }
 
@@ -167,33 +140,36 @@ class _MainMenuOptionState extends State<MainMenuOption>
                   clipBehavior: Clip.hardEdge,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    height: size.height * 0.25,
-                    width: size.width * 0.4,
+                    height: 100,
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                      color: widget.optionColor,
+                      color: ColorLib.darkBlue.color,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Row(
                       children: [
                         Container(
-                            padding: const EdgeInsets.all(8.0),
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3),
-                                shape: BoxShape.circle),
-                            child: Image.asset(
-                              'images/${widget.imageAsset}',
-                              height: 80,
-                              width: 80,
-                            )),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          padding: const EdgeInsets.all(8.0),
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white, width: 3),
+                              shape: BoxShape.circle),
+                          child: Image.asset(
+                            'images/${widget.imageAsset}',
+                            height: 80,
+                            width: 80,
+                          ),
+                        ),
+                        const Spacer(),
                         Text(
                           widget.title,
                           style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               fontSize: 17),
-                        )
+                        ),
+                        const Spacer(),
                       ],
                     ),
                   ),

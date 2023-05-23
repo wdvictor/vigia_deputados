@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'
-    show Material, Colors, DropdownButton, DropdownMenuItem;
+import 'package:flutter/material.dart' show Material, Colors;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
+import 'package:vigia_deputados/pages/partidos_page/partido_grid_widget.dart';
+import 'package:vigia_deputados/pages/partidos_page/sort_dropdown_widget.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class PartidosPage extends StatefulWidget {
@@ -38,7 +38,7 @@ class _PartidosPageState extends State<PartidosPage> {
         ),
       ),
       child: FutureBuilder<PartidosResponse>(
-        future: _api.getPartidos(pag: _page, sortBy: _sortBy),
+        future: _partidosRequest,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -124,153 +124,6 @@ class _PartidosPageState extends State<PartidosPage> {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class PartidoWidget extends StatefulWidget {
-  const PartidoWidget(
-      {Key? key,
-      required this.dado,
-      required this.animationMillisecondsDuration})
-      : super(key: key);
-  final Dado dado;
-  final int animationMillisecondsDuration;
-  @override
-  State<PartidoWidget> createState() => _PartidoWidgetState();
-}
-
-class _PartidoWidgetState extends State<PartidoWidget>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _opacityAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: Duration(milliseconds: widget.animationMillisecondsDuration),
-      vsync: this,
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
-    );
-
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _controller,
-        builder: (context, snapshot) {
-          return Opacity(
-            opacity: _opacityAnimation.value,
-            child: Transform.scale(
-              scale: _scaleAnimation.value,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorLib.darkBlue.color,
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    elevation: 6,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(),
-                          child: Text(
-                            widget.dado.sigla,
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: CupertinoColors.white),
-                          ),
-                        ),
-                        Text(
-                          widget.dado.nome,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.w600,
-                              color: CupertinoColors.white),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-  }
-}
-
-class SortByWidget extends StatelessWidget {
-  const SortByWidget(
-      {Key? key,
-      required this.sortByOptions,
-      required this.sortBySelectedOption,
-      required this.callback})
-      : super(key: key);
-  final List<String> sortByOptions;
-  final String sortBySelectedOption;
-  final ValueChanged callback;
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.only(left: size.width * 0.7),
-          constraints: BoxConstraints.tight(const Size(150, 50)),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: ColorLib.darkBlue.color)),
-          child: DropdownButton<String>(
-              borderRadius: BorderRadius.circular(20),
-              isExpanded: true,
-              elevation: 12,
-              underline: Container(),
-              value: sortBySelectedOption,
-              items: sortByOptions
-                  .map(
-                    (e) => DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e),
-                    ),
-                  )
-                  .toList(),
-              onChanged: callback),
-        ),
       ),
     );
   }

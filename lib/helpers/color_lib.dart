@@ -27,9 +27,9 @@ extension ColorLibExtension on ColorLib {
     ColorLib.lightBlue: 0xFF79B4D9,
     ColorLib.darkBlue: 0xFF0339A6,
     ColorLib.mediumBlue: 0xFF118EBF,
-    ColorLib.darkGreen: 0xFF5DBF4E,
+    ColorLib.darkGreen: 0xFF03A61C,
     ColorLib.mediumGreen: 0xFF5DBF4E,
-    ColorLib.lightGreen: 0xFF03A61C,
+    ColorLib.lightGreen: 0xFF5DBF4E,
     ColorLib.almostWhite: 0xFFF2F2F2,
   };
 

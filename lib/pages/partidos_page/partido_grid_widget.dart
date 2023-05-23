@@ -3,6 +3,7 @@ import 'package:flutter/material.dart' show Material, Colors;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
+import 'package:vigia_deputados/pages/partidos_page/partido_profile/partido_profile_page.dart';
 
 class PartidoWidget extends StatefulWidget {
   const PartidoWidget(
@@ -56,53 +57,61 @@ class _PartidoWidgetState extends State<PartidoWidget>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _controller,
-        builder: (context, snapshot) {
-          return Opacity(
-            opacity: _opacityAnimation.value,
-            child: Transform.scale(
-              scale: _scaleAnimation.value,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorLib.darkBlue.color,
-                    borderRadius: BorderRadius.circular(
-                      10,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (_) => PartidoProfilePage(
+                    partidoID: widget.dado.id,
+                  ))),
+      child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, snapshot) {
+            return Opacity(
+              opacity: _opacityAnimation.value,
+              child: Transform.scale(
+                scale: _scaleAnimation.value,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ColorLib.darkBlue.color,
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
                     ),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    elevation: 6,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(),
-                          child: Text(
-                            widget.dado.sigla,
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: CupertinoColors.white),
+                    child: Material(
+                      color: Colors.transparent,
+                      elevation: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            decoration: const BoxDecoration(),
+                            child: Text(
+                              widget.dado.sigla,
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color: CupertinoColors.white),
+                            ),
                           ),
-                        ),
-                        Text(
-                          widget.dado.nome,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.w600,
-                              color: CupertinoColors.white),
-                        )
-                      ],
+                          Text(
+                            widget.dado.nome,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w600,
+                                color: CupertinoColors.white),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }

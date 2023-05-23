@@ -136,7 +136,7 @@ class _MainMenuOptionState extends State<MainMenuOption>
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Material(
-                  elevation: 12,
+                  elevation: 6,
                   clipBehavior: Clip.hardEdge,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
@@ -147,29 +147,59 @@ class _MainMenuOptionState extends State<MainMenuOption>
                     ),
                     child: Row(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          padding: const EdgeInsets.all(8.0),
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 3),
-                              shape: BoxShape.circle),
-                          child: Image.asset(
-                            'images/${widget.imageAsset}',
-                            height: 80,
-                            width: 80,
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            padding: const EdgeInsets.all(8.0),
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 3),
+                                shape: BoxShape.circle),
+                            child: Image.asset(
+                              'images/${widget.imageAsset}',
+                              height: 80,
+                              width: 80,
+                            ),
                           ),
                         ),
                         const Spacer(),
-                        Text(
-                          widget.title,
-                          style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 17),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            widget.title,
+                            style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 17),
+                          ),
                         ),
                         const Spacer(),
+                        Container(
+                          width: 40,
+                          height: double.infinity,
+                          decoration:
+                              BoxDecoration(color: ColorLib.darkGreen.color),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 20,
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        bottomRight: Radius.circular(20)),
+                                    color: ColorLib.darkBlue.color),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: ColorLib.darkBlue.color,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Material, Colors;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
 import 'package:vigia_deputados/pages/partidos_page/partido_grid_widget.dart';
 import 'package:vigia_deputados/pages/partidos_page/sort_dropdown_widget.dart';
@@ -19,7 +20,7 @@ class _PartidosPageState extends State<PartidosPage> {
   int _page = 1;
   String _sortBy = 'sigla';
   final List<String> _sortOptions = ['sigla', 'nome'];
-
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -30,6 +31,7 @@ class _PartidosPageState extends State<PartidosPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      backgroundColor: ColorLib.darkBlue.color,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           'Partidos',
@@ -53,20 +55,20 @@ class _PartidosPageState extends State<PartidosPage> {
             addAutomaticKeepAlives: false,
             addRepaintBoundaries: false,
             children: [
-              SortByWidget(
+              AdvancedOptions(
                   sortByOptions: _sortOptions,
                   sortBySelectedOption: _sortBy,
-                  callback: (value) {
+                  searchController: _searchController,
+                  searchCallback: () {},
+                  sortOptionCallback: (value) {
                     setState(() {
                       _sortBy = value;
                     });
                   }),
-              GridView.builder(
+              ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data!.dados.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
                   itemBuilder: (context, index) {
                     return PartidoWidget(
                       dado: snapshot.data!.dados[index],
@@ -85,7 +87,7 @@ class _PartidosPageState extends State<PartidosPage> {
                           }),
                           child: const Icon(
                             CupertinoIcons.arrow_left,
-                            color: CupertinoColors.black,
+                            color: CupertinoColors.white,
                           ),
                         ),
                       ),
@@ -95,9 +97,11 @@ class _PartidosPageState extends State<PartidosPage> {
                     Expanded(
                       child: Center(
                         child: Material(
+                          color: Colors.transparent,
                           child: Text(
                             '$_page',
                             style: GoogleFonts.montserrat(
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -111,7 +115,7 @@ class _PartidosPageState extends State<PartidosPage> {
                           }),
                           child: const Icon(
                             CupertinoIcons.arrow_right,
-                            color: CupertinoColors.black,
+                            color: CupertinoColors.white,
                           ),
                         ),
                       ),

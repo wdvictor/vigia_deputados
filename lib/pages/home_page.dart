@@ -15,12 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text(
-            'Vigia Deputados',
-            style: GoogleFonts.montserrat(fontWeight: FontWeight.bold),
-          ),
-        ),
+        backgroundColor: ColorLib.darkBlue.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -141,8 +136,7 @@ class _MainMenuOptionState extends State<MainMenuOption>
                       decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                              color: ColorLib.darkBlue.color, width: 1.5)),
+                          border: Border.all(color: Colors.white, width: 1.5)),
                       child: Row(
                         children: [
                           Expanded(
@@ -164,23 +158,22 @@ class _MainMenuOptionState extends State<MainMenuOption>
                                   shape: BoxShape.circle),
                             ),
                           ),
-                          const Spacer(),
                           Expanded(
                             flex: 2,
                             child: Text(
                               widget.title,
                               style: GoogleFonts.montserrat(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 17),
                             ),
                           ),
                           const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Icon(
                               Icons.arrow_forward_ios,
-                              color: ColorLib.darkBlue.color,
+                              color: Colors.white,
                             ),
                           )
                         ],

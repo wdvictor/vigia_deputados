@@ -72,38 +72,36 @@ class _PartidoWidgetState extends State<PartidoWidget>
               child: Transform.scale(
                 scale: _scaleAnimation.value,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorLib.darkBlue.color,
-                      borderRadius: BorderRadius.circular(
-                        10,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  child: Material(
+                    color: Colors.transparent,
+                    elevation: 6,
+                    child: Container(
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: ColorLib.darkGreen.color,
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ),
                       ),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      elevation: 6,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(),
-                            child: Text(
-                              widget.dado.sigla,
-                              style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: CupertinoColors.white),
-                            ),
-                          ),
                           Text(
                             widget.dado.nome,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w600,
-                                color: CupertinoColors.white),
-                          )
+                                color: Colors.white),
+                          ),
+                          Text(
+                            '(${widget.dado.sigla})',
+                            style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Colors.white),
+                          ),
                         ],
                       ),
                     ),

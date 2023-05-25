@@ -1,6 +1,6 @@
 //cSpell:ignore cupertino RGBO
 import 'package:flutter/material.dart';
-import 'package:vigia_deputados/pages/home_page.dart';
+import 'package:vigia_deputados/pages/homepage/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,3 +17,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+///Attributions required:
+///Image by storyset on Freepik

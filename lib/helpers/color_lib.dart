@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ColorLib {
-  lightBlue,
-  darkBlue,
-  darkGreen,
-  lightGreen,
-  almostWhite,
-  mediumBlue,
-  mediumGreen
-}
+enum ColorLib { pinkBrown, darkPink, lightPink, violet, greyPink }
 
 enum DarkThemeLib { primaryBackgroundColor, primaryColor, secondaryColor }
 
@@ -24,13 +16,11 @@ extension DarkTheme on DarkThemeLib {
 
 extension ColorLibExtension on ColorLib {
   static const Map<ColorLib, int> names = {
-    ColorLib.lightBlue: 0xFF79B4D9,
-    ColorLib.darkBlue: 0xFF0339A6,
-    ColorLib.mediumBlue: 0xFF118EBF,
-    ColorLib.darkGreen: 0xFF03A61C,
-    ColorLib.mediumGreen: 0xFF5DBF4E,
-    ColorLib.lightGreen: 0xFF5DBF4E,
-    ColorLib.almostWhite: 0xFFF2F2F2,
+    ColorLib.pinkBrown: 0xFF400D1F,
+    ColorLib.darkPink: 0xFFBD1FBF,
+    ColorLib.lightPink: 0xFFEF4BF2,
+    ColorLib.violet: 0xFF471C59,
+    ColorLib.greyPink: 0xFFDBC4F2,
   };
 
   Color get color => Color(names[this]!);

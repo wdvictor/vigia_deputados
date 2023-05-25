@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Material, Colors;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
 import 'package:vigia_deputados/pages/partidos_page/partido_profile/partido_profile_page.dart';
 
@@ -80,7 +79,6 @@ class _PartidoWidgetState extends State<PartidoWidget>
                     child: Container(
                       height: 70,
                       decoration: BoxDecoration(
-                        color: ColorLib.darkGreen.color,
                         borderRadius: BorderRadius.circular(
                           10,
                         ),

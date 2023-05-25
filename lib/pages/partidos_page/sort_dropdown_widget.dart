@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vigia_deputados/helpers/color_lib.dart';
 
 class AdvancedOptions extends StatefulWidget {
   const AdvancedOptions(
       {Key? key,
       required this.sortByOptions,
       required this.sortBySelectedOption,
-      required this.sortOptionCallback, required this.searchController, required this.searchCallback})
+      required this.sortOptionCallback,
+      required this.searchController,
+      required this.searchCallback})
       : super(key: key);
   final List<String> sortByOptions;
   final String sortBySelectedOption;
@@ -49,7 +50,6 @@ class _AdvancedOptionsState extends State<AdvancedOptions>
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.white)),
               child: DropdownButton<String>(
-                  dropdownColor: ColorLib.darkGreen.color,
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.white,

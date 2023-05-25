@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Material, Colors;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
 import 'package:vigia_deputados/pages/partidos_page/partido_grid_widget.dart';
 import 'package:vigia_deputados/pages/partidos_page/sort_dropdown_widget.dart';
@@ -31,7 +30,6 @@ class _PartidosPageState extends State<PartidosPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: ColorLib.darkBlue.color,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           'Partidos',

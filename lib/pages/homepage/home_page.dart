@@ -31,15 +31,16 @@ class _HomePageState extends State<HomePage> {
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withOpacity(0.3),
             width: size.width,
             height: size.height,
             child: Column(children: [
               const Spacer(),
               SizedBox(
-                height: size.height * 0.4,
+                height: size.height * 0.3,
                 child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AnimatedButton(
                       child: PartidosWidget(
@@ -61,8 +62,11 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              const Spacer(
+              const Expanded(
                 flex: 2,
+                child: Column(
+                  children: [],
+                ),
               )
             ]),
           ),

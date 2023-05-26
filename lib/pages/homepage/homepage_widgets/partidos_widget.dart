@@ -20,7 +20,7 @@ class _PartidosWidgetState extends State<PartidosWidget>
         horizontal: 15,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
+        border: Border.all(color: ColorLib.greyPink.color, width: 3),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(

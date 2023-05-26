@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 
 class ProposicoesWidget extends StatelessWidget {
@@ -14,11 +15,22 @@ class ProposicoesWidget extends StatelessWidget {
       width: size.width * 0.45,
       height: size.height * 0.05,
       decoration: BoxDecoration(
+        color: ColorLib.greyPink.color,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(width: 3, color: ColorLib.greyPink.color),
       ),
-      child: const Row(
-        children: [],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            'Proposições',
+            style: GoogleFonts.montserrat(
+                color: ColorLib.pinkBrown.color, fontWeight: FontWeight.bold),
+          ),
+          Icon(
+            Icons.arrow_forward,
+            color: ColorLib.pinkBrown.color,
+          )
+        ],
       ),
     );
   }

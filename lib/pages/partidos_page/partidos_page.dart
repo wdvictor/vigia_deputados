@@ -1,5 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Material, Colors;
+import 'package:flutter/material.dart' show Colors, IconButton, Material, Icons;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
 import 'package:vigia_deputados/pages/partidos_page/partido_grid_widget.dart';
@@ -29,104 +31,123 @@ class _PartidosPageState extends State<PartidosPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(
-          'Partidos',
-          style: GoogleFonts.montserrat(
-              fontWeight: FontWeight.bold, color: CupertinoColors.systemGrey),
+    final Size size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        Container(
+          height: size.height,
+          width: size.width,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('images/CAMARA_01.jpg'))),
         ),
-      ),
-      child: FutureBuilder<PartidosResponse>(
-        future: _partidosRequest,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CupertinoActivityIndicator(
-                color: Colors.black,
-                radius: 30,
-              ),
-            );
-          }
+        BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: FutureBuilder<PartidosResponse>(
+            future: _partidosRequest,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CupertinoActivityIndicator(
+                    color: Colors.black,
+                    radius: 30,
+                  ),
+                );
+              }
 
-          return ListView(
-            addAutomaticKeepAlives: false,
-            addRepaintBoundaries: false,
-            children: [
-              AdvancedOptions(
-                  sortByOptions: _sortOptions,
-                  sortBySelectedOption: _sortBy,
-                  searchController: _searchController,
-                  searchCallback: () {},
-                  sortOptionCallback: (value) {
-                    setState(() {
-                      _sortBy = value;
-                    });
-                  }),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data!.dados.length,
-                  itemBuilder: (context, index) {
-                    return PartidoWidget(
-                      dado: snapshot.data!.dados[index],
-                      animationMillisecondsDuration: 100 * index,
-                    );
-                  }),
-              SizedBox(
-                height: 100,
-                child: Row(
-                  children: [
-                    if (_page > 1) ...{
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => setState(() {
-                            _page -= 1;
-                          }),
-                          child: const Icon(
-                            CupertinoIcons.arrow_left,
-                            color: CupertinoColors.white,
-                          ),
-                        ),
-                      ),
-                    } else ...{
-                      const Spacer(),
-                    },
-                    Expanded(
-                      child: Center(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: Text(
-                            '$_page',
-                            style: GoogleFonts.montserrat(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+              return ListView(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                          )),
                     ),
-                    if (snapshot.data!.dados.isNotEmpty) ...{
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => setState(() {
-                            _page += 1;
-                          }),
-                          child: const Icon(
-                            CupertinoIcons.arrow_right,
-                            color: CupertinoColors.white,
+                  ),
+                  AdvancedOptions(
+                      sortByOptions: _sortOptions,
+                      sortBySelectedOption: _sortBy,
+                      searchController: _searchController,
+                      searchCallback: () {},
+                      sortOptionCallback: (value) {
+                        setState(() {
+                          _sortBy = value;
+                        });
+                      }),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.dados.length,
+                      itemBuilder: (context, index) {
+                        return PartidoWidget(
+                          dado: snapshot.data!.dados[index],
+                          animationMillisecondsDuration: 100 * index,
+                        );
+                      }),
+                  SizedBox(
+                    height: 100,
+                    child: Row(
+                      children: [
+                        if (_page > 1) ...{
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => setState(() {
+                                _page -= 1;
+                              }),
+                              child: const Icon(
+                                CupertinoIcons.arrow_left,
+                                color: CupertinoColors.white,
+                              ),
+                            ),
+                          ),
+                        } else ...{
+                          const Spacer(),
+                        },
+                        Expanded(
+                          child: Center(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                '$_page',
+                                style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    } else ...{
-                      const Spacer()
-                    }
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+                        if (snapshot.data!.dados.isNotEmpty) ...{
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => setState(() {
+                                _page += 1;
+                              }),
+                              child: const Icon(
+                                CupertinoIcons.arrow_right,
+                                color: CupertinoColors.white,
+                              ),
+                            ),
+                          ),
+                        } else ...{
+                          const Spacer()
+                        }
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

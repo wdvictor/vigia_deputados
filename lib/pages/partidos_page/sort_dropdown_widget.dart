@@ -27,106 +27,110 @@ class _AdvancedOptionsState extends State<AdvancedOptions>
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        color: Colors.transparent,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Text(
-              'Ordenar por:',
-              style: GoogleFonts.montserrat(
-                  color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: EdgeInsets.only(right: size.width * 0.6),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.white)),
-              child: DropdownButton<String>(
+    return SizedBox(
+      height: size.height * 0.2,
+      width: size.width,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              CupertinoTextField(
+                style: GoogleFonts.montserrat(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+                cursorColor: Colors.white,
+                suffix: IconButton(
+                  onPressed: () {},
                   icon: const Icon(
-                    Icons.arrow_drop_down,
+                    Icons.search,
                     color: Colors.white,
                   ),
-                  borderRadius: BorderRadius.circular(10),
-                  isExpanded: true,
-                  elevation: 12,
-                  underline: Container(),
-                  value: widget.sortBySelectedOption,
-                  items: widget.sortByOptions
-                      .map(
-                        (e) => DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(
-                            e,
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: widget.sortOptionCallback),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            CupertinoTextField(
-              style: GoogleFonts.montserrat(
-                  color: Colors.white, fontWeight: FontWeight.bold),
-              cursorColor: Colors.white,
-              suffix: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.search,
-                  color: Colors.white,
                 ),
-              ),
-              placeholder: 'Buscar partido',
-              placeholderStyle: GoogleFonts.dmSans(color: Colors.white60),
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.white)),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InkWell(
-              onTap: () {},
-              onHighlightChanged: (value) {
-                setState(() {
-                  _isTapped = value;
-                });
-              },
-              child: AnimatedContainer(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        _isTapped ? size.width * 0.4 : size.width * 0.3),
-                height: _isTapped ? 30 : 50,
-                width: _isTapped ? 70 : 100,
-                duration: const Duration(milliseconds: 100),
+                placeholder: 'Buscar partido',
+                placeholderStyle: GoogleFonts.dmSans(color: Colors.white60),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.white,
-                  ),
-                ),
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.white)),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
-                  'Buscar',
+                  'Ordenar por:',
                   style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-            )
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 150,
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.white)),
+                    child: DropdownButton<String>(
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        isExpanded: true,
+                        elevation: 12,
+                        underline: Container(),
+                        value: widget.sortBySelectedOption,
+                        items: widget.sortByOptions
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(
+                                  e,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: widget.sortOptionCallback),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {},
+                    onHighlightChanged: (value) {
+                      setState(() {
+                        _isTapped = value;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      alignment: Alignment.center,
+                      height: _isTapped ? 30 : 50,
+                      width: _isTapped ? 70 : 100,
+                      duration: const Duration(milliseconds: 100),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
+                      ),
+                      child: Text(
+                        'Buscar',
+                        style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

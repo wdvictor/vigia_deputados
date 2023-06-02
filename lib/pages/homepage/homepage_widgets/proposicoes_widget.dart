@@ -11,26 +11,18 @@ class ProposicoesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Container(
+      alignment: Alignment.center,
       margin: const EdgeInsets.only(top: 30),
       width: size.width * 0.45,
       height: size.height * 0.05,
       decoration: BoxDecoration(
-        color: ColorLib.greyPink.color,
+        color: ColorLib.darkBlue.color,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            'Proposições',
-            style: GoogleFonts.montserrat(
-                color: ColorLib.pinkBrown.color, fontWeight: FontWeight.bold),
-          ),
-          Icon(
-            Icons.arrow_forward,
-            color: ColorLib.pinkBrown.color,
-          )
-        ],
+      child: Text(
+        'Proposições',
+        style: GoogleFonts.montserrat(
+            color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
   }

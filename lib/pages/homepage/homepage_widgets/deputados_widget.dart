@@ -20,14 +20,11 @@ class _DeputadosWidgetState extends State<DeputadosWidget> {
           clipBehavior: Clip.hardEdge,
           alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
-              border: Border.all(color: ColorLib.greyPink.color, width: 3),
+              border: Border.all(color: ColorLib.darkBlue.color, width: 3),
               image: const DecorationImage(
                   fit: BoxFit.cover, image: AssetImage('images/camara.png')),
               shape: BoxShape.circle,
-              color: ColorLib.greyPink.color),
-          child: const Padding(
-            padding: EdgeInsets.only(bottom: 20.0),
-          ),
+              color: ColorLib.darkBlue.color),
         ),
         Text(
           'Deputados',

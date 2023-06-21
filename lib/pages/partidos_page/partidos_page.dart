@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors, IconButton, Material, Icons;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vigia_deputados/backend/api/api_partidodos.dart';
+import 'package:vigia_deputados/backend/domain/domain_partidos.dart';
 import 'package:vigia_deputados/models/partidos_response.dart';
 import 'package:vigia_deputados/pages/partidos_page/partido_grid_widget.dart';
 import 'package:vigia_deputados/pages/partidos_page/sort_dropdown_widget.dart';
-import 'package:vigia_deputados/services/camara_api.dart';
 
 class PartidosPage extends StatefulWidget {
   const PartidosPage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class PartidosPage extends StatefulWidget {
 }
 
 class _PartidosPageState extends State<PartidosPage> {
-  final CamaraApi _api = CamaraApi();
+  final PartidoDomain _partidoDomain = PartidoDomain(APIpartidos());
   late Future<PartidosResponse> _partidosRequest;
   int _page = 1;
   String _sortBy = 'sigla';
@@ -26,7 +27,8 @@ class _PartidosPageState extends State<PartidosPage> {
   void initState() {
     super.initState();
 
-    _partidosRequest = _api.getPartidos(pag: _page, sortBy: _sortBy);
+    _partidosRequest =
+        _partidoDomain.getPartidos(pagina: _page, sortBy: _sortBy);
   }
 
   @override

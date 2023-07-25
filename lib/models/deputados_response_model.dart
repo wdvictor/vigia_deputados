@@ -3,14 +3,12 @@
 //     final deputadosResponse = deputadosResponseFromJson(jsonString);
 
 import 'dart:convert';
-
 import 'dart:developer';
 
 DeputadosResponse deputadosResponseFromJson(String str) =>
     DeputadosResponse.fromJson(json.decode(str));
 
-String deputadosResponseToJson(DeputadosResponse data) =>
-    json.encode(data.toJson());
+String deputadosResponseToJson(DeputadosResponse data) => json.encode(data.toJson());
 
 class DeputadosResponse {
   DeputadosResponse({
@@ -21,10 +19,8 @@ class DeputadosResponse {
   List<DeputadoDado> dados;
   List<Link> links;
 
-  factory DeputadosResponse.fromJson(Map<String, dynamic> json) =>
-      DeputadosResponse(
-        dados: List<DeputadoDado>.from(
-            json["dados"].map((x) => DeputadoDado.fromJson(x))),
+  factory DeputadosResponse.fromJson(Map<String, dynamic> json) => DeputadosResponse(
+        dados: List<DeputadoDado>.from(json["dados"].map((x) => DeputadoDado.fromJson(x))),
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
       );
 

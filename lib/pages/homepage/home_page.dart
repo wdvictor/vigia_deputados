@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
-import 'package:vigia_deputados/widgets/animated_button.dart';
+import 'package:vigia_deputados/models/all_deputados_notifier.dart';
+import 'package:vigia_deputados/models/deputados_response_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,130 +12,105 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  final double _initialPosition =
-      -500.0; // Posição inicial do menu (fora da tela)
-  final double _targetPosition =
-      200.0; // Posição final do menu (centro da tela)
-
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-    _animationController.forward();
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  List<Widget> _buildBody(List<DeputadoDado> deputados) {
+    final List<Widget> widgets = [];
+    const titleWidget = Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Deputados em exercício',
+            style: TextStyle(color: Colors.grey, fontFamily: 'inter-bold', fontSize: 18),
+          ),
+          Divider(
+            color: Colors.grey,
+          )
+        ],
+      ),
+    );
+    widgets.add(titleWidget);
+    for (final deputado in deputados) {
+      widgets.add(DeputadoWidget(deputado: deputado));
+    }
+    return widgets;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              final position = _animationController.value *
-                      (_targetPosition - _initialPosition) +
-                  _initialPosition;
+        appBar: AppBar(
+          backgroundColor: ColorLib.primaryColor.color,
+        ),
+        body: Consumer<AllDeputadosNotifier>(
+          builder: (context, allDeputados, _) {
+            if (allDeputados.allDeputadosResponse == null) {
+              allDeputados.getDeputados();
+              return const CupertinoActivityIndicator();
+            }
 
-              return Positioned(
-                left: 0,
-                right: 0,
-                bottom: position,
-                child: child!,
-              );
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                AnimatedButton(
-                  animationMilliseconds: 500,
-                  child: MenuOptionButton(
-                    title: 'Partidos',
-                    callback: () {},
-                  ),
-                ),
-                AnimatedButton(
-                  animationMilliseconds: 750,
-                  child: MenuOptionButton(
-                    title: 'Partidos',
-                    callback: () {},
-                  ),
-                ),
-                AnimatedButton(
-                  animationMilliseconds: 1000,
-                  child: MenuOptionButton(
-                    title: 'Partidos',
-                    callback: () {},
-                  ),
-                ),
-                AnimatedButton(
-                  animationMilliseconds: 1250,
-                  child: MenuOptionButton(
-                    title: 'Partidos',
-                    callback: () {},
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+            List<Widget> bodyWidget = _buildBody(allDeputados.allDeputadosResponse!.dados);
+            return ListView.builder(
+                itemCount: bodyWidget.length,
+                itemBuilder: (context, index) {
+                  return bodyWidget[index];
+                });
+          },
+        ));
   }
 }
 
-class MenuOptionButton extends StatelessWidget {
-  const MenuOptionButton({
-    Key? key,
-    required this.title,
-    required this.callback,
-  }) : super(key: key);
-
-  final String title;
-  final VoidCallback callback;
-
+class DeputadoWidget extends StatelessWidget {
+  const DeputadoWidget({Key? key, required this.deputado}) : super(key: key);
+  final DeputadoDado deputado;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      height: 70,
-      decoration: BoxDecoration(
-        color: ColorLib.darkBlue.color,
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      height: 100,
+      child: Material(
         borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          const Spacer(
-            flex: 3,
-          ),
-          Text(
-            title,
-            style: GoogleFonts.montserrat(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 17,
+        clipBehavior: Clip.hardEdge,
+        color: ColorLib.whiteLilac.color,
+        elevation: 12,
+        child: Row(
+          children: [
+            Image.network(deputado.urlFoto),
+            const Spacer(),
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    deputado.nome,
+                    style: const TextStyle(fontFamily: 'inter-medium', color: Colors.grey),
+                  ),
+                  Text(
+                    deputado.siglaPartido,
+                    style: const TextStyle(fontFamily: 'inter-bold', color: Colors.black),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Spacer(
-            flex: 10,
-          ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-          ),
-          const Spacer(),
-        ],
+            Expanded(
+                child: IconButton(
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+              ),
+              onPressed: () => {},
+            ))
+          ],
+        ),
       ),
     );
   }

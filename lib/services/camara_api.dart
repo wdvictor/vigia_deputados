@@ -8,40 +8,22 @@ import 'package:vigia_deputados/models/deputados_response_model.dart';
 
 class CamaraApi {
   final String url = 'https://dadosabertos.camara.leg.br/api/v2';
-  final String deputadosUrl =
-      'https://dadosabertos.camara.leg.br/api/v2/deputados?dataInicio=2018-01-01&ordem=ASC&ordenarPor=nome';
 
-  DeputadosResponse? deputadosResponseCache;
-
-  Future<DeputadosResponse> getDeputados(
-      {List<String>? ufs, bool forceRequest = false}) async {
+  Future<DeputadosResponse> getDeputados({required int page}) async {
     try {
-      if (deputadosResponseCache == null || forceRequest) {
-        Response response = await get(Uri.parse('$url/'));
-        deputadosResponseCache = deputadosResponseFromJson(
-          jsonEncode(response.body),
-        );
-      }
-      return deputadosResponseCache!;
+      Response response = await get(Uri.parse('$url/deputados'));
+      return deputadosResponseFromJson(response.body);
     } catch (exception) {
       rethrow;
     }
   }
 
-  DeputadoDetalhadoResponse? deputadoDetalhadoResponseCache;
   Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
     try {
-      if (deputadoDetalhadoResponseCache == null) {
-        String requestUrl =
-            'https://dadosabertos.camara.leg.br/api/v2/deputados';
-
-        Response response = await get(Uri.parse('$requestUrl/$deputadoID'));
-        deputadoDetalhadoResponseCache = deputadoDetalhadoResponseFromJson(
-          jsonEncode(response.body),
-        );
-      }
-
-      return deputadoDetalhadoResponseCache!;
+      Response response = await get(Uri.parse('$url/deputados/$deputadoID'));
+      return deputadoDetalhadoResponseFromJson(
+        jsonEncode(response.body),
+      );
     } catch (exception) {
       rethrow;
     }
@@ -51,8 +33,7 @@ class CamaraApi {
   Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID) async {
     try {
       if (deputadoDespesas == null) {
-        String requestUrl =
-            'https://dadosabertos.camara.leg.br/api/v2/deputados'
+        String requestUrl = 'https://dadosabertos.camara.leg.br/api/v2/deputados'
             '/$deputadoID/despesas?itens=10000&ordem=DESC';
 
         Response response = await get(Uri.parse(requestUrl));

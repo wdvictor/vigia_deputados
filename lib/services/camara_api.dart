@@ -14,7 +14,16 @@ class CamaraApi {
   Future<DeputadosResponse> getDeputados() async {
     try {
       Response response = await get(Uri.parse('$url/deputados'));
-      return deputadosResponseFromJson(
+      return deputadosResponseFromJson(response.body);
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
+    try {
+      Response response = await get(Uri.parse('$url/deputados/$deputadoID'));
+      return deputadoDetalhadoResponseFromJson(
         jsonEncode(response.body),
       );
     } catch (exception) {
@@ -22,35 +31,13 @@ class CamaraApi {
     }
   }
 
-  DeputadoDetalhadoResponse? deputadoDetalhadoResponseCache;
-  Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
-    try {
-      if (deputadoDetalhadoResponseCache == null) {
-        String requestUrl = 'https://dadosabertos.camara.leg.br/api/v2/deputados';
-
-        Response response = await get(Uri.parse('$requestUrl/$deputadoID'));
-        deputadoDetalhadoResponseCache = deputadoDetalhadoResponseFromJson(
-          jsonEncode(response.body),
-        );
-      }
-
-      return deputadoDetalhadoResponseCache!;
-    } catch (exception) {
-      rethrow;
-    }
-  }
-
-  DeputadoDespesas? deputadoDespesas;
   Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID) async {
     try {
-      if (deputadoDespesas == null) {
-        String requestUrl = 'https://dadosabertos.camara.leg.br/api/v2/deputados'
-            '/$deputadoID/despesas?itens=10000&ordem=DESC';
+      String requestUrl = '$url/deputados/$deputadoID/despesas?'
+          'itens=10000&ordem=DESC';
 
-        Response response = await get(Uri.parse(requestUrl));
-        deputadoDespesas = deputadoDespesasFromJson(jsonEncode(response.body));
-      }
-      return deputadoDespesas!;
+      Response response = await get(Uri.parse(requestUrl));
+      return deputadoDespesasFromJson(jsonEncode(response.body));
     } catch (exception) {
       rethrow;
     }

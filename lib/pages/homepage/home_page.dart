@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/models/notifiers/deputados_notifier.dart';
 import 'package:vigia_deputados/pages/homepage/deputado_list_card.dart';
@@ -13,10 +14,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  final TextEditingController _textEditingController = TextEditingController();
-
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<DeputadoDado> todosDeputados = [];
+
   @override
   void initState() {
     super.initState();
@@ -24,14 +24,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: ColorLib.primaryColor.color,
           title: const Text('Vigia Deputados'),
           actions: [
             IconButton(
-                onPressed: () =>
-                    showSearch(context: context, delegate: DeputadoSearchDelegete(todosDeputados)),
-                icon: Icon(Icons.search))
+              onPressed: () =>
+                  showSearch(context: context, delegate: DeputadoSearchDelegete(todosDeputados)),
+              icon: const Icon(Icons.search),
+            ),
           ],
         ),
         body: Consumer<DeputadoNotifier>(
@@ -52,9 +55,34 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
             todosDeputados = deputados.deputados!.dados;
 
-            return ListView.builder(
-              itemCount: todosDeputados.length,
-              itemBuilder: (context, index) => DeputadoListCard(deputado: todosDeputados[index]),
+            return Container(
+              color: ColorLib.primaryColor.color,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      child: ListView.builder(
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
+                        itemCount: todosDeputados.length,
+                        itemBuilder: (context, index) =>
+                            DeputadoListCard(deputado: todosDeputados[index]),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         ));

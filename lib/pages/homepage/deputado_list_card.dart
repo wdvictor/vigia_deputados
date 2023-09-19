@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 
 class DeputadoListCard extends StatelessWidget {
@@ -7,24 +8,31 @@ class DeputadoListCard extends StatelessWidget {
   final DeputadoDado deputado;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      height: 100,
-      child: Material(
-        elevation: 12,
-        borderRadius: BorderRadius.circular(20),
-        clipBehavior: Clip.hardEdge,
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: Image.network(deputado.urlFoto),
+    return GestureDetector(
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
+        ),
+        decoration: BoxDecoration(
+            border: Border.all(color: ColorLib.whiteLilac.color),
+            borderRadius: BorderRadius.circular(20)),
+        height: 100,
+        child: Material(
+          elevation: 8,
+          borderRadius: BorderRadius.circular(20),
+          clipBehavior: Clip.hardEdge,
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.all(8.0),
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  child: Image.network(deputado.urlFoto),
+                ),
               ),
-            ),
-            Expanded(
+              Expanded(
                 flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,8 +44,17 @@ class DeputadoListCard extends StatelessWidget {
                     ),
                     Text('${deputado.siglaPartido}-${deputado.siglaUf}')
                   ],
-                )),
-          ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

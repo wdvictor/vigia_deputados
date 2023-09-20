@@ -1,14 +1,12 @@
 // ignore_for_file: constant_identifier_names
 //cSpell:ignore cnpj ESCRITRIO COMBUSTVEIS DIVULGAO SERVIOS ELETRNICA
 import 'dart:convert';
-
 import 'dart:developer';
 
 DeputadoDespesas deputadoDespesasFromJson(String str) =>
     DeputadoDespesas.fromJson(json.decode(str));
 
-String deputadoDespesasToJson(DeputadoDespesas data) =>
-    json.encode(data.toJson());
+String deputadoDespesasToJson(DeputadoDespesas data) => json.encode(data.toJson());
 
 class DeputadoDespesas {
   DeputadoDespesas({
@@ -19,8 +17,7 @@ class DeputadoDespesas {
   List<DeputadoDespesasDado> dados;
   List<Link> links;
 
-  factory DeputadoDespesas.fromJson(Map<String, dynamic> json) =>
-      DeputadoDespesas(
+  factory DeputadoDespesas.fromJson(Map<String, dynamic> json) => DeputadoDespesas(
         dados: List<DeputadoDespesasDado>.from(
             json["dados"].map((x) => DeputadoDespesasDado.fromJson(x))),
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
@@ -55,9 +52,9 @@ class DeputadoDespesasDado {
 
   int ano;
   int mes;
-  TipoDespesa? tipoDespesa;
+  String tipoDespesa;
   int codDocumento;
-  TipoDocumento? tipoDocumento;
+  String tipoDocumento;
   int codTipoDocumento;
   DateTime dataDocumento;
   String numDocumento;
@@ -76,9 +73,9 @@ class DeputadoDespesasDado {
       return DeputadoDespesasDado(
         ano: json["ano"],
         mes: json["mes"],
-        tipoDespesa: tipoDespesaValues.map[json["tipoDespesa"]],
+        tipoDespesa: json["tipoDespesa"],
         codDocumento: json["codDocumento"],
-        tipoDocumento: tipoDocumentoValues.map[json["tipoDocumento"]],
+        tipoDocumento: json["tipoDocumento"],
         codTipoDocumento: json["codTipoDocumento"],
         dataDocumento: DateTime.parse(json["dataDocumento"]),
         numDocumento: json["numDocumento"],
@@ -93,8 +90,7 @@ class DeputadoDespesasDado {
         parcela: json["parcela"],
       );
     } catch (exception) {
-      log(exception.toString(),
-          name: 'DeputadoDespesasDado.fromJson in Deputado despesas');
+      log(exception.toString(), name: 'DeputadoDespesasDado.fromJson in Deputado despesas');
       rethrow;
     }
   }
@@ -102,9 +98,9 @@ class DeputadoDespesasDado {
   Map<String, dynamic> toJson() => {
         "ano": ano,
         "mes": mes,
-        "tipoDespesa": tipoDespesaValues.reverse?[tipoDespesa],
+        "tipoDespesa": tipoDespesa,
         "codDocumento": codDocumento,
-        "tipoDocumento": tipoDocumentoValues.reverse?[tipoDocumento],
+        "tipoDocumento": tipoDocumento,
         "codTipoDocumento": codTipoDocumento,
         "dataDocumento":
             "${dataDocumento.year.toString().padLeft(4, '0')}-${dataDocumento.month.toString().padLeft(2, '0')}-${dataDocumento.day.toString().padLeft(2, '0')}",
@@ -120,34 +116,6 @@ class DeputadoDespesasDado {
         "parcela": parcela,
       };
 }
-
-enum TipoDespesa {
-  MANUTENO_DE_ESCRITRIO_DE_APOIO_ATIVIDADE_PARLAMENTAR,
-  COMBUSTVEIS_E_LUBRIFICANTES,
-  DIVULGAO_DA_ATIVIDADE_PARLAMENTAR,
-  PASSAGEM_AREA_REEMBOLSO,
-  TELEFONIA,
-  SERVIOS_POSTAIS
-}
-
-final tipoDespesaValues = EnumValues({
-  "COMBUSTÍVEIS E LUBRIFICANTES.": TipoDespesa.COMBUSTVEIS_E_LUBRIFICANTES,
-  "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.":
-      TipoDespesa.DIVULGAO_DA_ATIVIDADE_PARLAMENTAR,
-  "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR":
-      TipoDespesa.MANUTENO_DE_ESCRITRIO_DE_APOIO_ATIVIDADE_PARLAMENTAR,
-  "PASSAGEM AÉREA - REEMBOLSO": TipoDespesa.PASSAGEM_AREA_REEMBOLSO,
-  "SERVIÇOS POSTAIS": TipoDespesa.SERVIOS_POSTAIS,
-  "TELEFONIA": TipoDespesa.TELEFONIA
-});
-
-enum TipoDocumento { NOTA_FISCAL_ELETRNICA, NOTA_FISCAL, RECIBOS_OUTROS }
-
-final tipoDocumentoValues = EnumValues({
-  "Nota Fiscal": TipoDocumento.NOTA_FISCAL,
-  "Nota Fiscal Eletrônica": TipoDocumento.NOTA_FISCAL_ELETRNICA,
-  "Recibos/Outros": TipoDocumento.RECIBOS_OUTROS
-});
 
 class Link {
   Link({

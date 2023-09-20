@@ -4,6 +4,7 @@ import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/tab_dados_pessoais.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/tab_despesas.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class PerfilDeputado extends StatefulWidget {
@@ -20,7 +21,7 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -61,6 +62,7 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                       text: 'Dados Pessoais',
                     ),
                     Tab(text: 'Despesas'),
+                    Tab(text: 'Notas fiscais'),
                     Tab(text: 'Órgãos Participantes'),
                     Tab(text: 'Frentes'),
                   ]),
@@ -69,9 +71,10 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                   controller: _tabController,
                   children: [
                     TabDadosPessoais(deputado: deputado),
-                    const Center(child: Text('Conteúdo de Despesas')),
+                    TabDespesas(deputadoID: deputado.id),
                     const Center(child: Text('Conteúdo de Órgãos Participantes')),
                     const Center(child: Text('Conteúdo de Frentes')),
+                    const Center(child: Text('Notas fiscais')),
                   ],
                 ),
               )

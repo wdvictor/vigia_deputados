@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/data_field.dart';
 
-class TabDadosPessoais extends StatelessWidget {
-  const TabDadosPessoais({Key? key, required this.deputado}) : super(key: key);
+class TabDadosGerais extends StatelessWidget {
+  const TabDadosGerais({Key? key, required this.deputado}) : super(key: key);
   final DeputadoDetalhadoDado deputado;
 
   String formatDateString(String inputDate) {

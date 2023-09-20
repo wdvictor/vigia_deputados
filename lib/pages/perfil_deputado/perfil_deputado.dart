@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/dados_gerais_tab/tab_dados_gerais.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/tab_despesas.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
-import 'package:vigia_deputados/pages/perfil_deputado/tab_dados_pessoais.dart';
-import 'package:vigia_deputados/pages/perfil_deputado/tab_despesas.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class PerfilDeputado extends StatefulWidget {
@@ -70,7 +70,7 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    TabDadosPessoais(deputado: deputado),
+                    TabDadosGerais(deputado: deputado),
                     TabDespesas(deputadoID: deputado.id),
                     const Center(child: Text('Conteúdo de Órgãos Participantes')),
                     const Center(child: Text('Conteúdo de Frentes')),

@@ -1,6 +1,5 @@
 // cSpell: ignore Camara camara
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
@@ -18,10 +17,9 @@ class CamaraApi {
           .timeout(const Duration(seconds: 30), onTimeout: () {
         throw TimeoutException('Esta requesição demorou de mais');
       });
-      log(response.body);
+
       return deputadosResponseFromJson(response.body);
     } catch (exception) {
-      log(exception.toString());
       rethrow;
     }
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
@@ -13,7 +12,7 @@ class DeputadoListCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        CupertinoPageRoute(
+        MaterialPageRoute(
           builder: (_) => PerfilDeputado(deputadoID: deputado.id),
         ),
       ),

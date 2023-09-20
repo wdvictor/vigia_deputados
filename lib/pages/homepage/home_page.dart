@@ -7,7 +7,6 @@ import 'package:vigia_deputados/models/notifiers/deputados_notifier.dart';
 import 'package:vigia_deputados/pages/homepage/deputado_list_card.dart';
 import 'package:vigia_deputados/pages/homepage/deputados_search_delegate.dart';
 import 'package:vigia_deputados/pages/homepage/error_screen.dart';
-import 'package:vigia_deputados/widgets/error_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,10 +40,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: Consumer<DeputadoNotifier>(
           builder: (context, deputados, _) {
             if (deputados.fetchDeputadosException != null) {
-              Future.delayed(const Duration(seconds: 1), () {
-                errorDialog(context: context, error: deputados.fetchDeputadosException);
-              });
-
               return const ErrorScreen();
             }
 

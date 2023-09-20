@@ -28,7 +28,7 @@ class CamaraApi {
     try {
       Response response = await get(Uri.parse('$url/deputados/$deputadoID'));
       return deputadoDetalhadoResponseFromJson(
-        jsonEncode(response.body),
+        response.body,
       );
     } catch (exception) {
       rethrow;

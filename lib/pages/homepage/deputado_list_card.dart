@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/perfil_deputado.dart';
 
 class DeputadoListCard extends StatelessWidget {
   const DeputadoListCard({Key? key, required this.deputado}) : super(key: key);
@@ -9,6 +11,12 @@ class DeputadoListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (_) => PerfilDeputado(deputadoID: deputado.id),
+        ),
+      ),
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 10,

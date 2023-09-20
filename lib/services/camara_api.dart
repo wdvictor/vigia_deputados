@@ -1,4 +1,5 @@
 // cSpell: ignore Camara camara
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
@@ -13,7 +14,10 @@ class CamaraApi {
 
   Future<DeputadosResponse> getDeputados() async {
     try {
-      Response response = await get(Uri.parse('$url/deputados'));
+      Response response = await get(Uri.parse('$url/deputados'))
+          .timeout(const Duration(seconds: 30), onTimeout: () {
+        throw TimeoutException('Esta requesição demorou de mais');
+      });
       return deputadosResponseFromJson(response.body);
     } catch (exception) {
       rethrow;

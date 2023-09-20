@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.16.0 <=3.1.2"
 
 dependencies:
   flutter:
@@ -17,6 +17,8 @@ dependencies:
   url_launcher: ^6.0.20
   syncfusion_flutter_charts: ^23.1.36
   provider: ^6.0.5
+  awesome_dialog: ^3.1.0
+  
 
 dev_dependencies:
   flutter_lints: ^1.0.4
@@ -28,12 +30,13 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/images/app_icon.png"
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.3
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/
   fonts:
     - family: inter-medium
       fonts:

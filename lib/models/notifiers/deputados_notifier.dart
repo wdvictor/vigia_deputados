@@ -6,12 +6,18 @@ class DeputadoNotifier extends ChangeNotifier {
   final CamaraApi _api = CamaraApi();
   DeputadosResponse? deputados;
   dynamic fetchDeputadosException;
+
+  void setError(Object? error) {
+    fetchDeputadosException = error;
+    notifyListeners();
+  }
+
   Future<void> fetchDeputados() async {
     try {
       deputados = await _api.getDeputados();
+      notifyListeners();
     } catch (exception) {
       fetchDeputadosException = exception;
-    } finally {
       notifyListeners();
     }
   }

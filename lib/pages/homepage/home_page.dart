@@ -6,6 +6,7 @@ import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/models/notifiers/deputados_notifier.dart';
 import 'package:vigia_deputados/pages/homepage/deputado_list_card.dart';
 import 'package:vigia_deputados/pages/homepage/deputados_search_delegate.dart';
+import 'package:vigia_deputados/widgets/error_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,7 +25,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: ColorLib.primaryColor.color,
@@ -39,18 +39,53 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         body: Consumer<DeputadoNotifier>(
           builder: (context, deputados, _) {
-            if (deputados.deputados == null) {
-              deputados.fetchDeputados();
-
-              return const CupertinoActivityIndicator();
-            }
-
             /// Criar errorDialog para descobrir quais tipos de exceptions
             /// essa função vai retornar
             if (deputados.fetchDeputadosException != null) {
-              AlertDialog(
-                content: Text(deputados.fetchDeputadosException.toString()),
+              Future.delayed(const Duration(seconds: 1), () {
+                errorDialog(context: context, error: deputados.fetchDeputadosException);
+              });
+
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Image.asset('assets/images/urban-error-404.png'),
+                    InkWell(
+                      onTap: () {
+                        deputados.setError(null);
+                      },
+                      child: Container(
+                        width: 200,
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            border: Border.all(color: ColorLib.primaryColor.color, width: 3)),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Text('Tentar de novo'),
+                            Spacer(),
+                            Icon(Icons.refresh),
+                            Spacer(),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               );
+            }
+
+            if (deputados.deputados == null) {
+              deputados.fetchDeputados();
+
+              return const Center(child: CupertinoActivityIndicator());
             }
 
             todosDeputados = deputados.deputados!.dados;

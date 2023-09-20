@@ -61,6 +61,24 @@ class TabDadosPessoais extends StatelessWidget {
             data: formatCellphone(deputado.ultimoStatus.gabinete.telefone),
             showCopyButton: true,
           ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 20),
+            child: Text(
+              'Dados Eleitorais',
+              style:
+                  GoogleFonts.dmSans(color: Colors.grey, fontSize: 25, fontWeight: FontWeight.w600),
+            ),
+          ),
+          const Divider(
+            endIndent: 20,
+            indent: 20,
+            color: Colors.grey,
+          ),
+          DataField(title: 'Condição eleitoral', data: deputado.ultimoStatus.condicaoEleitoral),
+          DataField(title: 'Situação', data: deputado.ultimoStatus.situacao),
+          const SizedBox(
+            height: 50,
+          )
         ],
       ),
     );

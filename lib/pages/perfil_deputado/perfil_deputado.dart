@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/tab_dados_pessoais.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class PerfilDeputado extends StatefulWidget {
@@ -43,7 +44,7 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
             return const Center(child: CircularProgressIndicator());
           }
 
-          var deputado = snapshot.data!.dados;
+          final DeputadoDetalhadoDado deputado = snapshot.data!.dados;
           return Column(
             children: [
               PerfilHeader(
@@ -66,11 +67,11 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: const [
-                    Center(child: Text('Conteúdo de Dados Pessoais')),
-                    Center(child: Text('Conteúdo de Despesas')),
-                    Center(child: Text('Conteúdo de Órgãos Participantes')),
-                    Center(child: Text('Conteúdo de Frentes')),
+                  children: [
+                    TabDadosPessoais(deputado: deputado),
+                    const Center(child: Text('Conteúdo de Despesas')),
+                    const Center(child: Text('Conteúdo de Órgãos Participantes')),
+                    const Center(child: Text('Conteúdo de Frentes')),
                   ],
                 ),
               )

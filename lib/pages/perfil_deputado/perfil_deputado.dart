@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
@@ -11,8 +12,21 @@ class PerfilDeputado extends StatefulWidget {
   State<PerfilDeputado> createState() => _PerfilDeputadoState();
 }
 
-class _PerfilDeputadoState extends State<PerfilDeputado> {
+class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProviderStateMixin {
   final CamaraApi _api = CamaraApi();
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +49,31 @@ class _PerfilDeputadoState extends State<PerfilDeputado> {
               PerfilHeader(
                 deputado: deputado,
               ),
+              TabBar(
+                  controller: _tabController,
+                  labelStyle: GoogleFonts.dmSans(color: Colors.black),
+                  indicatorColor: ColorLib.primaryColor.color,
+                  labelColor: Colors.black,
+                  isScrollable: true,
+                  tabs: const [
+                    Tab(
+                      text: 'Dados Pessoais',
+                    ),
+                    Tab(text: 'Despesas'),
+                    Tab(text: 'Órgãos Participantes'),
+                    Tab(text: 'Frentes'),
+                  ]),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    Center(child: Text('Conteúdo de Dados Pessoais')),
+                    Center(child: Text('Conteúdo de Despesas')),
+                    Center(child: Text('Conteúdo de Órgãos Participantes')),
+                    Center(child: Text('Conteúdo de Frentes')),
+                  ],
+                ),
+              )
             ],
           );
         }),

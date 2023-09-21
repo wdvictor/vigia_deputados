@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/chart_sample_data.dart';
 
-class DoughnutChartFullScreen extends StatefulWidget {
-  const DoughnutChartFullScreen({Key? key, required this.chartData}) : super(key: key);
-  final List<ChartSampleData> chartData;
-  @override
-  State<DoughnutChartFullScreen> createState() => _DoughnutChartFullScreenState();
-}
-
-class _DoughnutChartFullScreenState extends State<DoughnutChartFullScreen> {
+class DoughnutChart extends StatelessWidget {
+  const DoughnutChart({Key? key, required this.doughnutchartData}) : super(key: key);
+  final List<ChartSampleData> doughnutchartData;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorLib.primaryColor.color,
-        shadowColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SfCircularChart(
+    return Container(
+      margin: const EdgeInsets.only(top: 20),
+      height: MediaQuery.of(context).size.height * 0.45,
+      child: SfCircularChart(
         title: ChartTitle(text: 'Distribuição de despesas'),
         legend: const Legend(
           position: LegendPosition.bottom,
-          isVisible: true,
+          isVisible: false,
           overflowMode: LegendItemOverflowMode.wrap,
           shouldAlwaysShowScrollbar: true,
         ),
         series: <DoughnutSeries<ChartSampleData, String>>[
           DoughnutSeries(
-              radius: '80%',
+              radius: '50%',
               explode: true,
               explodeOffset: '10%',
-              dataSource: widget.chartData,
+              dataSource: doughnutchartData,
               xValueMapper: (datum, index) => datum.x,
               yValueMapper: (datum, index) => datum.y,
+              dataLabelMapper: (datum, index) => datum.x,
               startAngle: 90,
               endAngle: 90,
               dataLabelSettings: const DataLabelSettings(

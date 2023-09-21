@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:vigia_deputados/models/chart_sample_data.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
-import 'package:vigia_deputados/models/doughnut_chart_sample_data.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart_fullscreen.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/line_chart.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/line_chart_full_screen.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
 class TabDespesas extends StatefulWidget {
@@ -16,7 +19,56 @@ class TabDespesas extends StatefulWidget {
 
 class _TabDespesasState extends State<TabDespesas> {
   final CamaraApi _api = CamaraApi();
-  List<DoughnutChartSampleData> doughnutchartData = [];
+  List<ChartSampleData> doughnutchartData = [];
+  List<ChartSampleData> lineChartData = [];
+
+  String _getMonth(int month) {
+    switch (month) {
+      case 1:
+        return 'Janeiro';
+      case 2:
+        return 'Fevereiro';
+      case 3:
+        return 'Março';
+      case 4:
+        return 'Abril';
+      case 5:
+        return 'Maio';
+      case 6:
+        return 'Junho';
+      case 7:
+        return 'Julho';
+      case 8:
+        return 'Agosto';
+      case 9:
+        return 'Setembro';
+      case 10:
+        return 'Outubro';
+      case 11:
+        return 'Novembro';
+      case 12:
+        return 'Dezembro';
+      default:
+        return '';
+    }
+  }
+
+  void _buildLineData(List<DeputadoDespesasDado> dados) {
+    Map<int, double> lineData = {};
+    for (var data in dados) {
+      if (lineData[data.mes] == null) {
+        lineData[data.mes] = data.valorDocumento;
+      } else {
+        lineData[data.mes] = data.valorDocumento + lineData[data.mes]!;
+      }
+    }
+    if (lineChartData.isEmpty) {
+      for (var data in lineData.entries) {
+        lineChartData
+            .add(ChartSampleData(_getMonth(data.key), double.parse(data.value.toStringAsFixed(2))));
+      }
+    }
+  }
 
   void _buildDoughnutData(List<DeputadoDespesasDado> dados) {
     Map<String, double> dataMap = {};
@@ -30,7 +82,7 @@ class _TabDespesasState extends State<TabDespesas> {
     if (doughnutchartData.isEmpty) {
       for (var data in dataMap.entries) {
         doughnutchartData
-            .add(DoughnutChartSampleData(data.key, double.parse(data.value.toStringAsFixed(2))));
+            .add(ChartSampleData(data.key, double.parse(data.value.toStringAsFixed(2))));
       }
     }
   }
@@ -49,6 +101,7 @@ class _TabDespesasState extends State<TabDespesas> {
           }
 
           _buildDoughnutData(snapshot.data!.dados);
+          _buildLineData(snapshot.data!.dados);
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width,
@@ -56,41 +109,38 @@ class _TabDespesasState extends State<TabDespesas> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  IconButton(
-                      onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => DoughnutChartFullScreen(chartData: doughnutchartData),
-                            ),
-                          ),
-                      icon: const Icon(Icons.open_in_full_rounded)),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: SfCircularChart(
-                      title: ChartTitle(text: 'Distribuição de despesas'),
-                      legend: const Legend(
-                        position: LegendPosition.bottom,
-                        isVisible: false,
-                        overflowMode: LegendItemOverflowMode.wrap,
-                        shouldAlwaysShowScrollbar: true,
+                  OpenContainer(closedBuilder: (_, openContainer) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: openContainer,
+                              icon: const Icon(Icons.open_in_full_rounded)),
+                          Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
+                        ],
                       ),
-                      series: <DoughnutSeries<DoughnutChartSampleData, String>>[
-                        DoughnutSeries(
-                            radius: '50%',
-                            explode: true,
-                            explodeOffset: '10%',
-                            dataSource: doughnutchartData,
-                            xValueMapper: (datum, index) => datum.x,
-                            yValueMapper: (datum, index) => datum.y,
-                            dataLabelMapper: (datum, index) => datum.x,
-                            startAngle: 90,
-                            endAngle: 90,
-                            dataLabelSettings: const DataLabelSettings(
-                                isVisible: true, labelPosition: ChartDataLabelPosition.outside)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox()
+                    );
+                  }, openBuilder: (_, closeContainer) {
+                    return DoughnutChartFullScreen(chartData: doughnutchartData);
+                  }),
+                  OpenContainer(closedBuilder: (_, openContainer) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: openContainer,
+                              icon: const Icon(Icons.open_in_full_rounded)),
+                          Expanded(child: LineChart(lineChartData: lineChartData))
+                        ],
+                      ),
+                    );
+                  }, openBuilder: (_, closeContainer) {
+                    return LineChartFullScreen(lineChartData: lineChartData);
+                  }),
                 ],
               ),
             ),

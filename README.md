@@ -10,7 +10,7 @@ Não coletamos informações pessoais que possam identificá-lo diretamente, com
 
 ### Dados de Uso
 
-Podemos coletar informações sobre como o aplicativo é acessado e usado ("Dados de Uso"). Esses Dados de Uso podem incluir informações como o modelo do dispositivo, a versão do sistema operacional, a hora e data de uso do aplicativo e outras estatísticas.
+Não coletamos nenhuma informação de uso.
 
 ## Uso de Informações
 
@@ -30,6 +30,6 @@ Podemos atualizar nossa Política de Privacidade de tempos em tempos. Recomendam
 
 ## Contate-nos
 
-Se você tiver alguma dúvida ou sugestão sobre nossa Política de Privacidade, não hesite em nos contatar pelo e-mail [seu-email@example.com].
+Se você tiver alguma dúvida ou sugestão sobre nossa Política de Privacidade, não hesite em nos contatar pelo e-mail [victorhpantunes@gmail.com].
 
 Esta política de privacidade foi gerada pelo [Privacy Policy Generator](https://www.privacypolicygenerator.info/) e adaptada para atender às necessidades do aplicativo "Vigia Deputados".

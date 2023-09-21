@@ -1,40 +1,35 @@
-# Vigia Deputados
+# Política de Privacidade do Vigia Deputados
 
-Um aplicativo mobile para vigiar as atividades e despesas dos deputados. A intenção desse aplicativo é poder criar uma ferramenta no qual os eleitores possam tirar suas próprias conclusões sobre os parlamentares.
+A sua privacidade é importante para nós. É política do aplicativo "Vigia Deputados" respeitar a sua privacidade em relação a qualquer informação que possamos coletar enquanto opera o nosso aplicativo.
 
-## Getting Started
-   Quer contribuir? ÓTIMO, qualquer ajuda é bem-vinda. É iniciante em flutter? Está com medo? ótimo! Pegue uma issue, crie sua branch e faça seu pull request. Não existe melhor hora para começar se não essa. Não esqueça de comentar na issue que você irá trabalhar nela.
-   
-  - A Guideline de contribuição será criada nas próximas semanas
-  - Falta melhorar a arquitetura do código. Tem alguma sugestão? Abra uma issue e vamos discutir ela.
-   
-   Venha comigo nessa para ajudar a democracia Brasileira.
-   
+## Informações que Coletamos
 
+### Dados Pessoais
 
-   <table>
-  <tr>
-    <td>
-      <img src="https://i.imgur.com/C77emwp.jpg" title="source: imgur.com" height="500px"/>
-    </td>
-    <td>
-      <img src="https://i.imgur.com/R8UV1tG.jpg" title="source: imgur.com" height="500px"/>
-    </td>
-     <td>
-    
-  </tr>
-  <tr>
-    <td>
-      <img src="https://i.imgur.com/5Ke691W.jpg" title="source: imgur.com" height="500px"/>
-    </td>
-    <td>
-       <img src="https://i.imgur.com/tOmUHmq.jpg" title="source: imgur.com" height="500px"/>
-    </td>
-  </tr>
-</table>
+Não coletamos informações pessoais que possam identificá-lo diretamente, como nome, endereço, número de telefone ou endereço de e-mail.
 
+### Dados de Uso
 
-  
-   
-   
-   
+Podemos coletar informações sobre como o aplicativo é acessado e usado ("Dados de Uso"). Esses Dados de Uso podem incluir informações como o modelo do dispositivo, a versão do sistema operacional, a hora e data de uso do aplicativo e outras estatísticas.
+
+## Uso de Informações
+
+O aplicativo "Vigia Deputados" não coleta, armazena nem compartilha suas informações pessoais com terceiros.
+
+## Cookies
+
+O aplicativo não utiliza cookies.
+
+## Links para Sites Externos
+
+Este aplicativo pode conter links para outros sites. Se você clicar em um link de terceiros, será direcionado para esse site. Observe que esses sites externos não são operados por nós. Portanto, recomendamos que você reveja a política de privacidade desses sites. Não temos controle e não assumimos responsabilidade pelo conteúdo, políticas de privacidade ou práticas de sites ou serviços de terceiros.
+
+## Alterações nesta Política de Privacidade
+
+Podemos atualizar nossa Política de Privacidade de tempos em tempos. Recomendamos que você reveja esta página periodicamente para qualquer alteração. Informaremos sobre quaisquer alterações publicando a nova Política de Privacidade nesta página. Essas alterações entram em vigor imediatamente após serem publicadas nesta página.
+
+## Contate-nos
+
+Se você tiver alguma dúvida ou sugestão sobre nossa Política de Privacidade, não hesite em nos contatar pelo e-mail [seu-email@example.com].
+
+Esta política de privacidade foi gerada pelo [Privacy Policy Generator](https://www.privacypolicygenerator.info/) e adaptada para atender às necessidades do aplicativo "Vigia Deputados".

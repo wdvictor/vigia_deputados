@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
+import 'package:vigia_deputados/models/deputado_frentes.dart';
+import 'package:vigia_deputados/models/deputado_orgaos.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 
 class CamaraApi {
@@ -42,6 +44,28 @@ class CamaraApi {
 
       Response response = await get(Uri.parse(requestUrl));
       return deputadoDespesasFromJson(response.body);
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  Future<FrentesResponse> getDeputadoFrentes(int deputadoID) async {
+    try {
+      String requestUrl = '$url/deputados/$deputadoID/frentes';
+
+      Response response = await get(Uri.parse(requestUrl));
+      return frentesResponseFromJson(response.body);
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  Future<OrgaosResponse> getDeputadoOrgaos(int deputadoID) async {
+    try {
+      String requestUrl = '$url/deputados/$deputadoID/orgaos';
+
+      Response response = await get(Uri.parse(requestUrl));
+      return orgaosResponseFromJson(response.body);
     } catch (exception) {
       rethrow;
     }

@@ -26,7 +26,7 @@ class DoughnutChart extends StatelessWidget {
               dataSource: doughnutchartData,
               xValueMapper: (datum, index) => datum.x,
               yValueMapper: (datum, index) => datum.y,
-              dataLabelMapper: (datum, index) => datum.x,
+              dataLabelMapper: (datum, index) => datum.x.toLowerCase(),
               startAngle: 90,
               endAngle: 90,
               dataLabelSettings: const DataLabelSettings(

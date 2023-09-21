@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:vigia_deputados/models/chart_sample_data.dart';
@@ -62,10 +60,13 @@ class _TabDespesasState extends State<TabDespesas> {
         lineData[data.mes] = data.valorDocumento + lineData[data.mes]!;
       }
     }
+    var meses = lineData.keys.toList();
+    meses.sort(((a, b) => a.compareTo(b)));
     if (lineChartData.isEmpty) {
-      for (var data in lineData.entries) {
-        lineChartData
-            .add(ChartSampleData(_getMonth(data.key), double.parse(data.value.toStringAsFixed(2))));
+      for (var mes in meses) {
+        lineChartData.add(
+          ChartSampleData(_getMonth(mes), lineData[mes]!),
+        );
       }
     }
   }
@@ -89,7 +90,6 @@ class _TabDespesasState extends State<TabDespesas> {
 
   @override
   Widget build(BuildContext context) {
-    log(widget.deputadoID.toString());
     return Scaffold(
       body: FutureBuilder<DeputadoDespesas>(
         future: _api.getDeputadoDespesas(widget.deputadoID),
@@ -116,14 +116,16 @@ class _TabDespesasState extends State<TabDespesas> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           IconButton(
-                              onPressed: openContainer,
-                              icon: const Icon(Icons.open_in_full_rounded)),
-                          Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
+                            onPressed: openContainer,
+                            icon: const Icon(Icons.open_in_full_sharp),
+                            color: Colors.grey,
+                          ),
+                          Expanded(child: LineChart(lineChartData: lineChartData))
                         ],
                       ),
                     );
                   }, openBuilder: (_, closeContainer) {
-                    return DoughnutChartFullScreen(chartData: doughnutchartData);
+                    return LineChartFullScreen(lineChartData: lineChartData);
                   }),
                   OpenContainer(closedBuilder: (_, openContainer) {
                     return SizedBox(
@@ -133,13 +135,16 @@ class _TabDespesasState extends State<TabDespesas> {
                         children: [
                           IconButton(
                               onPressed: openContainer,
-                              icon: const Icon(Icons.open_in_full_rounded)),
-                          Expanded(child: LineChart(lineChartData: lineChartData))
+                              icon: const Icon(
+                                Icons.open_in_full_sharp,
+                                color: Colors.grey,
+                              )),
+                          Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
                         ],
                       ),
                     );
                   }, openBuilder: (_, closeContainer) {
-                    return LineChartFullScreen(lineChartData: lineChartData);
+                    return DoughnutChartFullScreen(chartData: doughnutchartData);
                   }),
                 ],
               ),

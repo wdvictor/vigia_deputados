@@ -21,7 +21,7 @@ class LineChart extends StatelessWidget {
         ),
         primaryXAxis: CategoryAxis(
             edgeLabelPlacement: EdgeLabelPlacement.shift,
-            interval: 2,
+            interval: 1,
             majorGridLines: const MajorGridLines(width: 0)),
         primaryYAxis: NumericAxis(
           labelFormat: 'R\${value}',

@@ -51,7 +51,9 @@ class OrgaosDado {
     required this.dataFim,
   });
 
-  factory OrgaosDado.fromJson(Map<String, dynamic> json) => OrgaosDado(
+  factory OrgaosDado.fromJson(Map<String, dynamic> json) {
+    try {
+      return OrgaosDado(
         idOrgao: json["idOrgao"],
         uriOrgao: json["uriOrgao"],
         siglaOrgao: json["siglaOrgao"],
@@ -60,8 +62,12 @@ class OrgaosDado {
         titulo: json["titulo"],
         codTitulo: json["codTitulo"],
         dataInicio: DateTime.parse(json['dataInicio']),
-        dataFim: DateTime.tryParse(json["dataFim"]),
+        dataFim: DateTime.tryParse(json["dataFim"] ?? ''),
       );
+    } catch (exception) {
+      rethrow;
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         "idOrgao": idOrgao,

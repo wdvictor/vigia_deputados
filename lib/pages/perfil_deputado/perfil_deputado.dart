@@ -6,6 +6,7 @@ import 'package:vigia_deputados/pages/perfil_deputado/dados_gerais_tab/tab_dados
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/tab_despesas.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/frentes_tab/frentes_tab.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/notas_fiscais_tab/notas_fiscais_tab.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/orgaos_tab.dart/orgaos_tab.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 
@@ -75,7 +76,7 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                     TabDadosGerais(deputado: deputado),
                     TabDespesas(deputadoID: deputado.id),
                     TabNotasFiscais(deputadoID: deputado.id),
-                    const Center(child: Text('Notas fiscais')),
+                    TabOrgaos(deputadoID: deputado.id),
                     TabFrentes(deputadoID: deputado.id),
                   ],
                 ),

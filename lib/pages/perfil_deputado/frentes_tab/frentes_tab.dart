@@ -29,10 +29,11 @@ class TabFrentes extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         dados[index].titulo,
-                        style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                        style: GoogleFonts.dmSans(color: Colors.grey[800]),
                       )
                     ],
                   ),

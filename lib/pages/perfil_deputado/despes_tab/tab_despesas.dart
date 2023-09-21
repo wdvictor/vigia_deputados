@@ -92,7 +92,7 @@ class _TabDespesasState extends State<TabDespesas> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<DeputadoDespesas>(
-        future: _api.getDeputadoDespesas(widget.deputadoID),
+        future: _api.getDeputadoDespesas(widget.deputadoID, DateTime.now().year),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

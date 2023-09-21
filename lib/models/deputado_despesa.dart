@@ -56,7 +56,7 @@ class DeputadoDespesasDado {
   int codDocumento;
   String tipoDocumento;
   int codTipoDocumento;
-  DateTime dataDocumento;
+  DateTime? dataDocumento;
   String numDocumento;
   double valorDocumento;
   String? urlDocumento;
@@ -77,7 +77,7 @@ class DeputadoDespesasDado {
         codDocumento: json["codDocumento"],
         tipoDocumento: json["tipoDocumento"],
         codTipoDocumento: json["codTipoDocumento"],
-        dataDocumento: DateTime.parse(json["dataDocumento"]),
+        dataDocumento: DateTime.tryParse(json["dataDocumento"] ?? ''),
         numDocumento: json["numDocumento"],
         valorDocumento: json["valorDocumento"].toDouble(),
         urlDocumento: json["urlDocumento"],
@@ -103,7 +103,7 @@ class DeputadoDespesasDado {
         "tipoDocumento": tipoDocumento,
         "codTipoDocumento": codTipoDocumento,
         "dataDocumento":
-            "${dataDocumento.year.toString().padLeft(4, '0')}-${dataDocumento.month.toString().padLeft(2, '0')}-${dataDocumento.day.toString().padLeft(2, '0')}",
+            "${dataDocumento?.year.toString().padLeft(4, '0')}-${dataDocumento?.month.toString().padLeft(2, '0')}-${dataDocumento?.day.toString().padLeft(2, '0')}",
         "numDocumento": numDocumento,
         "valorDocumento": valorDocumento,
         "urlDocumento": urlDocumento,

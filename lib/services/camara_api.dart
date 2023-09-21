@@ -35,10 +35,10 @@ class CamaraApi {
     }
   }
 
-  Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID) async {
+  Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID, int ano) async {
     try {
       String requestUrl = '$url/deputados/$deputadoID/despesas?'
-          'itens=10000&ordem=DESC';
+          'itens=10000&ordem=DESC&ano=$ano';
 
       Response response = await get(Uri.parse(requestUrl));
       return deputadoDespesasFromJson(response.body);

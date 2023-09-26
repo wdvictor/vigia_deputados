@@ -1,5 +1,6 @@
 // cSpell: ignore Camara camara
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
@@ -12,6 +13,15 @@ class CamaraApi {
   final String url = 'https://dadosabertos.camara.leg.br/api/v2';
   final String deputadosUrl =
       'https://dadosabertos.camara.leg.br/api/v2/deputados?dataInicio=2018-01-01&ordem=ASC&ordenarPor=nome';
+
+  DateTime converterStringParaData(String dataString) {
+    List<String> partesData = dataString.split("-");
+    int ano = int.parse(partesData[0]);
+    int mes = int.parse(partesData[1]);
+    int dia = int.parse(partesData[2]);
+
+    return DateTime(ano, mes, dia);
+  }
 
   Future<DeputadosResponse> getDeputados() async {
     try {
@@ -37,14 +47,34 @@ class CamaraApi {
     }
   }
 
-  Future<DeputadoDespesas> getDeputadoDespesas(int deputadoID, int ano) async {
+  Future<List<DeputadoDespesasDado>> getAllDespesasAno(int deputadoID, int ano) async {
+    try {
+      log(deputadoID.toString());
+      List<DeputadoDespesasDado> despesas = [];
+      int mesAtual = DateTime.now().month;
+      for (int mes = 1; mes <= mesAtual; mes++) {
+        DeputadoDespesas response = await getDeputadoDespesasMes(deputadoID, ano, mes);
+        despesas.addAll(response.dados);
+      }
+      despesas.sort(
+        ((a, b) => a.dataDocumento!.compareTo(b.dataDocumento!)),
+      );
+      log(despesas.length.toString());
+      return despesas;
+    } catch (exception) {
+      log(exception.toString());
+      rethrow;
+    }
+  }
+
+  Future<DeputadoDespesas> getDeputadoDespesasMes(int deputadoID, int ano, int mes) async {
     try {
       String requestUrl = '$url/deputados/$deputadoID/despesas?'
-          'itens=10000&ordem=DESC&ano=$ano';
-
+          '&ano=$ano&mes=$mes';
       Response response = await get(Uri.parse(requestUrl));
       return deputadoDespesasFromJson(response.body);
     } catch (exception) {
+      log('', error: exception.toString());
       rethrow;
     }
   }

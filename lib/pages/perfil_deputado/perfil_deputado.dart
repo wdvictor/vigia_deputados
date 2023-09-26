@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
+import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/dados_gerais_tab/tab_dados_gerais.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/tab_despesas.dart';
@@ -49,40 +50,53 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
           }
 
           final DeputadoDetalhadoDado deputado = snapshot.data!.dados;
-          return Column(
-            children: [
-              PerfilHeader(
-                deputado: deputado,
-              ),
-              TabBar(
-                  controller: _tabController,
-                  labelStyle: GoogleFonts.dmSans(color: Colors.black),
-                  indicatorColor: ColorLib.primaryColor.color,
-                  labelColor: Colors.black,
-                  isScrollable: true,
-                  tabs: const [
-                    Tab(
-                      text: 'Dados Pessoais',
-                    ),
-                    Tab(text: 'Despesas'),
-                    Tab(text: 'Notas fiscais'),
-                    Tab(text: 'Órgãos Participantes'),
-                    Tab(text: 'Frentes'),
-                  ]),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
+          return FutureBuilder<List<DeputadoDespesasDado>>(
+              future: _api.getAllDespesasAno(deputado.id, DateTime.now().year),
+              builder: (context, despesasSnapshot) {
+                if (!despesasSnapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return Column(
                   children: [
-                    TabDadosGerais(deputado: deputado),
-                    TabDespesas(deputadoID: deputado.id),
-                    TabNotasFiscais(deputadoID: deputado.id),
-                    TabOrgaos(deputadoID: deputado.id),
-                    TabFrentes(deputadoID: deputado.id),
+                    PerfilHeader(
+                      deputado: deputado,
+                    ),
+                    TabBar(
+                        controller: _tabController,
+                        labelStyle: GoogleFonts.dmSans(color: Colors.black),
+                        indicatorColor: ColorLib.primaryColor.color,
+                        labelColor: Colors.black,
+                        isScrollable: true,
+                        tabs: const [
+                          Tab(
+                            text: 'Dados Pessoais',
+                          ),
+                          Tab(text: 'Despesas'),
+                          Tab(text: 'Notas fiscais'),
+                          Tab(text: 'Órgãos Participantes'),
+                          Tab(text: 'Frentes'),
+                        ]),
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          TabDadosGerais(deputado: deputado),
+                          TabDespesas(
+                            despesasDados: despesasSnapshot.data!,
+                          ),
+                          TabNotasFiscais(
+                            despesasDados: despesasSnapshot.data!,
+                          ),
+                          TabOrgaos(deputadoID: deputado.id),
+                          TabFrentes(deputadoID: deputado.id),
+                        ],
+                      ),
+                    )
                   ],
-                ),
-              )
-            ],
-          );
+                );
+              });
         }),
       ),
     );

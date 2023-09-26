@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
-import 'package:vigia_deputados/services/camara_api.dart';
 
 class TabNotasFiscais extends StatefulWidget {
-  const TabNotasFiscais({Key? key, required this.deputadoID}) : super(key: key);
-  final int deputadoID;
+  const TabNotasFiscais({Key? key, required this.despesasDados}) : super(key: key);
 
+  final List<DeputadoDespesasDado> despesasDados;
   @override
   State<TabNotasFiscais> createState() => _TabNotasFiscaisState();
 }
 
 class _TabNotasFiscaisState extends State<TabNotasFiscais> {
-  final CamaraApi _camaraApi = CamaraApi();
-
   String formatDate(DateTime? date) {
     if (date == null) {
       return '';
@@ -35,72 +32,59 @@ class _TabNotasFiscaisState extends State<TabNotasFiscais> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DeputadoDespesas>(
-        future: _camaraApi.getDeputadoDespesas(widget.deputadoID, DateTime.now().year),
-        builder: ((context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          List<DeputadoDespesasDado> dados = snapshot.data!.dados;
-          dados.sort((a, b) {
-            if (a.dataDocumento == null || b.dataDocumento == null) {
-              return -1;
-            }
-            return a.dataDocumento!.compareTo(b.dataDocumento!);
-          });
-
-          dados.removeWhere((element) => element.dataDocumento?.year != DateTime.now().year);
-          dados = dados.reversed.toList();
-          return ListView.builder(
-            itemCount: dados.length,
-            itemBuilder: ((context, index) {
-              return InkWell(
-                onTap: () => launchUrl(Uri.parse(dados[index].urlDocumento ?? '')),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  height: 120,
-                  decoration: const BoxDecoration(),
-                  child: Material(
-                    elevation: 12,
-                    borderRadius: BorderRadius.circular(10),
-                    child: Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(CupertinoIcons.doc),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                dados[index].nomeFornecedor.toLowerCase(),
-                                style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                dados[index].tipoDespesa.toLowerCase(),
-                                style: GoogleFonts.dmSans(color: Colors.grey[600]),
-                              ),
-                              Text(
-                                formatDate(dados[index].dataDocumento),
-                                style: GoogleFonts.dmSans(color: Colors.grey[600]),
-                              )
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => {},
-                          icon: const Icon(Icons.arrow_forward_ios),
-                        )
-                      ],
+    widget.despesasDados.sort((a, b) {
+      if (a.dataDocumento == null || b.dataDocumento == null) {
+        return -1;
+      }
+      return a.dataDocumento!.compareTo(b.dataDocumento!);
+    });
+    final data = widget.despesasDados.reversed.toList();
+    return ListView.builder(
+        itemCount: data.length,
+        itemBuilder: ((context, index) {
+          return InkWell(
+            onTap: () => launchUrl(Uri.parse(data[index].urlDocumento ?? '')),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              height: 120,
+              decoration: const BoxDecoration(),
+              child: Material(
+                elevation: 12,
+                borderRadius: BorderRadius.circular(10),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(CupertinoIcons.doc),
                     ),
-                  ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data[index].nomeFornecedor.toLowerCase(),
+                            style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            data[index].tipoDespesa.toLowerCase(),
+                            style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                          ),
+                          Text(
+                            formatDate(data[index].dataDocumento),
+                            style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                          )
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => {},
+                      icon: const Icon(Icons.arrow_forward_ios),
+                    )
+                  ],
                 ),
-              );
-            }),
+              ),
+            ),
           );
         }));
   }

@@ -68,6 +68,15 @@ class DeputadoDespesasDado {
   int codLote;
   int parcela;
 
+  DateTime converterStringParaData(String dataString) {
+    List<String> partesData = dataString.split("-");
+    int ano = int.parse(partesData[0]);
+    int mes = int.parse(partesData[1]);
+    int dia = int.parse(partesData[2]);
+
+    return DateTime(ano, mes, dia);
+  }
+
   factory DeputadoDespesasDado.fromJson(Map<String, dynamic> json) {
     try {
       return DeputadoDespesasDado(

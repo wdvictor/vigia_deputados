@@ -61,6 +61,11 @@ class TabDadosGerais extends StatelessWidget {
             data: formatCellphone(deputado.ultimoStatus.gabinete.telefone),
             showCopyButton: true,
           ),
+          DataField(
+            title: 'E-mail',
+            data: deputado.ultimoStatus.gabinete.email ?? '',
+            showCopyButton: true,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20, top: 20),
             child: Text(

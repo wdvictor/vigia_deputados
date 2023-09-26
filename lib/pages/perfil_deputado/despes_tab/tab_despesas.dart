@@ -6,17 +6,16 @@ import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart.
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart_fullscreen.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/line_chart.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/line_chart_full_screen.dart';
-import 'package:vigia_deputados/services/camara_api.dart';
 
 class TabDespesas extends StatefulWidget {
-  const TabDespesas({Key? key, required this.deputadoID}) : super(key: key);
-  final int deputadoID;
+  const TabDespesas({Key? key, required this.despesasDados}) : super(key: key);
+
+  final List<DeputadoDespesasDado> despesasDados;
   @override
   State<TabDespesas> createState() => _TabDespesasState();
 }
 
 class _TabDespesasState extends State<TabDespesas> {
-  final CamaraApi _api = CamaraApi();
   List<ChartSampleData> doughnutchartData = [];
   List<ChartSampleData> lineChartData = [];
 
@@ -90,68 +89,56 @@ class _TabDespesasState extends State<TabDespesas> {
 
   @override
   Widget build(BuildContext context) {
+    _buildDoughnutData(widget.despesasDados);
+    _buildLineData(widget.despesasDados);
     return Scaffold(
-      body: FutureBuilder<DeputadoDespesas>(
-        future: _api.getDeputadoDespesas(widget.deputadoID, DateTime.now().year),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          _buildDoughnutData(snapshot.data!.dados);
-          _buildLineData(snapshot.data!.dados);
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  OpenContainer(closedBuilder: (_, openContainer) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: openContainer,
-                            icon: const Icon(Icons.open_in_full_sharp),
-                            color: Colors.grey,
-                          ),
-                          Expanded(child: LineChart(lineChartData: lineChartData))
-                        ],
-                      ),
-                    );
-                  }, openBuilder: (_, closeContainer) {
-                    return LineChartFullScreen(lineChartData: lineChartData);
-                  }),
-                  OpenContainer(closedBuilder: (_, openContainer) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                              onPressed: openContainer,
-                              icon: const Icon(
-                                Icons.open_in_full_sharp,
-                                color: Colors.grey,
-                              )),
-                          Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
-                        ],
-                      ),
-                    );
-                  }, openBuilder: (_, closeContainer) {
-                    return DoughnutChartFullScreen(chartData: doughnutchartData);
-                  }),
-                ],
-              ),
-            ),
-          );
-        },
+        body: SizedBox(
+      height: MediaQuery.of(context).size.height * 0.6,
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            OpenContainer(closedBuilder: (_, openContainer) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: openContainer,
+                      icon: const Icon(Icons.open_in_full_sharp),
+                      color: Colors.grey,
+                    ),
+                    Expanded(child: LineChart(lineChartData: lineChartData))
+                  ],
+                ),
+              );
+            }, openBuilder: (_, closeContainer) {
+              return LineChartFullScreen(lineChartData: lineChartData);
+            }),
+            OpenContainer(closedBuilder: (_, openContainer) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    IconButton(
+                        onPressed: openContainer,
+                        icon: const Icon(
+                          Icons.open_in_full_sharp,
+                          color: Colors.grey,
+                        )),
+                    Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
+                  ],
+                ),
+              );
+            }, openBuilder: (_, closeContainer) {
+              return DoughnutChartFullScreen(chartData: doughnutchartData);
+            }),
+          ],
+        ),
       ),
-    );
+    ));
   }
 }

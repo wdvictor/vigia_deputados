@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class PerfilHeader extends StatelessWidget {
   const PerfilHeader({Key? key, required this.deputado}) : super(key: key);
   final DeputadoDetalhadoDado deputado;
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     final Size size = MediaQuery.of(context).size;
     return Container(
       height: size.height * 0.2,
@@ -27,7 +29,7 @@ class PerfilHeader extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: CircleAvatar(
-                    radius: 50,
+                    radius: isTablet ? 100 : 50,
                     backgroundImage: NetworkImage(deputado.ultimoStatus.urlFoto),
                   ),
                 ),
@@ -39,12 +41,18 @@ class PerfilHeader extends StatelessWidget {
                       const Spacer(),
                       Text(
                         deputado.nomeCivil,
-                        style: GoogleFonts.dmSans(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.dmSans(
+                            fontSize: isTablet ? 23 : 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Text(
                         '${deputado.ultimoStatus.siglaPartido}-${deputado.ultimoStatus.siglaUf}',
-                        style: GoogleFonts.dmSans(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.dmSans(
+                            fontSize: isTablet ? 22 : 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                       const Spacer(
                         flex: 2,

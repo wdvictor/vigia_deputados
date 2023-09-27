@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/models/deputado_orgaos.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class TabOrgaos extends StatelessWidget {
   const TabOrgaos({Key? key, required this.deputadoID}) : super(key: key);
@@ -26,6 +27,7 @@ class TabOrgaos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     return FutureBuilder<OrgaosResponse>(
       future: CamaraApi().getDeputadoOrgaos(deputadoID),
       builder: (context, snapshot) {
@@ -56,11 +58,13 @@ class TabOrgaos extends StatelessWidget {
                           children: [
                             Text(
                               dados[index].titulo,
-                              style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                              style: GoogleFonts.dmSans(
+                                  fontSize: isTablet ? 20 : 14, color: Colors.grey[600]),
                             ),
                             Text(
                               formatDate(dados[index].dataInicio),
-                              style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                              style: GoogleFonts.dmSans(
+                                  fontSize: isTablet ? 20 : 14, color: Colors.grey[600]),
                             )
                           ],
                         ),
@@ -68,14 +72,17 @@ class TabOrgaos extends StatelessWidget {
                       Text(
                         dados[index].siglaOrgao,
                         style: GoogleFonts.dmSans(
-                            color: Colors.grey[800], fontWeight: FontWeight.bold),
+                            fontSize: isTablet ? 20 : 14,
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
                         dados[index].nomeOrgao,
-                        style: GoogleFonts.dmSans(color: Colors.grey[800]),
+                        style: GoogleFonts.dmSans(
+                            fontSize: isTablet ? 20 : 15, color: Colors.grey[800]),
                       ),
                     ],
                   ),

@@ -3,7 +3,6 @@
 //     final deputadosResponse = deputadosResponseFromJson(jsonString);
 
 import 'dart:convert';
-import 'dart:developer';
 
 DeputadosResponse deputadosResponseFromJson(String str) =>
     DeputadosResponse.fromJson(json.decode(str));
@@ -67,7 +66,6 @@ class DeputadoDado {
         email: json["email"],
       );
     } catch (exception) {
-      log(exception.toString());
       rethrow;
     }
   }

@@ -18,6 +18,13 @@ class TabDespesas extends StatefulWidget {
 class _TabDespesasState extends State<TabDespesas> {
   List<ChartSampleData> doughnutchartData = [];
   List<ChartSampleData> lineChartData = [];
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
 
   String _getMonth(int month) {
     switch (month) {
@@ -93,50 +100,55 @@ class _TabDespesasState extends State<TabDespesas> {
     _buildLineData(widget.despesasDados);
     return Scaffold(
         body: SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
       width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            OpenContainer(closedBuilder: (_, openContainer) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      onPressed: openContainer,
-                      icon: const Icon(Icons.open_in_full_sharp),
-                      color: Colors.grey,
-                    ),
-                    Expanded(child: LineChart(lineChartData: lineChartData))
-                  ],
-                ),
-              );
-            }, openBuilder: (_, closeContainer) {
-              return LineChartFullScreen(lineChartData: lineChartData);
-            }),
-            OpenContainer(closedBuilder: (_, openContainer) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
+      child: Scrollbar(
+        thumbVisibility: true,
+        thickness: 10,
+        controller: _scrollController,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              OpenContainer(closedBuilder: (_, openContainer) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
                         onPressed: openContainer,
-                        icon: const Icon(
-                          Icons.open_in_full_sharp,
-                          color: Colors.grey,
-                        )),
-                    Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
-                  ],
-                ),
-              );
-            }, openBuilder: (_, closeContainer) {
-              return DoughnutChartFullScreen(chartData: doughnutchartData);
-            }),
-          ],
+                        icon: const Icon(Icons.open_in_full_sharp),
+                        color: Colors.grey,
+                      ),
+                      Expanded(child: LineChart(lineChartData: lineChartData)),
+                    ],
+                  ),
+                );
+              }, openBuilder: (_, closeContainer) {
+                return LineChartFullScreen(lineChartData: lineChartData);
+              }),
+              OpenContainer(closedBuilder: (_, openContainer) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: openContainer,
+                          icon: const Icon(
+                            Icons.open_in_full_sharp,
+                            color: Colors.grey,
+                          )),
+                      Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
+                    ],
+                  ),
+                );
+              }, openBuilder: (_, closeContainer) {
+                return DoughnutChartFullScreen(chartData: doughnutchartData);
+              }),
+            ],
+          ),
         ),
       ),
     ));

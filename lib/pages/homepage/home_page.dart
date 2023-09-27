@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/models/notifiers/deputados_notifier.dart';
+import 'package:vigia_deputados/pages/homepage/deputado_grid_card.dart';
 import 'package:vigia_deputados/pages/homepage/deputado_list_card.dart';
 import 'package:vigia_deputados/pages/homepage/deputados_search_delegate.dart';
 import 'package:vigia_deputados/pages/homepage/error_screen.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -68,13 +70,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           topRight: Radius.circular(30),
                         ),
                       ),
-                      child: ListView.builder(
-                        addAutomaticKeepAlives: false,
-                        addRepaintBoundaries: false,
-                        itemCount: todosDeputados.length,
-                        itemBuilder: (context, index) =>
-                            DeputadoListCard(deputado: todosDeputados[index]),
-                      ),
+                      child: DeviceInfo.isTablet(context)
+                          ? GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3, crossAxisSpacing: 50, mainAxisSpacing: 50),
+                              addAutomaticKeepAlives: false,
+                              addRepaintBoundaries: false,
+                              itemCount: todosDeputados.length,
+                              itemBuilder: (context, index) =>
+                                  DeputadoGridCard(deputado: todosDeputados[index]),
+                            )
+                          : ListView.builder(
+                              addAutomaticKeepAlives: false,
+                              addRepaintBoundaries: false,
+                              itemCount: todosDeputados.length,
+                              itemBuilder: (context, index) =>
+                                  DeputadoListCard(deputado: todosDeputados[index]),
+                            ),
                     ),
                   ),
                 ],

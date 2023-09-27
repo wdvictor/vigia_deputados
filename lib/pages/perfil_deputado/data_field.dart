@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class DataField extends StatelessWidget {
   const DataField({Key? key, required this.title, required this.data, this.showCopyButton = false})
@@ -41,11 +42,12 @@ class DataField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       width: double.maxFinite,
-      height: 50,
+      height: isTablet ? 100 : 50,
       decoration: BoxDecoration(
           color: ColorLib.dataFieldColor.color, borderRadius: BorderRadius.circular(10)),
       child: Row(
@@ -57,11 +59,12 @@ class DataField extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.dmSans(color: Colors.grey[700]),
+                  style: GoogleFonts.dmSans(fontSize: isTablet ? 22 : 15, color: Colors.grey[700]),
                 ),
                 Text(
                   data,
-                  style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                  style:
+                      GoogleFonts.dmSans(fontSize: isTablet ? 22 : 15, fontWeight: FontWeight.bold),
                 )
               ],
             ),

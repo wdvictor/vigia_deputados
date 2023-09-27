@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class TabNotasFiscais extends StatefulWidget {
   const TabNotasFiscais({Key? key, required this.despesasDados}) : super(key: key);
@@ -39,6 +40,8 @@ class _TabNotasFiscaisState extends State<TabNotasFiscais> {
       return a.dataDocumento!.compareTo(b.dataDocumento!);
     });
     final data = widget.despesasDados.reversed.toList();
+    final Size size = MediaQuery.of(context).size;
+    final isTablet = DeviceInfo.isTablet(context);
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: ((context, index) {
@@ -46,16 +49,19 @@ class _TabNotasFiscaisState extends State<TabNotasFiscais> {
             onTap: () => launchUrl(Uri.parse(data[index].urlDocumento ?? '')),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              height: 120,
+              height: isTablet ? size.height * 0.15 : 120,
               decoration: const BoxDecoration(),
               child: Material(
                 elevation: 12,
                 borderRadius: BorderRadius.circular(10),
                 child: Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(CupertinoIcons.doc),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        CupertinoIcons.doc,
+                        size: size.width * 0.05,
+                      ),
                     ),
                     Expanded(
                       child: Column(
@@ -64,22 +70,28 @@ class _TabNotasFiscaisState extends State<TabNotasFiscais> {
                         children: [
                           Text(
                             data[index].nomeFornecedor.toLowerCase(),
-                            style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                            style: GoogleFonts.dmSans(
+                                fontSize: isTablet ? 20 : 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             data[index].tipoDespesa.toLowerCase(),
-                            style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                            style: GoogleFonts.dmSans(
+                                fontSize: isTablet ? 23 : 15, color: Colors.grey[600]),
                           ),
                           Text(
                             formatDate(data[index].dataDocumento),
-                            style: GoogleFonts.dmSans(color: Colors.grey[600]),
+                            style: GoogleFonts.dmSans(
+                                fontSize: isTablet ? 20 : 15, color: Colors.grey[600]),
                           )
                         ],
                       ),
                     ),
                     IconButton(
                       onPressed: () => {},
-                      icon: const Icon(Icons.arrow_forward_ios),
+                      icon: Icon(
+                        Icons.arrow_forward_ios,
+                        size: size.width * 0.03,
+                      ),
                     )
                   ],
                 ),

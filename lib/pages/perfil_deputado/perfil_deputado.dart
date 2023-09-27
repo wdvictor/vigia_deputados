@@ -10,6 +10,7 @@ import 'package:vigia_deputados/pages/perfil_deputado/notas_fiscais_tab/notas_fi
 import 'package:vigia_deputados/pages/perfil_deputado/orgaos_tab.dart/orgaos_tab.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class PerfilDeputado extends StatefulWidget {
   const PerfilDeputado({Key? key, required this.deputadoID}) : super(key: key);
@@ -36,6 +37,7 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorLib.primaryColor.color,
@@ -65,7 +67,8 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                     ),
                     TabBar(
                         controller: _tabController,
-                        labelStyle: GoogleFonts.dmSans(color: Colors.black),
+                        labelStyle:
+                            GoogleFonts.dmSans(color: Colors.black, fontSize: isTablet ? 23 : 15),
                         indicatorColor: ColorLib.primaryColor.color,
                         labelColor: Colors.black,
                         isScrollable: true,

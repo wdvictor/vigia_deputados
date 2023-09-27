@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 //cSpell:ignore cnpj ESCRITRIO COMBUSTVEIS DIVULGAO SERVIOS ELETRNICA
 import 'dart:convert';
-import 'dart:developer';
 
 DeputadoDespesas deputadoDespesasFromJson(String str) =>
     DeputadoDespesas.fromJson(json.decode(str));
@@ -99,7 +98,6 @@ class DeputadoDespesasDado {
         parcela: json["parcela"],
       );
     } catch (exception) {
-      log(exception.toString(), name: 'DeputadoDespesasDado.fromJson in Deputado despesas');
       rethrow;
     }
   }

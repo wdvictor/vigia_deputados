@@ -1,6 +1,5 @@
 // cSpell: ignore Camara camara
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
@@ -49,7 +48,6 @@ class CamaraApi {
 
   Future<List<DeputadoDespesasDado>> getAllDespesasAno(int deputadoID, int ano) async {
     try {
-      log(deputadoID.toString());
       List<DeputadoDespesasDado> despesas = [];
       int mesAtual = DateTime.now().month;
       for (int mes = 1; mes <= mesAtual; mes++) {
@@ -57,12 +55,16 @@ class CamaraApi {
         despesas.addAll(response.dados);
       }
       despesas.sort(
-        ((a, b) => a.dataDocumento!.compareTo(b.dataDocumento!)),
+        ((a, b) {
+          if (a.dataDocumento != null && b.dataDocumento != null) {
+            return a.dataDocumento!.compareTo(b.dataDocumento!);
+          }
+          return -1;
+        }),
       );
-      log(despesas.length.toString());
+
       return despesas;
     } catch (exception) {
-      log(exception.toString());
       rethrow;
     }
   }
@@ -74,7 +76,6 @@ class CamaraApi {
       Response response = await get(Uri.parse(requestUrl));
       return deputadoDespesasFromJson(response.body);
     } catch (exception) {
-      log('', error: exception.toString());
       rethrow;
     }
   }

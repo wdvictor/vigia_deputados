@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vigia_deputados/models/deputado_frentes.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class TabFrentes extends StatelessWidget {
   const TabFrentes({Key? key, required this.deputadoID}) : super(key: key);
   final int deputadoID;
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     return FutureBuilder<FrentesResponse>(
       future: CamaraApi().getDeputadoFrentes(deputadoID),
       builder: (context, snapshot) {
@@ -33,7 +35,8 @@ class TabFrentes extends StatelessWidget {
                     children: [
                       Text(
                         dados[index].titulo,
-                        style: GoogleFonts.dmSans(color: Colors.grey[800]),
+                        style: GoogleFonts.dmSans(
+                            fontSize: isTablet ? 20 : 15, color: Colors.grey[800]),
                       )
                     ],
                   ),

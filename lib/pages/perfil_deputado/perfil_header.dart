@@ -16,9 +16,8 @@ class PerfilHeader extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     String getImageName(String rede) {
-      log(rede);
       final Map<String, String> redesSociais = {
-        'twitter': 'assets/images/x_logo.png',
+        'twitter': 'assets/images/twitter_logo.png',
         'instagram': 'assets/images/instagram_logo.png',
         'facebook': 'assets/images/facebook_logo.png',
         'youtube': 'assets/images/youtube_logo.png',
@@ -107,10 +106,16 @@ class PerfilHeader extends StatelessWidget {
                 children: [
                   for (var i = 0; i < deputado.redeSocial.length; i++) ...{
                     GestureDetector(
-                      onTap: () => {launchUrl(deputado.redeSocial[i])},
-                      child: Image.asset(
-                        getImageName(
-                          deputado.redeSocial[i],
+                      onTap: () => {launchUrl(Uri.parse(deputado.redeSocial[i]))},
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        width: 25,
+                        height: 25,
+                        child: Image.asset(
+                          getImageName(
+                            deputado.redeSocial[i],
+                          ),
+                          color: Colors.white,
                         ),
                       ),
                     )

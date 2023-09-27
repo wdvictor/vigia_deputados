@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/services/device_info.dart';
@@ -11,13 +14,46 @@ class PerfilHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isTablet = DeviceInfo.isTablet(context);
     final Size size = MediaQuery.of(context).size;
+
+    String getImageName(String rede) {
+      log(rede);
+      final Map<String, String> redesSociais = {
+        'twitter': 'assets/images/x_logo.png',
+        'instagram': 'assets/images/instagram_logo.png',
+        'facebook': 'assets/images/facebook_logo.png',
+        'youtube': 'assets/images/youtube_logo.png',
+        'site': 'assets/images/site.png'
+      };
+      if (rede.contains('twitter')) {
+        return redesSociais['twitter']!;
+      }
+
+      if (rede.contains('youtube')) {
+        return redesSociais['youtube']!;
+      }
+
+      if (rede.contains('facebook')) {
+        return redesSociais['facebook']!;
+      }
+
+      if (rede.contains('instagram')) {
+        return redesSociais['instagram']!;
+      }
+
+      return redesSociais['site']!;
+    }
+
+    log(deputado.redeSocial.length.toString());
+
     return Container(
       height: size.height * 0.2,
       width: size.width,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
         color: ColorLib.primaryColor.color,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
       ),
       child: Column(
         children: [
@@ -63,7 +99,26 @@ class PerfilHeader extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  for (var i = 0; i < deputado.redeSocial.length; i++) ...{
+                    GestureDetector(
+                      onTap: () => {launchUrl(deputado.redeSocial[i])},
+                      child: Image.asset(
+                        getImageName(
+                          deputado.redeSocial[i],
+                        ),
+                      ),
+                    )
+                  }
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

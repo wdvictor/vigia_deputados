@@ -18,18 +18,24 @@ class DataField extends StatelessWidget {
         backgroundColor: Colors.green,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         content: Row(
           children: [
             const Spacer(
-              flex: 2,
-            ),
-            const Icon(
-              Icons.done_outlined,
-              color: Colors.white,
+              flex: 3,
             ),
             Text(
               'Texto copiado!',
-              style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+              style: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+            Container(
+              padding: const EdgeInsets.all(5.0),
+              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              child: const Icon(
+                Icons.done,
+                color: Colors.green,
+              ),
             ),
             const Spacer(
               flex: 2,

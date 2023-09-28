@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/frente_response.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/data_field.dart';
@@ -48,6 +50,9 @@ class _FrentePageState extends State<FrentePage> {
                 child: Column(
                   children: [
                     DataField(title: 'Título', data: dadosFrente.titulo),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -74,74 +79,97 @@ class _FrentePageState extends State<FrentePage> {
                         ],
                       ),
                     ),
-                    DataField(
-                      title: 'Telefone',
-                      data: dadosFrente.telefone,
-                      showCopyButton: true,
+                    const SizedBox(
+                      height: 20,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GestureDetector(
+                        onTap: () => launchUrl(
+                          Uri.parse(dadosFrente.urlDocumento),
+                        ),
+                        child: Material(
+                          elevation: 6,
+                          child: Container(
+                            height: 50,
+                            width: size.width,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.doc,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
               Positioned(
                 bottom: 0,
-                child: GestureDetector(
-                  onVerticalDragUpdate: (details) {
-                    setState(() {
-                      if (_expandedHeight > 200) {
+                child: Material(
+                  elevation: 12,
+                  child: GestureDetector(
+                    onVerticalDragUpdate: (details) {
+                      setState(() {
                         _expandedHeight -= details.primaryDelta!;
-                      }
-                      _showCoordenadorField = _expandedHeight > 250;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    height: _expandedHeight,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: ColorLib.primaryColor.color,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 5,
-                          width: 25,
-                          margin: const EdgeInsets.only(top: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 20),
-                          child: Text(
-                            'Coordenador',
-                            style: GoogleFonts.dmSans(
-                                color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600),
+
+                        _showCoordenadorField = _expandedHeight > 300;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: _expandedHeight,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: ColorLib.primaryColor.color,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 5,
+                            width: 25,
+                            margin: const EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white, borderRadius: BorderRadius.circular(20)),
                           ),
-                        ),
-                        const Divider(
-                          endIndent: 20,
-                          indent: 20,
-                          color: Colors.white,
-                          thickness: 1,
-                        ),
-                        CoordenadorHeader(dadosFrente: dadosFrente),
-                        Visibility(
-                          visible: _showCoordenadorField,
-                          child: DataField(
-                            title: 'Email',
-                            data: dadosFrente.email,
-                            showCopyButton: true,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, top: 20),
+                            child: Text(
+                              'Coordenador',
+                              style: GoogleFonts.dmSans(
+                                  color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600),
+                            ),
                           ),
-                        ),
-                        Visibility(
-                          visible: _showCoordenadorField,
-                          child: DataField(
-                            title: 'Email',
-                            data: dadosFrente.telefone,
-                            showCopyButton: true,
+                          const Divider(
+                            endIndent: 20,
+                            indent: 20,
+                            color: Colors.white,
+                            thickness: 1,
                           ),
-                        ),
-                      ],
+                          CoordenadorHeader(dadosFrente: dadosFrente),
+                          Visibility(
+                            visible: _showCoordenadorField,
+                            child: DataField(
+                              title: 'Email',
+                              data: dadosFrente.email,
+                              showCopyButton: true,
+                            ),
+                          ),
+                          Visibility(
+                            visible: _showCoordenadorField,
+                            child: DataField(
+                              title: 'Telefone',
+                              data: "(61) ${dadosFrente.telefone}",
+                              showCopyButton: true,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

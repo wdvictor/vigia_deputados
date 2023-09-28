@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final frentesResponse = frentesResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 FrentesResponse frentesResponseFromJson(String str) => FrentesResponse.fromJson(json.decode(str));

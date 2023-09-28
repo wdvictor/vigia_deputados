@@ -1,7 +1,3 @@
-//cSpell:ignore municipio situacao condicao descricao predio
-// To parse this JSON data, do
-// final DeputadoDetalhadoResponse = DeputadoDetalhadoResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 DeputadoDetalhadoResponse deputadoDetalhadoResponseFromJson(String str) =>
@@ -62,8 +58,7 @@ class DeputadoDetalhadoDado {
   String municipioNascimento;
   String escolaridade;
 
-  factory DeputadoDetalhadoDado.fromJson(Map<String, dynamic> json) =>
-      DeputadoDetalhadoDado(
+  factory DeputadoDetalhadoDado.fromJson(Map<String, dynamic> json) => DeputadoDetalhadoDado(
         id: json["id"],
         uri: json["uri"],
         nomeCivil: json["nomeCivil"],

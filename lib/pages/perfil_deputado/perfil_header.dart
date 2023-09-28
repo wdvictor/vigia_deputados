@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,8 +39,6 @@ class PerfilHeader extends StatelessWidget {
 
       return redesSociais['site']!;
     }
-
-    log(deputado.redeSocial.length.toString());
 
     return Container(
       height: size.height * 0.2,

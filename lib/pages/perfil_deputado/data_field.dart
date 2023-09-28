@@ -45,9 +45,8 @@ class DataField extends StatelessWidget {
     final isTablet = DeviceInfo.isTablet(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       width: double.maxFinite,
-      height: isTablet ? 100 : 50,
       decoration: BoxDecoration(
           color: ColorLib.dataFieldColor.color, borderRadius: BorderRadius.circular(10)),
       child: Row(

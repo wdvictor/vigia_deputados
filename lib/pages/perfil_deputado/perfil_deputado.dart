@@ -78,8 +78,8 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                           ),
                           Tab(text: 'Despesas'),
                           Tab(text: 'Notas fiscais'),
-                          Tab(text: 'Órgãos Participantes'),
                           Tab(text: 'Frentes'),
+                          Tab(text: 'Órgãos Participantes'),
                         ]),
                     Expanded(
                       child: TabBarView(
@@ -92,8 +92,8 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
                           TabNotasFiscais(
                             despesasDados: despesasSnapshot.data!,
                           ),
-                          TabOrgaos(deputadoID: deputado.id),
                           TabFrentes(deputadoID: deputado.id),
+                          TabOrgaos(deputadoID: deputado.id),
                         ],
                       ),
                     )

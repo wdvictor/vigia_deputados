@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final orgaosResponse = orgaosResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 OrgaosResponse orgaosResponseFromJson(String str) => OrgaosResponse.fromJson(json.decode(str));

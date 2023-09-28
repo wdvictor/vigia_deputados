@@ -88,9 +88,9 @@ class _TabNotasFiscaisState extends State<TabNotasFiscais> {
                     ),
                     IconButton(
                       onPressed: () => {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_forward_ios,
-                        size: size.width * 0.03,
+                        size: 20,
                       ),
                     )
                   ],

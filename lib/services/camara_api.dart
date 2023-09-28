@@ -7,6 +7,7 @@ import 'package:vigia_deputados/models/deputado_detalhado_response_model.dart';
 import 'package:vigia_deputados/models/deputado_frentes.dart';
 import 'package:vigia_deputados/models/deputado_orgaos.dart';
 import 'package:vigia_deputados/models/deputados_response_model.dart';
+import 'package:vigia_deputados/models/frente_response.dart';
 
 class CamaraApi {
   final String url = 'https://dadosabertos.camara.leg.br/api/v2';
@@ -97,6 +98,17 @@ class CamaraApi {
 
       Response response = await get(Uri.parse(requestUrl));
       return orgaosResponseFromJson(response.body);
+    } catch (exception) {
+      rethrow;
+    }
+  }
+
+  Future<FrenteResponse> getFrente(int frenteID) async {
+    try {
+      String requestUrl = '$url/frentes/$frenteID';
+
+      Response response = await get(Uri.parse(requestUrl));
+      return frenteResponseFromJson(response.body);
     } catch (exception) {
       rethrow;
     }

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final deputadosResponse = deputadosResponseFromJson(jsonString);
-
 import 'dart:convert';
 
 DeputadosResponse deputadosResponseFromJson(String str) =>

@@ -115,7 +115,11 @@ class _FrentePageState extends State<FrentePage> {
                   child: GestureDetector(
                     onVerticalDragUpdate: (details) {
                       setState(() {
-                        _expandedHeight -= details.primaryDelta!;
+                        if (_expandedHeight >= 250) {
+                          _expandedHeight -= details.primaryDelta!;
+                        } else {
+                          _expandedHeight = 250;
+                        }
 
                         _showCoordenadorField = _expandedHeight > 300;
                       });

@@ -8,6 +8,7 @@ import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart.
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart_fullscreen.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/line_chart.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/line_chart_full_screen.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class TabDespesas extends StatefulWidget {
   const TabDespesas({Key? key, required this.despesasDados}) : super(key: key);
@@ -100,97 +101,111 @@ class _TabDespesasState extends State<TabDespesas> {
   Widget build(BuildContext context) {
     _buildDoughnutData(widget.despesasDados);
     _buildLineData(widget.despesasDados);
+    final isTablet = DeviceInfo.isTablet(context);
     return Scaffold(
+        backgroundColor: Colors.white,
         body: SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Scrollbar(
-        thumbVisibility: true,
-        thickness: 10,
-        radius: const Radius.circular(20),
-        controller: _scrollController,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              OpenContainer(
-                  closedElevation: 0,
-                  closedBuilder: (_, openContainer) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.55,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: openContainer,
-                            icon: const Icon(Icons.open_in_full_sharp),
-                            color: Colors.grey,
+          width: MediaQuery.of(context).size.width,
+          child: Scrollbar(
+            thumbVisibility: true,
+            thickness: 10,
+            radius: const Radius.circular(20),
+            controller: _scrollController,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  OpenContainer(
+                      closedElevation: 0,
+                      closedBuilder: (_, openContainer) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.55,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                child: IconButton(
+                                  onPressed: openContainer,
+                                  icon: Icon(
+                                    Icons.open_in_full_sharp,
+                                    size: isTablet ? 45 : 25,
+                                  ),
+                                ),
+                              ),
+                              Expanded(child: LineChart(lineChartData: lineChartData)),
+                            ],
                           ),
-                          Expanded(child: LineChart(lineChartData: lineChartData)),
-                        ],
-                      ),
-                    );
-                  },
-                  openBuilder: (_, closeContainer) {
-                    return LineChartFullScreen(lineChartData: lineChartData);
-                  }),
-              Center(
-                child: InkWell(
-                  onTap: () {
-                    _scrollController.jumpTo(_scrollController.offset + 510);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    width: 120,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: ColorLib.primaryColor.color)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Ver mais',
-                          style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                        );
+                      },
+                      openBuilder: (_, closeContainer) {
+                        return LineChartFullScreen(lineChartData: lineChartData);
+                      }),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Center(
+                      child: InkWell(
+                        onTap: () {
+                          _scrollController.jumpTo(_scrollController.offset + 510);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          width: isTablet ? 200 : 120,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(color: ColorLib.primaryColor.color)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                'Ver mais',
+                                style: GoogleFonts.dmSans(
+                                    fontSize: isTablet ? 22 : 15, fontWeight: FontWeight.bold),
+                              ),
+                              const Icon(Icons.arrow_downward)
+                            ],
+                          ),
                         ),
-                        const Icon(Icons.arrow_downward)
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  OpenContainer(
+                      closedElevation: 0,
+                      closedBuilder: (_, openContainer) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                child: IconButton(
+                                    onPressed: openContainer,
+                                    icon: Icon(
+                                      Icons.open_in_full_sharp,
+                                      size: isTablet ? 45 : 25,
+                                    )),
+                              ),
+                              Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
+                            ],
+                          ),
+                        );
+                      },
+                      openBuilder: (_, closeContainer) {
+                        return DoughnutChartFullScreen(chartData: doughnutchartData);
+                      }),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Text(
+                      '*Os gráficos são interativos',
+                      style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
               ),
-              OpenContainer(
-                  closedElevation: 0,
-                  closedBuilder: (_, openContainer) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                              onPressed: openContainer,
-                              icon: const Icon(
-                                Icons.open_in_full_sharp,
-                                color: Colors.grey,
-                              )),
-                          Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
-                        ],
-                      ),
-                    );
-                  },
-                  openBuilder: (_, closeContainer) {
-                    return DoughnutChartFullScreen(chartData: doughnutchartData);
-                  }),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Text(
-                  '*Os gráficos são interativos',
-                  style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 }

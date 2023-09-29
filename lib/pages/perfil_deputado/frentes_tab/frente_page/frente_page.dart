@@ -7,6 +7,7 @@ import 'package:vigia_deputados/models/frente_response.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/data_field.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/frentes_tab/frente_page/coordenador_header.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class FrentePage extends StatefulWidget {
   const FrentePage({Key? key, required this.frenteID}) : super(key: key);
@@ -30,6 +31,7 @@ class _FrentePageState extends State<FrentePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -54,8 +56,9 @@ class _FrentePageState extends State<FrentePage> {
                       height: 10,
                     ),
                     Container(
+                      width: double.maxFinite,
                       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       decoration: BoxDecoration(
                           color: ColorLib.dataFieldColor.color,
                           borderRadius: BorderRadius.circular(10)),
@@ -65,7 +68,8 @@ class _FrentePageState extends State<FrentePage> {
                         children: [
                           Text(
                             'Situação',
-                            style: GoogleFonts.dmSans(fontSize: 15, color: Colors.grey[700]),
+                            style: GoogleFonts.dmSans(
+                                fontSize: isTablet ? 22 : 15, color: Colors.grey[700]),
                           ),
                           const SizedBox(
                             height: 10,
@@ -73,7 +77,7 @@ class _FrentePageState extends State<FrentePage> {
                           Text(
                             dadosFrente.situacao,
                             style: GoogleFonts.dmSans(
-                              fontSize: 15,
+                              fontSize: isTablet ? 22 : 15,
                             ),
                           )
                         ],

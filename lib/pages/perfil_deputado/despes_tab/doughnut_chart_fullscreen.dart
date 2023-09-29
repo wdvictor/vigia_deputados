@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/chart_sample_data.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class DoughnutChartFullScreen extends StatefulWidget {
   const DoughnutChartFullScreen({Key? key, required this.chartData}) : super(key: key);
@@ -13,6 +15,7 @@ class DoughnutChartFullScreen extends StatefulWidget {
 class _DoughnutChartFullScreenState extends State<DoughnutChartFullScreen> {
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorLib.primaryColor.color,
@@ -21,9 +24,10 @@ class _DoughnutChartFullScreenState extends State<DoughnutChartFullScreen> {
       ),
       body: SfCircularChart(
         title: ChartTitle(text: 'Distribuição de despesas'),
-        legend: const Legend(
+        legend: Legend(
           position: LegendPosition.bottom,
           isVisible: true,
+          textStyle: GoogleFonts.dmSans(fontSize: isTablet ? 22 : 15),
           overflowMode: LegendItemOverflowMode.wrap,
           shouldAlwaysShowScrollbar: true,
         ),
@@ -37,8 +41,10 @@ class _DoughnutChartFullScreenState extends State<DoughnutChartFullScreen> {
               yValueMapper: (datum, index) => datum.y,
               startAngle: 90,
               endAngle: 90,
-              dataLabelSettings: const DataLabelSettings(
-                  isVisible: true, labelPosition: ChartDataLabelPosition.outside)),
+              dataLabelSettings: DataLabelSettings(
+                  textStyle: GoogleFonts.dmSans(fontSize: isTablet ? 22 : 15),
+                  isVisible: true,
+                  labelPosition: ChartDataLabelPosition.outside)),
         ],
       ),
     );

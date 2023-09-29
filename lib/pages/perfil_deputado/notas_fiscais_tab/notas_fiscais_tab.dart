@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/notas_fiscais_tab/nota_fiscal_widget.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/notas_fiscais_tab/notas_fiscais_search_delegate.dart';
+import 'package:vigia_deputados/services/device_info.dart';
 
 class TabNotasFiscais extends StatefulWidget {
   const TabNotasFiscais({Key? key, required this.despesasDados}) : super(key: key);
@@ -14,6 +15,7 @@ class TabNotasFiscais extends StatefulWidget {
 class _TabNotasFiscaisState extends State<TabNotasFiscais> {
   @override
   Widget build(BuildContext context) {
+    final isTablet = DeviceInfo.isTablet(context);
     widget.despesasDados.sort((a, b) {
       if (a.dataDocumento == null || b.dataDocumento == null) {
         return -1;
@@ -24,10 +26,16 @@ class _TabNotasFiscaisState extends State<TabNotasFiscais> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        IconButton(
-            onPressed: () =>
-                showSearch(context: context, delegate: NotasFiscaisSearchDelegate(data)),
-            icon: const Icon(Icons.search)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: IconButton(
+              onPressed: () =>
+                  showSearch(context: context, delegate: NotasFiscaisSearchDelegate(data)),
+              icon: Icon(
+                Icons.search,
+                size: isTablet ? 45 : 25,
+              )),
+        ),
         Expanded(
           child: ListView.builder(
             itemCount: data.length,

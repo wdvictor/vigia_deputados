@@ -28,10 +28,12 @@ class LineChart extends StatelessWidget {
         primaryXAxis: CategoryAxis(
             edgeLabelPlacement: EdgeLabelPlacement.shift,
             interval: 1,
+            labelStyle: GoogleFonts.dmSans(fontSize: isTablet ? 22 : 15),
             majorGridLines: const MajorGridLines(width: 0)),
         primaryYAxis: NumericAxis(
-          labelFormat: 'R\${value}',
+          labelFormat: 'R\$ {value}',
           axisLine: const AxisLine(width: 0),
+          labelStyle: GoogleFonts.dmSans(fontSize: isTablet ? 22 : 15),
           majorTickLines: const MajorTickLines(color: Colors.transparent),
         ),
         series: <LineSeries<ChartSampleData, String>>[

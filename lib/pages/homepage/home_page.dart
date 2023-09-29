@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +28,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
+  Future<void> gravarInformacao() async {
+    try {
+      await FirebaseFirestore.instance.collection('deputados').add({'id': 0, 'nome': 'Victor'});
+      log('Informações foram gravadas!');
+    } catch (exception) {
+      log(exception.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    gravarInformacao();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: ColorLib.primaryColor.color,

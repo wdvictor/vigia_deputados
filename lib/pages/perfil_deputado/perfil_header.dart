@@ -105,8 +105,8 @@ class PerfilHeader extends StatelessWidget {
                       onTap: () => {launchUrl(Uri.parse(deputado.redeSocial[i]))},
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 10),
-                        width: 25,
-                        height: 25,
+                        width: isTablet ? 40 : 25,
+                        height: isTablet ? 40 : 25,
                         child: Image.asset(
                           getImageName(
                             deputado.redeSocial[i],

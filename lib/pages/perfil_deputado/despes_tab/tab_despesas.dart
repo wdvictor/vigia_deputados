@@ -1,5 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:vigia_deputados/helpers/color_lib.dart';
 import 'package:vigia_deputados/models/chart_sample_data.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/doughnut_chart.dart';
@@ -104,30 +106,58 @@ class _TabDespesasState extends State<TabDespesas> {
       child: Scrollbar(
         thumbVisibility: true,
         thickness: 10,
+        radius: const Radius.circular(20),
         controller: _scrollController,
         child: SingleChildScrollView(
           controller: _scrollController,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              OpenContainer(closedBuilder: (_, openContainer) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: openContainer,
-                        icon: const Icon(Icons.open_in_full_sharp),
-                        color: Colors.grey,
+              OpenContainer(
+                  closedElevation: 0,
+                  closedBuilder: (_, openContainer) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.55,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: openContainer,
+                            icon: const Icon(Icons.open_in_full_sharp),
+                            color: Colors.grey,
+                          ),
+                          Expanded(child: LineChart(lineChartData: lineChartData)),
+                        ],
                       ),
-                      Expanded(child: LineChart(lineChartData: lineChartData)),
-                    ],
+                    );
+                  },
+                  openBuilder: (_, closeContainer) {
+                    return LineChartFullScreen(lineChartData: lineChartData);
+                  }),
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    _scrollController.jumpTo(_scrollController.offset + 400);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    width: 120,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(color: ColorLib.primaryColor.color)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          'Ver mais',
+                          style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                        ),
+                        const Icon(Icons.arrow_downward)
+                      ],
+                    ),
                   ),
-                );
-              }, openBuilder: (_, closeContainer) {
-                return LineChartFullScreen(lineChartData: lineChartData);
-              }),
+                ),
+              ),
               OpenContainer(closedBuilder: (_, openContainer) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.6,

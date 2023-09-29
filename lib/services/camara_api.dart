@@ -1,5 +1,6 @@
 // cSpell: ignore Camara camara
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:vigia_deputados/models/deputado_despesa.dart';
@@ -38,6 +39,7 @@ class CamaraApi {
 
   Future<DeputadoDetalhadoResponse> getDeputadoInfo(int deputadoID) async {
     try {
+      log('Requesting deputado info');
       Response response = await get(Uri.parse('$url/deputados/$deputadoID'));
       return deputadoDetalhadoResponseFromJson(
         response.body,

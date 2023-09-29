@@ -8,6 +8,7 @@ import 'package:vigia_deputados/pages/perfil_deputado/despes_tab/tab_despesas.da
 import 'package:vigia_deputados/pages/perfil_deputado/frentes_tab/frentes_tab.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/notas_fiscais_tab/notas_fiscais_tab.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/orgaos_tab.dart/orgaos_tab.dart';
+import 'package:vigia_deputados/pages/perfil_deputado/perfil_deputado_error_page.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_header.dart';
 import 'package:vigia_deputados/services/camara_api.dart';
 import 'package:vigia_deputados/services/device_info.dart';
@@ -22,7 +23,7 @@ class PerfilDeputado extends StatefulWidget {
 class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProviderStateMixin {
   final CamaraApi _api = CamaraApi();
   late TabController _tabController;
-
+  bool _retryGetInfo = false;
   @override
   void initState() {
     super.initState();
@@ -44,63 +45,66 @@ class _PerfilDeputadoState extends State<PerfilDeputado> with SingleTickerProvid
         shadowColor: Colors.transparent,
         elevation: 0,
       ),
-      body: FutureBuilder<DeputadoDetalhadoResponse>(
-        future: _api.getDeputadoInfo(widget.deputadoID),
-        builder: ((context, snapshot) {
+      body: FutureBuilder<List>(
+        future: Future.wait(
+          [
+            _api.getDeputadoInfo(widget.deputadoID),
+            _api.getAllDespesasAno(widget.deputadoID, DateTime.now().year),
+          ],
+        ),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return PerfilDeputadoError(
+              callback: () => setState(() => _retryGetInfo = !_retryGetInfo),
+            );
+          }
+
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final DeputadoDetalhadoDado deputado = snapshot.data!.dados;
-          return FutureBuilder<List<DeputadoDespesasDado>>(
-              future: _api.getAllDespesasAno(deputado.id, DateTime.now().year),
-              builder: (context, despesasSnapshot) {
-                if (!despesasSnapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return Column(
-                  children: [
-                    PerfilHeader(
-                      deputado: deputado,
+          final DeputadoDetalhadoResponse deputado = snapshot.data!.first;
+          final List<DeputadoDespesasDado> desputadoDespesas = snapshot.data!.last;
+
+          return Column(
+            children: [
+              PerfilHeader(
+                deputado: deputado.dados,
+              ),
+              TabBar(
+                  controller: _tabController,
+                  labelStyle: GoogleFonts.dmSans(color: Colors.black, fontSize: isTablet ? 23 : 15),
+                  indicatorColor: ColorLib.primaryColor.color,
+                  labelColor: Colors.black,
+                  isScrollable: true,
+                  tabs: const [
+                    Tab(
+                      text: 'Dados Pessoais',
                     ),
-                    TabBar(
-                        controller: _tabController,
-                        labelStyle:
-                            GoogleFonts.dmSans(color: Colors.black, fontSize: isTablet ? 23 : 15),
-                        indicatorColor: ColorLib.primaryColor.color,
-                        labelColor: Colors.black,
-                        isScrollable: true,
-                        tabs: const [
-                          Tab(
-                            text: 'Dados Pessoais',
-                          ),
-                          Tab(text: 'Despesas'),
-                          Tab(text: 'Notas fiscais'),
-                          Tab(text: 'Frentes'),
-                          Tab(text: 'Órgãos Participantes'),
-                        ]),
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          TabDadosGerais(deputado: deputado),
-                          TabDespesas(
-                            despesasDados: despesasSnapshot.data!,
-                          ),
-                          TabNotasFiscais(
-                            despesasDados: despesasSnapshot.data!,
-                          ),
-                          TabFrentes(deputadoID: deputado.id),
-                          TabOrgaos(deputadoID: deputado.id),
-                        ],
-                      ),
-                    )
+                    Tab(text: 'Despesas'),
+                    Tab(text: 'Notas fiscais'),
+                    Tab(text: 'Frentes'),
+                    Tab(text: 'Órgãos Participantes'),
+                  ]),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    TabDadosGerais(deputado: deputado.dados),
+                    TabDespesas(
+                      despesasDados: desputadoDespesas,
+                    ),
+                    TabNotasFiscais(
+                      despesasDados: desputadoDespesas,
+                    ),
+                    TabFrentes(deputadoID: deputado.dados.id),
+                    TabOrgaos(deputadoID: deputado.dados.id),
                   ],
-                );
-              });
-        }),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }

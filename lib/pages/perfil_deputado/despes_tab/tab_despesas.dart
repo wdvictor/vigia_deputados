@@ -137,7 +137,7 @@ class _TabDespesasState extends State<TabDespesas> {
               Center(
                 child: InkWell(
                   onTap: () {
-                    _scrollController.jumpTo(_scrollController.offset + 400);
+                    _scrollController.jumpTo(_scrollController.offset + 510);
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -158,25 +158,35 @@ class _TabDespesasState extends State<TabDespesas> {
                   ),
                 ),
               ),
-              OpenContainer(closedBuilder: (_, openContainer) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: openContainer,
-                          icon: const Icon(
-                            Icons.open_in_full_sharp,
-                            color: Colors.grey,
-                          )),
-                      Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
-                    ],
-                  ),
-                );
-              }, openBuilder: (_, closeContainer) {
-                return DoughnutChartFullScreen(chartData: doughnutchartData);
-              }),
+              OpenContainer(
+                  closedElevation: 0,
+                  closedBuilder: (_, openContainer) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: openContainer,
+                              icon: const Icon(
+                                Icons.open_in_full_sharp,
+                                color: Colors.grey,
+                              )),
+                          Expanded(child: DoughnutChart(doughnutchartData: doughnutchartData))
+                        ],
+                      ),
+                    );
+                  },
+                  openBuilder: (_, closeContainer) {
+                    return DoughnutChartFullScreen(chartData: doughnutchartData);
+                  }),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text(
+                  '*Os gráficos são interativos',
+                  style: GoogleFonts.dmSans(fontWeight: FontWeight.bold),
+                ),
+              )
             ],
           ),
         ),

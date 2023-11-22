@@ -6,7 +6,7 @@ import 'package:vigia_deputados/services/cache.dart';
 class DeputadoSearchDelegete extends SearchDelegate {
   List<DeputadoDado> listaDeDeputados;
   final cache = Cache();
-  bool reload = false;
+
   DeputadoSearchDelegete(this.listaDeDeputados);
 
   @override
@@ -38,7 +38,7 @@ class DeputadoSearchDelegete extends SearchDelegate {
         future: cache.getFavorites(),
         builder: (context, snapshot) {
           final ids = snapshot.data;
-          print(ids);
+
           return ListView.builder(
               itemCount: resultado.length,
               itemBuilder: (context, index) => DeputadoListCard(

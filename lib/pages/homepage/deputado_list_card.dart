@@ -5,8 +5,12 @@ import 'package:vigia_deputados/models/deputados_response_model.dart';
 import 'package:vigia_deputados/pages/perfil_deputado/perfil_deputado.dart';
 
 class DeputadoListCard extends StatelessWidget {
-  const DeputadoListCard({Key? key, required this.deputado}) : super(key: key);
+  const DeputadoListCard(
+      {Key? key, required this.deputado, required this.favorite, required this.isFavorite})
+      : super(key: key);
   final DeputadoDado deputado;
+  final VoidCallback favorite;
+  final bool? isFavorite;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -29,7 +33,25 @@ class DeputadoListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           clipBehavior: Clip.hardEdge,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              IconButton(
+                  onPressed: () {
+                    favorite();
+                    if (isFavorite != null && !isFavorite!) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PerfilDeputado(deputadoID: deputado.id),
+                          ));
+                    }
+                  },
+                  icon: isFavorite != null && isFavorite!
+                      ? const Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        )
+                      : const Icon(Icons.star_border)),
               Expanded(
                 child: Container(
                   alignment: Alignment.centerLeft,
@@ -53,11 +75,13 @@ class DeputadoListCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey,
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.grey,
+                  ),
                 ),
               )
             ],

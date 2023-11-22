@@ -8,6 +8,7 @@ import 'package:vigia_deputados/pages/homepage/deputado_grid_card.dart';
 import 'package:vigia_deputados/pages/homepage/deputado_list_card.dart';
 import 'package:vigia_deputados/pages/homepage/deputados_search_delegate.dart';
 import 'package:vigia_deputados/pages/homepage/error_screen.dart';
+import 'package:vigia_deputados/services/cache.dart';
 import 'package:vigia_deputados/services/device_info.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<DeputadoDado> todosDeputados = [];
-
+  final cache = Cache();
+  bool reload = false;
   @override
   void initState() {
     super.initState();
@@ -80,13 +82,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               itemBuilder: (context, index) =>
                                   DeputadoGridCard(deputado: todosDeputados[index]),
                             )
-                          : ListView.builder(
-                              addAutomaticKeepAlives: false,
-                              addRepaintBoundaries: false,
-                              itemCount: todosDeputados.length,
-                              itemBuilder: (context, index) =>
-                                  DeputadoListCard(deputado: todosDeputados[index]),
-                            ),
+                          : FutureBuilder<Set<String>>(
+                              future: cache.getFavorites(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return const LinearProgressIndicator();
+                                }
+                                final ids = snapshot.data;
+                                return ListView.builder(
+                                  addAutomaticKeepAlives: false,
+                                  addRepaintBoundaries: false,
+                                  itemCount: todosDeputados.length,
+                                  itemBuilder: (context, index) {
+                                    final isFavorite = ids?.contains(
+                                      todosDeputados[index].id.toString(),
+                                    );
+                                    return DeputadoListCard(
+                                        isFavorite: isFavorite,
+                                        favorite: () {
+                                          cache.favorite(todosDeputados[index], isFavorite);
+                                          setState(() {
+                                            reload = !reload;
+                                          });
+                                        },
+                                        deputado: todosDeputados[index]);
+                                  },
+                                );
+                              }),
                     ),
                   ),
                 ],
